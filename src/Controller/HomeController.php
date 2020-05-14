@@ -60,7 +60,7 @@ class HomeController extends AbstractController
         $formule = $formuleRepository->findAll();
         $temoignage = $temoignageRepository->findAll();
         return $this->render('home/index.html.twig', [
-            'controller_name' => 'ePodSone',
+            'controller_name' => 'Brulafine',
             'products' => $products,
             'formules' => $formule,
             'temoignages' => $temoignage
@@ -79,7 +79,7 @@ class HomeController extends AbstractController
             }
         }
         return $this->render('home/account.html.twig', [
-            'controller_name' => 'ePodSone'
+            'controller_name' => 'Brulafine'
         ]);
     }
     /**

@@ -16,7 +16,7 @@
     </style>
 {% endblock %}
 
-{% block body_web %}
+{% block body %}
 
 	<div data-overlay class="bg-gradient min-vh-100 bg-light d-flex flex-column justify-content-md-center o-hidden">
       <section class="py-3">
@@ -58,49 +58,12 @@
                   Vous n'avez pas encode de compte ? <a href="{{path('registration')}}" style="color:#fff">Créez votre compte</a>
               </div>
             </div>
-            <div class="col-md-6 col-lg-auto ml-lg-5 ">
-              <div class="mb-5">
-                <div class="mb-2 mb-md-4" data-aos="fade-left" data-aos-delay="100">
-                  <div class="media rounded align-items-center pl-3 pr-3 pr-md-4 py-2 bg-white shadow-sm">
-                    <span class="avatar avatar-sm flex-shrink-0 mr-3" style="font-size: 35px;align-items: center;">🚚</span>
-                    <div class="text-dark mb-0">Livraison disponible partout dans le monde</div>
-                  </div>
-                </div>
-              </div>
-              <div class="container-plan">
-                <h2>Epods One Sans Fil:</h2>
-                <div class="mb-3" data-aos="fade-left" data-aos-delay="500">
-                  <div class="d-flex align-items-center">
-                    <div class="rounded-circle bg-success-alt">
-                      <img src="{{ asset('assets/img/icons/interface/icon-check.svg')}}" alt="Box icon" class="m-2 icon icon-xs bg-success" data-inject-svg>
-                    </div>
-                    <h6 class="mb-0 ml-3">Propre et démêlé.</h6>
-                  </div>
-                </div>
-                <div class="mb-3" data-aos="fade-left" data-aos-delay="300">
-                  <div class="d-flex align-items-center">
-                    <div class="rounded-circle bg-success-alt">
-                      <img src="{{ asset('assets/img/icons/interface/icon-check.svg')}}" alt="Binoculars icon" class="m-2 icon icon-xs bg-success" data-inject-svg>
-                    </div>
-                    <h6 class="mb-0 ml-3">Plus de liberté de mouvement.</h6>
-                  </div>
-                </div>
-                <div class="mb-3" data-aos="fade-left" data-aos-delay="400">
-                  <div class="d-flex align-items-center">
-                    <div class="rounded-circle bg-success-alt">
-                      <img src="{{ asset('assets/img/icons/interface/icon-check.svg')}}" alt="Layouts icon" class="m-2 icon icon-xs bg-success" data-inject-svg>
-                    </div>
-                    <h6 class="mb-0 ml-3">Partagez plus facilement.</h6>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
     </div>
 
-{% endblock body_web %}
+{% endblock body %}
 
 {% block javascripts %}
 	{{parent()}}
