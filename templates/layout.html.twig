@@ -16,6 +16,7 @@
   <link href="{{ asset('assets/css/main.css')}}" rel="stylesheet" type="text/css" media="all" />
   <link href="{{ asset('assets/css/theme.css')}}" rel="stylesheet" type="text/css" media="all" />
   <link href="https://fonts.googleapis.com/css?family=Nunito:400,400i,600,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
   <style type="text/css">
     button, .btn{outline: none!important;}
     .cart-btn{padding: 1px 13px}
@@ -472,7 +473,7 @@
       }
     }
     body{
-      font-family: poppins !important;
+      font-family: 'Poppins' !important;
     }
   </style>
 
@@ -554,20 +555,23 @@
     <div class="navbar-container">
       <nav class="navbar navbar-expand-lg navbar-dark" data-overlay data-sticky="top">
           <div class="container"> 
-        <a class="navbar-brand navbar-brand-dynamic-color fade-page flex-grow-1"href="index.html">
-          <img alt="Jumpstart" src="https://imgur.com/zhUVFuo.png" style=" width: 150px; ">
+        
+
+        <a class="navbar-brand navbar-brand-dynamic-color" href="{{path('home')}}">
+               <img src="https://imgur.com/JoDUDKQ.png" class="logo scrolled-logo" alt="logo">
+               <img src="https://imgur.com/zhUVFuo.png" class="logo default-logo" alt="logo">
         </a>
-        <div class="d-flex align-items-center order-lg-3 flex-grow-1 justify-content-end"> 
-          <a href="#" class="btn btn-primary ml-lg-4 mr-3 mr-md-4 mr-lg-0 d-none d-sm-block order-lg-3" style=" font-weight: 400; ">Je commande</a>
-          <button
-          aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
-          data-target=".navbar-collapse" data-toggle="collapse" type="button">
-          <img alt="Navbar Toggler Open Icon" class="navbar-toggler-open icon icon-sm"
-          data-inject-svg src="assets/img/icons/interface/icon-menu.svg">
-          <img alt="Navbar Toggler Close Icon" class="navbar-toggler-close icon icon-sm"
-          data-inject-svg src="assets/img/icons/interface/icon-x.svg">
-          </button>
-        </div>
+            <div class="d-flex align-items-center order-lg-3 right-close">
+               <button aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target=".navbar-collapse" data-toggle="collapse" type="button">
+                 <img alt="Navbar Toggler Open Icon" class="navbar-toggler-open icon icon-sm" data-inject-svg src="{{ asset('assets/img/icons/interface/icon-menu.svg')}}">
+                 <img alt="Navbar Toggler Close Icon" class="navbar-toggler-close icon icon-sm" data-inject-svg src="{{ asset('assets/img/icons/interface/icon-x.svg')}}">
+               </button>
+                <a href="#" class="btn btn-primary ml-lg-4 mr-3 mr-md-4 mr-lg-0 d-none d-sm-block order-lg-3" style=" font-weight: 400; ">Je commande</a>
+               <span class="separe-nav-xs"></span>
+               <a href="javascript:void()" class="btn btn-primary ml-lg-4 mr-lg-0 d-sm-block order-lg-3 toggle-cart cart-btn"><i class="fa fa-shopping-cart shopping-cart"></i></a>
+            </div>
+
+
         <div class="collapse navbar-collapse order-3 order-lg-2 justify-content-lg-center">
           <ul class="navbar-nav my-3 my-lg-0">
             <li class="nav-item"> <a href="{{path('home')}}" class="nav-link">Accueil</a></li>
@@ -575,6 +579,13 @@
             <li class="nav-item"> <a href="#" class="nav-link">La marque</a></li>
             <li class="nav-item"> <a href="{{path('temoignage')}}" class="nav-link">Témoignages</a></li>
             <li class="nav-item"> <a href="#" class="nav-link">Questions</a></li>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+              <li class="nav-item">
+                <div>
+                  <a aria-expanded="false" aria-haspopup="true" class="nav-link nav-item" data-toggle="dropdown-grid" href="{{path('account')}}" role="button">Mon compte</a>
+                </div>
+              </li>
+            {% endif %}
           </ul>
         </div>
       </div>
@@ -586,6 +597,152 @@
 
 
     {% endblock body_web %}
+
+    <div class="cart-wrapper">
+      <i class="fa fa-arrow-right toggle-cart"></i>
+      <div class="empty-cart" style="text-align:center">Votre panier est vide</div>
+      <div class="cart-container">
+        <div class="product-list">
+          <div class="card-list-product">
+          </div>
+          <div class="card-list-formule">
+          </div>
+          <div class="form-group form-coupon">
+              <input type="text" name="code-promo" id="code-promo-input" class="form-control" placeholder="Code promo..." style="border-radius:0">
+              <a href="javascript:void()" onclick ="addCouponToCard('#code-promo-input',1)" class="valide-coupon">je valide!</a>
+            </div>
+            <ul class="totaux card-list-coupon">
+            </ul>
+            <ul class="totaux card-list-details">
+            </ul>
+            <div>
+              <a href="javascript:void()" class="btn btn-primary ml-lg-4 mr-3 mr-md-4 mr-lg-0 d-sm-block order-lg-3 open-modal-payment">Paiement de <b class="cart-total-pay">o</b>€ <strike><i class="cart-total-reduction">0</i>€ </strike></a>
+            </div>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') and (app.user.getStripeCustomId is not null) %}
+              <div style="text-align: center;margin-top: 19px;font-size: 16px">
+                  <a href="{{path('direct_paid')}}" class="oneClickPaid" style="text-decoration: underline;" title="Vous serez automatiquement debité sur la precedente carte utilisée">Payer en 1 click</a><br>
+                  <small style="display: block;margin-top: 6px;">Pour le paiement en un click, Vous serez automatiquement debité sur votre precedente carte utilisée</small>
+              </div>
+            {% endif %}
+            
+        </div>
+      </div>
+   </div>
+   
+   <div class="modal fade" id="modal-payment" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="alert alert-danger alert-dismissible fade show box-error-payment" role="alert">
+            <span class="text"></span>
+            <button type="button" class="close close-alert-msg">
+              x
+            </button>
+          </div>
+          <div class="modal-header text-center border-0">
+            <ul class="list-inline list-cart">
+                <li class="list-inline-item"><i class="text-muted fa fa-cc-visa fa-2x"></i></li>
+                <li class="list-inline-item"><i class="fa fa-cc-mastercard fa-2x"></i></li>
+                <li class="list-inline-item"><i class="fa fa-cc-amex fa-2x"></i></li>
+                <li class="list-inline-item"><i class="fa fa-cc-discover fa-2x"></i></li>
+            </ul>
+            <div class="w-100 pt-4">
+              <h5 class="h4" style="margin: 1.5rem; color: green">Paiement securisé <i class="fa fa-key"></i></h5>
+            </div>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">
+                <img src="assets/img/icons/interface/icon-x.svg" alt="Icon">
+              </span>
+            </button>
+          </div>
+          <div class="modal-body px-md-4 px-lg-5 pb-4 pb-lg-5" style="padding-top: 0;">
+            <form id="payment-form" name="payment-form" action="{{path('checkout_product')}}" style="position: relative;">
+              <div class="form-group">
+                <input type="text" class="form-control" name="name" placeholder="nom" value="{{ app.user ? app.user.name : '' }}">
+              </div>
+              <div class="form-group">
+                <input type="email" class="form-control" name="email" placeholder="adresse email" value="{{ app.user ? app.user.email : '' }}">
+              </div>
+              <div class="form-group">
+                  <div id="card-element">
+                    <!-- A Stripe Element will be inserted here. -->
+                  </div>
+
+                  <!-- Used to display form errors. -->
+                  <div id="card-errors" role="alert"></div>
+                </div>
+              <button class="btn btn-primary btn-block submit" type="submit" style="margin-top: 20px;">Valider</button>
+              <div class="lds-ripple"><div></div><div></div></div>
+              <div class="success-checkmark">
+                <div class="check-icon">
+                  <span class="icon-line line-tip"></span>
+                  <span class="icon-line line-long"></span>
+                  <div class="icon-circle"></div>
+                  <div class="icon-fix"></div>
+                </div>
+              </div>
+            </form>
+            <div class="text-center text-small mt-3">
+              Vous avez déjà un compte? <a href="javascript:void()" class="open-sign-in-modal">Connectez-vous</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="sign-in-modal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center border-0">
+            <div class="w-100 pt-4">
+              <h5 class="h3">Connexion</h5>
+              <div>Entrer vos informations de connexion</div>
+            </div>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">
+                <img src="assets/img/icons/interface/icon-x.svg" alt="Icon">
+              </span>
+            </button>
+          </div>
+          <div class="modal-body px-md-4 px-lg-5 pb-4 pb-lg-5">
+            <div class="alert alert-danger alert-dismissible fade show box-error-payment" role="alert">
+              <span class="text"></span>
+              <button type="button" class="close close-alert-msg">
+                x
+              </button>
+          </div>
+            <form name="AjaxLogin" id="AjaxLogin" method="POST" style="position:relative">
+              <div class="form-group">
+                <input type="email" class="form-control" name="email" placeholder="Adresse email">
+              </div>
+              <div class="form-group">
+                <input type="password" class="form-control" name="password" placeholder="mot de passe">
+                <div class="text-right text-small mt-2">
+                  <a href="account-forgot-password.html" style="visibility:hidden">Forgot Password?</a>
+                </div>
+              </div>
+              <div class="form-group" style="visibility:hidden">
+                <div class="custom-control custom-checkbox text-small">
+                  <input type="checkbox" class="custom-control-input" id="sign-in-remember">
+                  <label class="custom-control-label" for="sign-in-remember">Remember me next time</label>
+                </div>
+              </div>
+              <button class="btn btn-primary btn-block submit" type="submit">Sign In</button>
+              <div class="lds-ripple"><div></div><div></div></div>
+                <div class="success-checkmark">
+                  <div class="check-icon">
+                    <span class="icon-line line-tip"></span>
+                    <span class="icon-line line-long"></span>
+                    <div class="icon-circle"></div>
+                    <div class="icon-fix"></div>
+                  </div>
+                </div>
+            </form>
+            <div class="text-center text-small mt-3" style="visibility:hidden">
+              Don't have an account? <a href="account-sign-up-simple.html">Sign up here</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 <footer class="bg-primary-3 text-white links-white pb-5 footer-1">
          <div class="container">
             <div class="row">
@@ -613,6 +770,14 @@
                      <li class="nav-item mr-3 mr-md-0">
                         <a href="landing-6.html" class="nav-link fade-page px-0 py-2">Plan du site</a>
                      </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <a href="{{ path('app_logout') }}" data-id="je_minscris-form" class="nav-link px-0 py-2">Deconnexion</a>
+                    {% else %}   
+                        <a href="{{ path('app_login') }}" data-id="je_minscris-form" class="nav-link px-0 py-2">Connexion</a>
+
+                    {% endif %}
+                  </li>
                   </ul>
                </div>
                <div class="col-xl-auto mr-xl-5 col-md-3 mb-4 mb-md-0">
