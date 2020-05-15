@@ -67,6 +67,17 @@ class HomeController extends AbstractController
         ]);
     }
     /**
+     * @Route("/temoignage", name="temoignage")
+     */
+    public function temoignage(FormuleRepository $formuleRepository,TemoignageRepository $temoignageRepository)
+    {
+        $temoignage = $temoignageRepository->findAll();
+        return $this->render('home/temoignage.html.twig', [
+            'controller_name' => 'Nutridia',
+            'temoignages' => $temoignage
+        ]);
+    }
+    /**
      * @Route("/account", name="account")
      */
     public function account(FormuleRepository $formuleRepository,TemoignageRepository $temoignageRepository)

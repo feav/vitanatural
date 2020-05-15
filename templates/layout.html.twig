@@ -471,7 +471,62 @@
         box-shadow: 0px -1px 25px -5px rgba(0, 0, 0, 0.1);
       }
     }
+    body{
+      font-family: poppins !important;
+    }
   </style>
+
+  <style type="text/css">
+      label.error{
+        color: #bf0c0c;
+        font-size: 13px;
+        font-style: italic;
+      }
+     
+      .navbar ul.navbar-nav li.nav-item a{
+        color: white;
+      }
+      .btn-primary.btn {
+          background-color: #d81b60;
+          border-color: #d81b60;
+      }
+      .btn-outline-primary {
+          color: #d81b5f;
+          border-color: #d81b5f;
+      }
+      .btn-outline-primary {
+          border-color: rgb(216, 27, 95);
+      }
+      .btn-outline-primary:hover,.btn-primary:hover  {
+            background-color:#fff;
+            border-color: rgba(216, 27, 95, 0.46);
+            color: #d81b5f;
+      }
+      .position-fixed.navbar-light .navbar-nav .nav-link {
+          color: rgb(255, 255, 255);
+      }
+      .navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-nav .nav-link:focus {
+          color: rgb(255, 255, 255);
+      }
+      .navbar-light .navbar-nav .nav-link::after {
+        background: #fefefe;
+      }
+      @media(max-width: 992px){
+        .rowly > div {
+            max-width: 45%;
+        }
+      }
+      @media(max-width: 992px){
+        .rowly > div {
+            max-width: 45%;
+        }
+      }
+       .payment-list img {
+            max-width: 100%;
+            height: 30px;
+        }
+    </style>
+
 {% endblock %}
 
 {% block body %}
@@ -515,11 +570,11 @@
         </div>
         <div class="collapse navbar-collapse order-3 order-lg-2 justify-content-lg-center">
           <ul class="navbar-nav my-3 my-lg-0">
-            <li class="nav-item"> <a href="#" class="nav-link">Accueil</a></li>
+            <li class="nav-item"> <a href="{{path('home')}}" class="nav-link">Accueil</a></li>
             <li class="nav-item"> <a href="#" class="nav-link">Ingrédients</a></li>
             <li class="nav-item"> <a href="#" class="nav-link">La marque</a></li>
+            <li class="nav-item"> <a href="{{path('temoignage')}}" class="nav-link">Témoignages</a></li>
             <li class="nav-item"> <a href="#" class="nav-link">Questions</a></li>
-            <li class="nav-item"> <a href="#" class="nav-link">Témoignages</a></li>
           </ul>
         </div>
       </div>
@@ -648,7 +703,7 @@
                   </div>
                </div>
                <div class="col-auto mt-3 mt-lg-0">
-                  <ul class="list-unstyled d-flex mb-0">
+                  <ul class="list-unstyled d-flex mb-0 payment-list">
                      <li class="mx-2"> 
                         <img src="https://www.brulafine.com/assets/images/card-cb.svg" alt="Shelley McNabb avatar image"> 
                      </li>
