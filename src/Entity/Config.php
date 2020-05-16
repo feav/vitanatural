@@ -55,6 +55,10 @@ class Config
             array(
                 "key" => "FACEBOOK_PIXEL_JS_",
                 "description" => "Script Pixel Facebook " 
+            ),
+            array(
+                "key" => "GALERY_INSTAGRAM_PROFILE",
+                "description" => "Nom du profil instagram pour la gallerie" 
             )
         );
     }

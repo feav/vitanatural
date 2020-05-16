@@ -13,6 +13,66 @@
    nav.navbar.navbar-expand-lg.navbar-dark.position-fixed.scrolled {
        background: white;
    }
+
+   .img-thumb{
+      height: 450px;
+   }
+   .img-thumb img{
+      width: 100%;
+       height: 100%;
+       object-fit: cover;
+   }
+   .thumb-middle{
+      display: flex;
+       align-items: flex-start;
+       justify-content: space-between;
+   }
+   .thumb-middle > * {
+       width: 100%;
+   }
+   .thumb-middle .image-center img{
+      width: 100%;
+       height: 100%;
+       object-fit: cover;
+   }
+
+
+   .image-grid{
+     display: grid;
+     grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+     /*grid-gap: 1rem;*/
+   }
+   .image-grid a {
+     height: 12rem;
+     width: 100%;
+     -o-object-fit: cover;
+        object-fit: cover;
+   }
+   .thumb-middle .image-grid{
+     display: grid;
+     grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+     /*grid-gap: 1rem;*/
+   }
+   .thumb-middle .image-grid a {
+     height: 12rem;
+     width: 100%;
+     -o-object-fit: cover;
+        object-fit: cover;
+   }
+   .image-grid a img {
+     height: 100%;
+     width: 100%;
+     object-fit: cover;
+     -o-object-fit: cover;
+        object-fit: cover;
+   }
+   @media(max-width: 992px){
+      .thumb-middle .image-center{display: none;}
+   }
+   @media(max-width: 768px){
+      .thumb-middle{display: block;}
+   }
+
 </style>
 {% endblock %}
 {% block body_web %}
@@ -94,6 +154,7 @@
             </div>
          </div>
       </section>
+
       <section style=" padding-top: 100px; ">
          <div class="container">
             <div class="row justify-content-center rowly">
@@ -414,6 +475,8 @@
                   </div>
                </div>
                <div class="col-md-9 col-lg-6 col-xl-5 order-lg-1">
+
+
                   <img src="https://www.brulafine.com/assets/images/product/hero.png" alt="Image" class="img-fluid">
                </div>
             </div>
@@ -826,9 +889,65 @@
             <div class="lead">Pour faire profité un maximum de personne de Nutridia nous vous faisons gagnez 2 cure au choix chaque semaine sur Instagram !</div>
          </div>
       </div>
-      <div class="row justify-content-center" style=" margin: 0; "> <img alt="miniature" style="width: 100%;height: auto;" src="https://imgur.com/e7lw8Og.png"> </div>
+      <div class="rowly" style=" margin: 0; ">
+
+                 <!-- <div class=""> -->
+                   <div class="img-thumb">
+                   </div>
+
+                   <div class="thumb-middle">
+                     <div class="image-grid grid-left">
+                     </div>
+
+                     <div class="image-center">
+                     </div>
+
+                     <div class="image-grid grid-right">
+                     </div>
+                   </div>
+
+                   <div class="image-grid grid-bottom">
+                   </div>
+                 <!-- </div> -->
+         <!-- <img alt="miniature" style="width: 100%;height: auto;" src="https://imgur.com/e7lw8Og.png">  -->
+      </div>
 
 {% endblock body_web %}
 {% block javascripts %}
 {{parent()}}
+  <script>
+    $.ajax({
+      url:"https://www.instagram.com/nutridia?__a=1",
+      type:'get',
+      success:function(response){
+        posts = response.graphql.user.edge_owner_to_timeline_media.edges;
+        posts_grid_bottom = posts_grid_left = posts_grid_right = '';
+        console.log(posts);
+        for(var i=0;i<posts.length;i++){
+          url = posts[i].node.display_url;
+          if(i == 0)
+            $(".img-thumb").html('<a href="'+url+'" target="_blank"><img src="'+url+'"></a>');
+          else if(i == 1)
+            $(".thumb-middle .image-center").html('<a href="'+url+'" target="_blank"><img src="'+url+'"></a>');
+          else{
+            if(i < 10){
+
+              if(i%2 == 0)
+                posts_grid_left += '<a href="'+url+'" target="_blank"><img src="'+url+'"></a>';
+              else
+                posts_grid_right += '<a href="'+url+'" target="_blank"><img src="'+url+'"></a>';
+            }
+            else{
+              posts_grid_bottom += '<a href="'+url+'" target="_blank"><img src="'+url+'"></a>';  
+            }
+          }
+        }
+        $(".image-grid.grid-left").html(posts_grid_left);
+        $(".image-grid.grid-right").html(posts_grid_right);
+        $(".image-grid.grid-bottom").html(posts_grid_bottom);
+        $(".thumb-middle .image-center").css('height', $(".image-grid.grid-left").height());
+      }
+    });
+  </script>
+
 {% endblock %}
