@@ -41,6 +41,21 @@ class Temoignage
      */
     private $text;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $note = 0;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $progress;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $image;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -102,6 +117,42 @@ class Temoignage
     public function setText(?string $text): self
     {
         $this->text = $text;
+
+        return $this;
+    }
+
+    public function getNote(): ?float
+    {
+        return $this->note;
+    }
+
+    public function setNote(?float $note): self
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    public function getProgress(): ?string
+    {
+        return $this->progress;
+    }
+
+    public function setProgress(?string $progress): self
+    {
+        $this->progress = $progress;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

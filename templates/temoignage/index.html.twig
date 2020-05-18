@@ -35,21 +35,36 @@
                      <thead>
                         <tr>
                            <th>Nom</th>
-                           <th>Creation</th>
+                           <th>Note</th>
+                           <th>Lieu</th>
                            <th>Progres</th>
                            <th>Video</th>
+                           <th>Photo</th>
                            <th>actions</th>
                         </tr>
                      </thead>
                      <tbody>
                         {% for temoignage in temoignages %}
                         <tr>
-                           <td>{{ temoignage.name }}</td>
-                           <td>{{ temoignage.creation ? temoignage.creation|date('Y-m-d') : '' }}</td>
+                           <td> <a href="{{ path('temoignage_edit', {'id': temoignage.id}) }}">{{ temoignage.name }}</a></td>
+                           <td>
+
+                              {% if temoignage.note > 2.5 %}
+                                 <div class="badge badge-success">{{ temoignage.note }} </div>
+                              {% elseif temoignage.note > 1.5 %}
+                                 <div class="badge badge-warning">{{ temoignage.note }} </div>
+                              {% else %}
+                                 <div class="badge badge-error">{{ temoignage.note }} </div>
+                              {% endif %}
+
+
+                           </td>
                            <td>{{ temoignage.location }}</td>
+                           <td>{{ temoignage.progress }}</td>
                            <td><div class="badge badge-warning">{{ temoignage.video }} </div></td>
                            <td>
-                              <a href="{{ path('temoignage_edit', {'id': temoignage.id}) }}">Editer</a>
+                              <img  style="width: 65px;" src="{% if temoignage.image %}{{temoignage.image }}{% else %}{{ asset('assets/img/products/avatar.png') }}{% endif %}">
+                           <td>
                               {{ include('temoignage/_delete_form.html.twig') }}
                            </td>
                         </tr>

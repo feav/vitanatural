@@ -1,7 +1,7 @@
-{% extends 'admin/layout.html.twig' %}
-{% block title %} {{parent()}} | Temoignage {% endblock %}
+{% extends 'base.html.twig' %}
 
-{% block dataStructured %}{% endblock %}
+{% block title %}Temoignage{% endblock %}
+
 {% block body %}
     <h1>Temoignage</h1>
 
@@ -31,6 +31,18 @@
                 <th>Text</th>
                 <td>{{ temoignage.text }}</td>
             </tr>
+            <tr>
+                <th>Note</th>
+                <td>{{ temoignage.note }}</td>
+            </tr>
+            <tr>
+                <th>Progress</th>
+                <td>{{ temoignage.progress }}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td>{{ temoignage.image }}</td>
+            </tr>
         </tbody>
     </table>
 
@@ -40,4 +52,3 @@
 
     {{ include('temoignage/_delete_form.html.twig') }}
 {% endblock %}
-

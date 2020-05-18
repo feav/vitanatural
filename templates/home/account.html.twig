@@ -28,15 +28,21 @@
    height: 40px;
    }
    .navbar-light .logo-head.black{
-   display: none;
+    display: none;
    }
    .position-fixed.navbar-light .logo-head{
-   display: none;
+    display: none;
    }
-   .position-fixed.navbar-light .logo-head.black{
-   display: block;
+  .position-fixed.navbar-light .logo-head.black{
+    display: block;
+  }
+   .position-lock.navbar-light .logo-head{
+    display: none;
    }
-   .toast {
+  .position-lock.navbar-light .logo-head.black{
+    display: block;
+  }
+  .toast {
       backdrop-filter: none !important;
   }
    .container.pb-5 {
@@ -45,7 +51,14 @@
    .toast{
       opacity: 1;
    }
+    .pb-5, .py-5 {
+        padding-bottom: 3rem !important;
+        padding-top: 9rem;
+    }
+        
+
 </style>
+
 {% endblock %}
 {% block body_web %}
 

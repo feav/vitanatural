@@ -593,11 +593,11 @@
 {% endblock %}
 
 {% block body %}
-
-    <div class="loader">
+  <dir class="toast__container"></dir>
+   <!--  <div class="loader">
       <div class="loading-animation"></div>
-    </div>
-    <div class="alert alert-dismissible d-none d-md-block bg-primary-3 text-white py-4 py-md-3 px-0 mb-0 rounded-0 border-0">
+    </div> -->
+    <div style="display:none !important" class="alert alert-dismissible d-none d-md-block bg-primary-3 text-white py-4 py-md-3 px-0 mb-0 rounded-0 border-0" id="show-massage" >
       <div class="container">
           <div class="row no-gutters align-items-md-center justify-content-center">
               <div class="col-lg-11 col-md d-flex flex-column flex-md-row align-items-md-center justify-content-lg-center">
@@ -605,7 +605,7 @@
               </div>
               <div class="col-auto position-absolute right">
                   <button type="button" class="close p-0 position-relative" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true">
+                      <span aria-hidden="true" onclick="toogleNotif(true)">
                           <img src="assets/img/icons/interface/icon-x.svg" alt="Close" class="icon icon-sm bg-white" data-inject-svg>
                       </span>
                   </button>
@@ -615,7 +615,7 @@
   </div>
     
     <div class="navbar-container">
-      <nav class="navbar navbar-expand-lg navbar-dark" data-overlay data-sticky="top">
+      <nav class="navbar navbar-expand-lg navbar-dark position-lock" data-overlay data-sticky="top">
           <div class="container"> 
         
 
@@ -975,7 +975,6 @@
       </a>
 
 {% endblock %}
-
 {% block javascripts %}
   <!-- Required vendor scripts (Do not remove) -->
   <script type="text/javascript" src="{{ asset('assets/js/jquery.min.js')}}"></script>
@@ -1047,7 +1046,20 @@
   </script>
 
 <script type="text/javascript">
-   function toggleMute() {
+  function toogleNotif(set) {
+    var notif = localStorage.getItem('notif_');
+    if(set){
+          localStorage.setItem('notif_', !notif);
+          notif = localStorage.getItem('notif_');
+    }
+    if(notif){
+      $("#show-massage").hide();
+    }else{
+      $("#show-massage").show();
+
+    }
+  }
+  function toggleMute() {
           var video=document.getElementById("videoHeader");
           if(video.muted){
             video.muted = false;
@@ -1057,7 +1069,7 @@
           }
           var sound = localStorage.getItem('sound');
           localStorage.setItem('sound', !sound);
-   }
+  }
 
    var LENGTH_CARD = 0;
    var prods = [];
@@ -1232,6 +1244,9 @@
                   $(".card-list-product").html("");
                    data.panier.products.forEach(function(item, index){
                      $(".card-list-product").append(itemProduct(item.id_product,item.img, item.name, item.quantity, item.price, item.oldprice));
+                     if(typeof init_product_qty === "function"){
+                        init_product_qty(item.id_product,item.quantity);
+                     }
                    }); 
                   $(".card-list-coupon").html("");
                    data.panier.coupons.forEach(function(item, index){
@@ -1609,12 +1624,56 @@
 
 </script>
 <script type="text/javascript">
+
+  function init_product_qty(id,qty){
+    $('#product-qty-'+id).html(qty);
+    $('#product-'+id + " .add-product-card ").hide();
+    $('#product-'+id + " .get_quantity ").show();
+
+  }
   $(document).ready(function() {
 
      {% if is_granted('IS_AUTHENTICATED_FULLY') %}
          synch_card();
      {% endif %}
       refreshCard();
+      toogleNotif(false);
+
+       $(".add-product-card").click(
+                     function(){
+                        var id = parseInt($(this).attr('product'));
+                        var qty = $('#' + $(this).attr('target') + ' .get_quantity');
+                        $(this).hide();
+                        qty.show();
+                        addToCard(id,1,"product");
+
+                     }
+                  );
+
+                   $(".add-product-card-add").click(
+                     function(){
+                        var id = parseInt($(this).attr('product'));
+
+                        var qty = parseInt($('#product-qty-'+id).html());
+                        qty += 1;
+                        $('#product-qty-'+id).html(qty);
+                        addToCard(id,qty,"product");
+                        
+                     }
+                  );
+
+
+                   $(".add-product-card-remove").click(
+                     function(){
+                        var id = parseInt($(this).attr('product'));
+
+                        var qty = parseInt($('#product-qty-'+id).html());
+                        qty -= 1;
+                        $('#product-qty-'+id).html(qty);
+                        addToCard(id,qty,"product");
+                        
+                     }
+                  );
    });
 </script>
 <div id="config-js">
@@ -1624,4 +1683,8 @@
 
 
 </div>
+
+
 {% endblock %}
+
+

@@ -59,6 +59,7 @@ class HomeController extends AbstractController
         $products = $this->prodService->findAll();
         $formule = $formuleRepository->findAll();
         $temoignage = $temoignageRepository->findAll();
+        
         return $this->render('home/index.html.twig', [
             'controller_name' => 'Brulafine',
             'products' => $products,

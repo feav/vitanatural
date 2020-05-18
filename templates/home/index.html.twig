@@ -19,8 +19,9 @@
    }
    .img-thumb img{
       width: 100%;
-       height: 100%;
-       object-fit: cover;
+      height: 100%;
+      object-fit: cover;
+      display: none;
    }
    .thumb-middle{
       display: flex;
@@ -72,9 +73,17 @@
    @media(max-width: 768px){
       .thumb-middle{display: block;}
    }
-
+   .image-grid.grid-bottom{
+      display: none;
+   }
+   .img-thumb {
+       display: none;
+    }
 </style>
 {% endblock %}
+{% block css_hide_nav %}
+{% endblock %}
+
 {% block body_web %}
 
 <!--     <div class="bg-gradient text-white p-0 o-hidden jarallax" data-overlay data-jarallax data-speed="0.5">
@@ -647,9 +656,7 @@
                            ">
                            <div class="rounded o-hidden" style="border-radius: 0.3125rem 0.3125rem 0 0 !important;margin: -10px -10px 20px -10px;">
                               <div class="d-flex position-relative align-items-center justify-content-center rounded">
-                                 <img class="rounded img-fluid" src="{{asset('assets/img/avatars/male-2.jpg')}}" alt="Video cover image">
-                                 <a data-fancybox href="https://vimeo.com/166034462#t=32s" class="btn btn-lg btn-light rounded-circle position-absolute" data-aos="zoom-in">
-                                   <img src="{{asset('assets/img/icons/interface/icon-media-play.svg')}}" alt="Media Play Icon" class="icon icon-lg bg-dark pl-1" data-inject-svg>
+                                  <img   class="rounded img-fluid" style="width: 100%;height: 220px;" src="{% if temoignage.image %}{{temoignage.image }}{% else %}{{ asset('assets/img/products/avatar.png') }}{% endif %}">
                                  </a>
                               </div>
                            </div>
@@ -660,8 +667,16 @@
                            <p style="
                               margin-bottom: 5px;
                               font-size: 14px;
-                              ">Paris, France</p>
-                           <img alt="miniature" style="width: 115px;height: auto;margin-bottom: 15px;" src="https://le-chariot-de-course.fr/wp-content/uploads/2018/09/etoile-4.5.jpg">
+                              ">{{temoignage.location}}</p>
+                           <div>
+                              {% for i in  1..5  %}
+                                 {% if i <= temoignage.note|number_format  %}
+                                    <img alt="miniature" style="width: 25px;height: auto;margin-bottom: 10px;" src="{{asset('assets/img/star_1.svg')}}">
+                                 {% else %}
+                                    <img alt="miniature" style="width: 25px;height: auto;margin-bottom: 10px;" src="{{asset('assets/img/star_0.svg')}}">
+                                 {% endif %}
+                              {% endfor %}
+                           </div>
                            <p style="
                               ">{{temoignage.text|raw }}</p>
                            <img alt="miniature" style="width: 65px;height: auto;margin-bottom: -45px;" src="https://www.brulafine.com/assets/images/product/hero.png">
@@ -763,7 +778,9 @@
                </div>
             </div>
             <div class="row text-center">
-               <div class="col-md-6 col-lg-4 mb-4 mb-md-5 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+               {% for product in products  %}
+
+               <div id="product-{{product.id}}" class="col-md-6 col-lg-4 mb-4 mb-md-5 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
                   <div class="mx-xl-4">
                      <img src="https://www.brulafine.com/assets/images/product/hero.png" alt="Kyan logo" style="
                         height: 110px;
@@ -773,13 +790,13 @@
                         margin-bottom: 0px;
                         font-size: 24px;
                         font-weight: 300;
-                        ">Objectif Minceur</h5>
+                        ">{{product.name}}</h5>
                      <p style="
                         font-size: 18px;
                         font-weight: 600;
                         color: #009b72;
                         margin-bottom: 10px;
-                        ">39€ au lieu de 59€</p>
+                        ">{{product.price}}€ au lieu de {{product.getOldPrice()}}€</p>
                      <div style="
                         margin: auto;
                         display: inline-flex;
@@ -799,87 +816,18 @@
                            </li>
                         </ul>
                      </div>
-                     <a href="#" class="btn btn-primary" style="font-weight: 400;margin-left: 5px;">Ajouter</a>
+                     <a style="display:none" style="font-weight: 400;margin-left: 5px;padding-left: 10px;padding-right: 10px;" class=" get_quantity btn btn-primary">
+                        <span class="add-product-card-remove" target="product-{{product.id}}" product="{{product.id}}"   style="background: #0fb589;border-radius: 50px;color: #ffffff;padding: 0px 8px;margin-right: 5px;">-</span> 
+                        <label id="product-qty-{{product.id}}">1</label>
+                        <span class="add-product-card-add" target="product-{{product.id}}" product="{{product.id}}"   style="background: #0fb589;border-radius: 50px;color: #ffffff;padding: 0px 7px;margin-left: 5px;">+</span>
+                     </a>
+
+                     <a target="product-{{product.id}}" product="{{product.id}}"  class="btn btn-primary add-product-card" style="font-weight: 400;margin-left: 5px;">Ajouter</a>
                   </div>
                </div>
-               <div class="col-md-6 col-lg-4 mb-4 mb-md-5 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
-                  <div class="mx-xl-4">
-                     <img src="https://www.brulafine.com/assets/images/product/hero.png" alt="Kyan logo" style="
-                        height: 110px;
-                        margin-bottom: 5px;
-                        ">
-                     <h5 style="
-                        margin-bottom: 0px;
-                        font-size: 24px;
-                        font-weight: 300;
-                        ">Objectif Drainer</h5>
-                     <p style="
-                        font-size: 18px;
-                        font-weight: 600;
-                        color: #009b72;
-                        margin-bottom: 10px;
-                        ">39€ au lieu de 59€</p>
-                     <div style="
-                        margin: auto;
-                        display: inline-flex;
-                        ">
-                        <ul class="avatar-group">
-                           <li>
-                              <img src="assets/img/avatars/male-2.jpg" alt="Avatar" class="avatar avatar-sm">
-                           </li>
-                           <li>
-                              <img src="assets/img/avatars/male-3.jpg" alt="Avatar" class="avatar avatar-sm">
-                           </li>
-                           <li>
-                              <img src="assets/img/avatars/male-4.jpg" alt="Avatar" class="avatar avatar-sm">
-                           </li>
-                           <li>
-                              <img src="assets/img/avatars/male-5.jpg" alt="Avatar" class="avatar avatar-sm">
-                           </li>
-                        </ul>
-                     </div>
-                     <a href="#" style="font-weight: 400;margin-left: 5px;padding-left: 10px;padding-right: 10px;" class="btn btn-primary"><span style="background: #0fb589;border-radius: 50px;color: #ffffff;padding: 0px 8px;margin-right: 5px;">-</span> 1 <span style="background: #0fb589;border-radius: 50px;color: #ffffff;padding: 0px 7px;margin-left: 5px;">+</span></a>
-                  </div>
-               </div>
-               <div class="col-md-6 col-lg-4 mb-4 mb-md-5 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
-                  <div class="mx-xl-4">
-                     <img src="https://www.brulafine.com/assets/images/product/hero.png" alt="Kyan logo" style="
-                        height: 110px;
-                        margin-bottom: 5px;
-                        ">
-                     <h5 style="
-                        margin-bottom: 0px;
-                        font-size: 24px;
-                        font-weight: 300;
-                        ">Objectif Détox</h5>
-                     <p style="
-                        font-size: 18px;
-                        font-weight: 600;
-                        color: #009b72;
-                        margin-bottom: 10px;
-                        ">39€ au lieu de 59€</p>
-                     <div style="
-                        margin: auto;
-                        display: inline-flex;
-                        ">
-                        <ul class="avatar-group">
-                           <li>
-                              <img src="assets/img/avatars/male-2.jpg" alt="Avatar" class="avatar avatar-sm">
-                           </li>
-                           <li>
-                              <img src="assets/img/avatars/male-3.jpg" alt="Avatar" class="avatar avatar-sm">
-                           </li>
-                           <li>
-                              <img src="assets/img/avatars/male-4.jpg" alt="Avatar" class="avatar avatar-sm">
-                           </li>
-                           <li>
-                              <img src="assets/img/avatars/male-5.jpg" alt="Avatar" class="avatar avatar-sm">
-                           </li>
-                        </ul>
-                     </div>
-                     <a href="#" class="btn btn-primary" style="font-weight: 400;margin-left: 5px;">Ajouter</a>
-                  </div>
-               </div>
+               {% else %}
+                  <div>Aucun produit enregistre</div>
+          {% endfor %}
             </div>
          </div>
       </section>
