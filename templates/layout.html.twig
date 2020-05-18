@@ -1,0 +1,1690 @@
+{% set STRIPE_PUBLIC_KEY = render(controller('App\\Controller\\ApiConfigController::getValueByKey', {'key':'STRIPE_PUBLIC_KEY'})) %}
+
+{% extends 'base.html.twig' %}
+
+{% block meta %}
+{% endblock %}
+
+{% block stylesheets %}
+  <!-- Begin loading animation -->
+  <!--Floating WhatsApp css-->
+  <link rel="stylesheet" href="https://rawcdn.githack.com/rafaelbotazini/floating-whatsapp/3d18b26d5c7d430a1ab0b664f8ca6b69014aed68/floating-wpp.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css" integrity="sha256-PHcOkPmOshsMBC+vtJdVr5Mwb7r0LkSVJPlPrp/IMpU=" crossorigin="anonymous" />
+  <link href="{{ asset('assets/css/loaders/loader-pulse.css')}}" rel="stylesheet" type="text/css" media="all" />
+  <!-- End loading animation -->
+  <link href="{{ asset('assets/css/main.css')}}" rel="stylesheet" type="text/css" media="all" />
+  <link href="{{ asset('assets/css/theme.css')}}" rel="stylesheet" type="text/css" media="all" />
+  <link href="https://fonts.googleapis.com/css?family=Nunito:400,400i,600,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <style type="text/css">
+    button, .btn{outline: none!important;}
+    .cart-btn{padding: 1px 13px}
+    .item-elt-foot{
+      display: flex;
+      flex-direction: column;
+      align-items: left;
+    }
+    .item-elt-foot .nav{display: block!important }
+    .item-elt-foot .nav .nav-link{display: inline-block;}
+        
+    .toast__container{z-index: 99999!important}
+    .navbar img.logo{width: 140px}
+    .navbar img.logo.scrolled-logo {display: none;}
+    .navbar.scrolled img.logo.default-logo {display: none;}
+    .navbar.scrolled img.logo.scrolled-logo {display: block;}
+    .floating-wpp{
+      bottom: 20px;
+      z-index: 9999;
+    }
+    .floating-wpp .floating-wpp-button{
+      width: 55px!important;
+      height: 55px!important;
+    }
+    .floating-wpp .floating-wpp-popup.active{
+      bottom: 60px;
+    }
+    .floating-wpp:hover{bottom: 21px;}
+    html {
+      scroll-behavior: smooth;
+    }
+    ul{list-style: none;}
+    .cart-wrapper {
+      position: fixed;
+      top: 0;
+      height: 100vh;
+      width: 290px;
+      background: #fff;
+      z-index: 1055;
+      padding: 45px 20px 10px;
+      transition: linear .2s right;
+      right: -290px;
+      overflow-y: auto;
+      box-shadow: 0px 5px 25px -5px rgba(0, 0, 0, 0.1);
+      font-size: 14px;
+    }
+    .cart-wrapper.open{right: 0}
+    .cart-wrapper .product-item img.product-img {
+      height: 60px;
+      width: 80px;
+      object-fit: cover;
+      border-radius: 5px;
+      box-shadow: 0px 5px 15px -5px rgba(0, 0, 0, 0.1);
+      float: left;
+      margin-right: 13px;
+    }
+    .cart-wrapper .product-item ul.detail-list {
+      padding-left: 14px;
+    }
+    .cart-wrapper .form-coupon{
+      display: flex;
+      align-items: stretch;
+    }
+    .cart-wrapper .form-coupon .valide-coupon {
+      background: #009b72;
+      color: #fff;
+      width: 105px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .cart-wrapper .totaux{
+      padding: 0;
+      line-height: 27px;
+      margin-top: 25px;
+    }
+    .cart-wrapper .totaux > .item > span:last-child {
+      font-weight: 800;
+      float: right;
+    }
+    .cart-wrapper .form-control, .cart-wrapper .form-control:focus{
+      border-radius: 0!important;
+    }
+    .cart-wrapper .toggle-cart{
+      cursor: pointer;
+      position: absolute;
+      top: 12px;
+      color: #888;
+    }
+
+    /**
+     * The CSS shown here will not be introduced in the Quickstart guide, but shows
+     * how you can use CSS to style your Element's container.
+     */
+    .StripeElement {
+      box-sizing: border-box;
+
+      height: 40px;
+
+      padding: 10px 12px;
+
+      border: 1px solid transparent;
+      border-radius: 4px;
+      background-color: white;
+
+      -webkit-transition: box-shadow 150ms ease;
+      transition: box-shadow 150ms ease;
+      border:1px solid #f4f4f4;
+    }
+
+    .StripeElement--focus {
+      box-shadow: 0 1px 3px 0 #cfd7df;
+    }
+
+    .StripeElement--invalid {
+      border-color: #fa755a;
+    }
+
+    .StripeElement--webkit-autofill {
+      background-color: #fefde5 !important;
+    }
+    #card-errors{color: #c31b1b}
+    /*#modal-payment button.submit {
+        cursor: pointer;
+        display: inline-block;
+        height: 40px;
+        width: 100%;
+        margin-top: 40px;
+        font-size: 15px;
+        font-weight: 600;
+        line-height: 40px;
+        letter-spacing: 0.025em;
+        text-decoration: none;
+        white-space: nowrap;
+        background: #b64645;
+        color: #fff;
+        border: none;
+        outline: none;
+        border-radius: 4px;
+        box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+        -webkit-transition: all 150ms ease;
+        transition: all 150ms ease;
+    }*/
+    #modal-payment .paid-head{
+        text-align: center;
+        color: #b64645;
+        margin-top: 15px;
+    }
+    .lds-ripple {
+        display: none;
+        width: 80px;
+        height: 80px;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        margin: auto;
+        transform: translateY(-50%);
+        z-index: 50;
+    }
+    .lds-ripple div {
+      position: absolute;
+      border: 4px solid green;
+      opacity: 1;
+      border-radius: 50%;
+      animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+    }
+    .lds-ripple div:nth-child(2) {
+      animation-delay: -0.5s;
+    }
+    @keyframes lds-ripple {
+      0% {
+        top: 36px;
+        left: 36px;
+        width: 0;
+        height: 0;
+        opacity: 1;
+      }
+      100% {
+        top: 0px;
+        left: 0px;
+        width: 72px;
+        height: 72px;
+        opacity: 0;
+      }
+    }
+    .form-group{margin-bottom: 5px;}
+    #modal-payment .modal-dialog, #sign-in-modal .modal-dialog{max-width: 400px;}
+    .list-cart{
+      position: absolute;
+    }
+    .list-inline-item:not(:last-child){margin-right: 0}
+    .list-inline-item .fa-2x {
+      color: #009b72!important;
+      font-size: 1.7em;
+    }
+
+    /**
+     * Extracted from: SweetAlert
+     * Modified by: Istiak Tridip
+     */
+    .success-checkmark {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        transform: translateY(-50%);
+        z-index: 60;
+      width: 80px;
+      height: 115px;
+      margin: 0 auto;
+      display: none;
+    }
+    .success-checkmark .check-icon {
+      width: 80px;
+      height: 80px;
+      position: relative;
+      border-radius: 50%;
+      box-sizing: content-box;
+      border: 4px solid #4CAF50;
+      display: none;
+    }
+    .success-checkmark .check-icon::before {
+      top: 3px;
+      left: -2px;
+      width: 30px;
+      transform-origin: 100% 50%;
+      border-radius: 100px 0 0 100px;
+    }
+    .success-checkmark .check-icon::after {
+      top: 0;
+      left: 30px;
+      width: 60px;
+      transform-origin: 0 50%;
+      border-radius: 0 100px 100px 0;
+      animation: rotate-circle 4.25s ease-in;
+    }
+    .success-checkmark .check-icon::before, .success-checkmark .check-icon::after {
+      content: '';
+      height: 100px;
+      position: absolute;
+      background: #FFFFFF;
+      transform: rotate(-45deg);
+    }
+    .success-checkmark .check-icon .icon-line {
+      height: 5px;
+      background-color: #4CAF50;
+      display: block;
+      border-radius: 2px;
+      position: absolute;
+      z-index: 10;
+    }
+    .success-checkmark .check-icon .icon-line.line-tip {
+      top: 46px;
+      left: 14px;
+      width: 25px;
+      transform: rotate(45deg);
+      animation: icon-line-tip 0.75s;
+    }
+    .success-checkmark .check-icon .icon-line.line-long {
+      top: 38px;
+      right: 8px;
+      width: 47px;
+      transform: rotate(-45deg);
+      animation: icon-line-long 0.75s;
+    }
+    .success-checkmark .check-icon .icon-circle {
+      top: -4px;
+      left: -4px;
+      z-index: 10;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      position: absolute;
+      box-sizing: content-box;
+      border: 4px solid rgba(76, 175, 80, 0.5);
+    }
+    .success-checkmark .check-icon .icon-fix {
+      top: 8px;
+      width: 5px;
+      left: 26px;
+      z-index: 1;
+      height: 85px;
+      position: absolute;
+      transform: rotate(-45deg);
+      background-color: #FFFFFF;
+    }
+
+    @keyframes rotate-circle {
+      0% {
+        transform: rotate(-45deg);
+      }
+      5% {
+        transform: rotate(-45deg);
+      }
+      12% {
+        transform: rotate(-405deg);
+      }
+      100% {
+        transform: rotate(-405deg);
+      }
+    }
+    @keyframes icon-line-tip {
+      0% {
+        width: 0;
+        left: 1px;
+        top: 19px;
+      }
+      54% {
+        width: 0;
+        left: 1px;
+        top: 19px;
+      }
+      70% {
+        width: 50px;
+        left: -8px;
+        top: 37px;
+      }
+      84% {
+        width: 17px;
+        left: 21px;
+        top: 48px;
+      }
+      100% {
+        width: 25px;
+        left: 14px;
+        top: 45px;
+      }
+    }
+    @keyframes icon-line-long {
+      0% {
+        width: 0;
+        right: 46px;
+        top: 54px;
+      }
+      65% {
+        width: 0;
+        right: 46px;
+        top: 54px;
+      }
+      84% {
+        width: 55px;
+        right: 0px;
+        top: 35px;
+      }
+      100% {
+        width: 47px;
+        right: 8px;
+        top: 38px;
+      }
+    }
+    .box-error-payment{
+      display: none;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      left: 0;
+      z-index: 2;
+    }
+
+    /* custom nan reponsive */
+    .navbar.navbar-toggled-show img.logo.default-logo{
+      display: block;
+      margin-left: 1rem;
+    }
+    .navbar.navbar-toggled-show img.logo.scrolled-logo{
+      display: none;
+    }
+    .navbar.navbar-toggled-show .right-close{
+      margin-right: 1rem;
+    }
+    .navbar.navbar-toggled-show .navbar-collapse{
+      background: #fff;
+    }
+    .navbar.navbar-toggled-show .navbar-nav{margin: 0!important;}
+    .navbar.navbar-toggled-show{
+      text-align: center;
+      background: rgb(34, 155, 114);
+      padding: 0;
+    }
+    .navbar.navbar-toggled-show > .container{
+      max-width: 100%;
+    }
+    .navbar.navbar-toggled-show li.nav-item:nth-child(2n + 1) {
+      background: #fdf2f5;
+    }
+    .navbar.navbar-toggled-show li.nav-item:nth-child(2n) {
+      background: #f1fdf9;
+    }
+    .navbar.navbar-toggled-show li.nav-item:last-child {
+      background: #fff;
+    }
+    .navbar li.nav-item:last-child{display: none;}
+    .navbar.navbar-toggled-show li.nav-item:last-child{display: block;}
+    .navbar.navbar-toggled-show li.nav-item:last-child > div {
+      display: block;
+      padding: 5rem 0 2rem;
+      max-width: 200px;
+      margin: auto;
+      display: flex;
+      justify-content: space-around;
+    }
+    .navbar.navbar-toggled-show li.nav-item:last-child > div > .fa{
+      font-weight: 600;
+      background-color: #229b72;
+      border-radius: 30px;
+      color: #fff;
+      display: inline-block;
+      height: 25px;
+      line-height: 25px;
+      margin: auto 3px;
+      width: 25px;
+      font-size: 13px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .navbar.navbar-toggled-show.navbar-dark .navbar-nav .nav-link{
+      color: #333;
+      line-height: 2em;
+    }
+
+    .navbar.navbar-toggled-show.navbar-dark .navbar-toggler svg [stroke]:not([stroke="none"]){stroke: #fff!important;}
+    .navbar .shopping-cart{
+      color: #fff;
+    }
+    @media(max-width: 992px){
+      .separe-nav-xs{
+        width: 2px;
+        height: 30px;
+        background: #fff;
+        margin: 0 .5rem 0 1rem;
+      }
+      .cart-btn{
+        background: transparent;
+        border: none;
+        font-size: 20px;
+        padding: 0;
+      }
+      .navbar.scrolled .shopping-cart{
+        color: #2C3038;
+      }
+      .navbar.navbar-toggled-show.scrolled .shopping-cart{
+        color: #fff;
+      }
+      .navbar.scrolled .separe-nav-xs{
+        background: #2C3038;
+      }
+      .navbar.navbar-toggled-show.scrolled .separe-nav-xs{
+        background: #fff;
+      }
+      .navbar.navbar-toggled-show{
+        box-shadow: 0px -1px 25px -5px rgba(0, 0, 0, 0.1);
+      }
+    }
+    body{
+      font-family: 'Poppins' !important;
+    }
+  </style>
+
+  <style type="text/css">
+      label.error{
+        color: #bf0c0c;
+        font-size: 13px;
+        font-style: italic;
+      }
+     
+      .navbar ul.navbar-nav li.nav-item a{
+        color: white;
+      }
+      .btn-primary.btn {
+          background-color: #d81b60;
+          border-color: #d81b60;
+      }
+      .btn-outline-primary {
+          color: #d81b5f;
+          border-color: #d81b5f;
+      }
+      .btn-outline-primary {
+          border-color: rgb(216, 27, 95);
+      }
+      .btn-outline-primary:hover,.btn-primary:hover  {
+            background-color:#fff;
+            border-color: rgba(216, 27, 95, 0.46);
+            color: #d81b5f;
+      }
+      .position-fixed.navbar-light .navbar-nav .nav-link {
+          color: rgb(255, 255, 255);
+      }
+      .navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-nav .nav-link:focus {
+          color: rgb(255, 255, 255);
+      }
+      .navbar-light .navbar-nav .nav-link::after {
+        background: #fefefe;
+      }
+      @media(max-width: 992px){
+        .rowly > div {
+            max-width: 45%;
+        }
+      }
+      @media(max-width: 992px){
+        .rowly > div {
+            max-width: 45%;
+        }
+      }
+       .payment-list img {
+            max-width: 100%;
+            height: 30px;
+        }
+
+
+
+   .img-thumb{
+      height: 450px;
+   }
+   .img-thumb img{
+      width: 100%;
+       height: 100%;
+       object-fit: cover;
+   }
+   .thumb-middle{
+      display: flex;
+       align-items: flex-start;
+       justify-content: space-between;
+   }
+   .thumb-middle > * {
+       width: 100%;
+   }
+   .thumb-middle .image-center img{
+      width: 100%;
+       height: 100%;
+       object-fit: cover;
+   }
+
+
+   .image-grid{
+     display: grid;
+     grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+     /*grid-gap: 1rem;*/
+   }
+   .image-grid a {
+     height: 12rem;
+     width: 100%;
+     -o-object-fit: cover;
+        object-fit: cover;
+   }
+   .thumb-middle .image-grid{
+     display: grid;
+     grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+     /*grid-gap: 1rem;*/
+   }
+   .thumb-middle .image-grid a {
+     height: 12rem;
+     width: 100%;
+     -o-object-fit: cover;
+        object-fit: cover;
+   }
+   .image-grid a img {
+     height: 100%;
+     width: 100%;
+     object-fit: cover;
+     -o-object-fit: cover;
+        object-fit: cover;
+   }
+   @media(max-width: 992px){
+      .thumb-middle .image-center{display: none;}
+   }
+   @media(max-width: 768px){
+      .thumb-middle{display: block;}
+   }
+   
+    </style>
+
+{% endblock %}
+
+{% block body %}
+  <dir class="toast__container"></dir>
+   <!--  <div class="loader">
+      <div class="loading-animation"></div>
+    </div> -->
+    <div style="display:none !important" class="alert alert-dismissible d-none d-md-block bg-primary-3 text-white py-4 py-md-3 px-0 mb-0 rounded-0 border-0" id="show-massage" >
+      <div class="container">
+          <div class="row no-gutters align-items-md-center justify-content-center">
+              <div class="col-lg-11 col-md d-flex flex-column flex-md-row align-items-md-center justify-content-lg-center">
+                  <div class="mb-3 mb-md-0">Livraison gratuite à partir de 45€ - Payez en 3X sans frais dès 60€.<br>Les commandes sont expédiées tous les jours et livrées malgré le virus.</div>
+              </div>
+              <div class="col-auto position-absolute right">
+                  <button type="button" class="close p-0 position-relative" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true" onclick="toogleNotif(true)">
+                          <img src="assets/img/icons/interface/icon-x.svg" alt="Close" class="icon icon-sm bg-white" data-inject-svg>
+                      </span>
+                  </button>
+              </div>
+          </div>
+      </div>
+  </div>
+    
+    <div class="navbar-container">
+      <nav class="navbar navbar-expand-lg navbar-dark position-lock" data-overlay data-sticky="top">
+          <div class="container"> 
+        
+
+        <a class="navbar-brand navbar-brand-dynamic-color" href="{{path('home')}}">
+               <img src="https://imgur.com/JoDUDKQ.png" class="logo scrolled-logo" alt="logo">
+               <img src="https://imgur.com/zhUVFuo.png" class="logo default-logo" alt="logo">
+        </a>
+            <div class="d-flex align-items-center order-lg-3 right-close">
+               <button aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target=".navbar-collapse" data-toggle="collapse" type="button">
+                 <img alt="Navbar Toggler Open Icon" class="navbar-toggler-open icon icon-sm" data-inject-svg src="{{ asset('assets/img/icons/interface/icon-menu.svg')}}">
+                 <img alt="Navbar Toggler Close Icon" class="navbar-toggler-close icon icon-sm" data-inject-svg src="{{ asset('assets/img/icons/interface/icon-x.svg')}}">
+               </button>
+                <a href="#" class="btn btn-primary ml-lg-4 mr-3 mr-md-4 mr-lg-0 d-none d-sm-block order-lg-3" style=" font-weight: 400; ">Je commande</a>
+               <span class="separe-nav-xs"></span>
+               <a href="javascript:void()" class="btn btn-primary ml-lg-4 mr-lg-0 d-sm-block order-lg-3 toggle-cart cart-btn"><i class="fa fa-shopping-cart shopping-cart"></i></a>
+            </div>
+
+
+        <div class="collapse navbar-collapse order-3 order-lg-2 justify-content-lg-center">
+          <ul class="navbar-nav my-3 my-lg-0">
+            <li class="nav-item"> <a href="{{path('home')}}" class="nav-link">Accueil</a></li>
+            <li class="nav-item"> <a href="#" class="nav-link">Ingrédients</a></li>
+            <li class="nav-item"> <a href="#" class="nav-link">La marque</a></li>
+            <li class="nav-item"> <a href="{{path('temoignage')}}" class="nav-link">Témoignages</a></li>
+            <li class="nav-item"> <a href="#" class="nav-link">Questions</a></li>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+              <li class="nav-item">
+                <div>
+                  <a aria-expanded="false" aria-haspopup="true" class="nav-link nav-item" data-toggle="dropdown-grid" href="{{path('account')}}" role="button">Mon compte</a>
+                </div>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+    </div>
+
+    {% block body_web %}
+
+
+
+    {% endblock body_web %}
+
+    <div class="cart-wrapper">
+      <i class="fa fa-arrow-right toggle-cart"></i>
+      <div class="empty-cart" style="text-align:center">Votre panier est vide</div>
+      <div class="cart-container">
+        <div class="product-list">
+          <div class="card-list-product">
+          </div>
+          <div class="card-list-formule">
+          </div>
+          <div class="form-group form-coupon">
+              <input type="text" name="code-promo" id="code-promo-input" class="form-control" placeholder="Code promo..." style="border-radius:0">
+              <a href="javascript:void()" onclick ="addCouponToCard('#code-promo-input',1)" class="valide-coupon">je valide!</a>
+            </div>
+            <ul class="totaux card-list-coupon">
+            </ul>
+            <ul class="totaux card-list-details">
+            </ul>
+            <div>
+              <a href="javascript:void()" class="btn btn-primary ml-lg-4 mr-3 mr-md-4 mr-lg-0 d-sm-block order-lg-3 open-modal-payment">Paiement de <b class="cart-total-pay">o</b>€ <strike><i class="cart-total-reduction">0</i>€ </strike></a>
+            </div>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') and (app.user.getStripeCustomId is not null) %}
+              <div style="text-align: center;margin-top: 19px;font-size: 16px">
+                  <a href="{{path('direct_paid')}}" class="oneClickPaid" style="text-decoration: underline;" title="Vous serez automatiquement debité sur la precedente carte utilisée">Payer en 1 click</a><br>
+                  <small style="display: block;margin-top: 6px;">Pour le paiement en un click, Vous serez automatiquement debité sur votre precedente carte utilisée</small>
+              </div>
+            {% endif %}
+            
+        </div>
+      </div>
+   </div>
+   
+   <div class="modal fade" id="modal-payment" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="alert alert-danger alert-dismissible fade show box-error-payment" role="alert">
+            <span class="text"></span>
+            <button type="button" class="close close-alert-msg">
+              x
+            </button>
+          </div>
+          <div class="modal-header text-center border-0">
+            <ul class="list-inline list-cart">
+                <li class="list-inline-item"><i class="text-muted fa fa-cc-visa fa-2x"></i></li>
+                <li class="list-inline-item"><i class="fa fa-cc-mastercard fa-2x"></i></li>
+                <li class="list-inline-item"><i class="fa fa-cc-amex fa-2x"></i></li>
+                <li class="list-inline-item"><i class="fa fa-cc-discover fa-2x"></i></li>
+            </ul>
+            <div class="w-100 pt-4">
+              <h5 class="h4" style="margin: 1.5rem; color: green">Paiement securisé <i class="fa fa-key"></i></h5>
+            </div>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">
+                <img src="assets/img/icons/interface/icon-x.svg" alt="Icon">
+              </span>
+            </button>
+          </div>
+          <div class="modal-body px-md-4 px-lg-5 pb-4 pb-lg-5" style="padding-top: 0;">
+            <form id="payment-form" name="payment-form" action="{{path('checkout_product')}}" style="position: relative;">
+              <div class="form-group">
+                <input type="text" class="form-control" name="name" placeholder="nom" value="{{ app.user ? app.user.name : '' }}">
+              </div>
+              <div class="form-group">
+                <input type="email" class="form-control" name="email" placeholder="adresse email" value="{{ app.user ? app.user.email : '' }}">
+              </div>
+              <div class="form-group">
+                  <div id="card-element">
+                    <!-- A Stripe Element will be inserted here. -->
+                  </div>
+
+                  <!-- Used to display form errors. -->
+                  <div id="card-errors" role="alert"></div>
+                </div>
+              <button class="btn btn-primary btn-block submit" type="submit" style="margin-top: 20px;">Valider</button>
+              <div class="lds-ripple"><div></div><div></div></div>
+              <div class="success-checkmark">
+                <div class="check-icon">
+                  <span class="icon-line line-tip"></span>
+                  <span class="icon-line line-long"></span>
+                  <div class="icon-circle"></div>
+                  <div class="icon-fix"></div>
+                </div>
+              </div>
+            </form>
+            <div class="text-center text-small mt-3">
+              Vous avez déjà un compte? <a href="javascript:void()" class="open-sign-in-modal">Connectez-vous</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="sign-in-modal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center border-0">
+            <div class="w-100 pt-4">
+              <h5 class="h3">Connexion</h5>
+              <div>Entrer vos informations de connexion</div>
+            </div>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">
+                <img src="assets/img/icons/interface/icon-x.svg" alt="Icon">
+              </span>
+            </button>
+          </div>
+          <div class="modal-body px-md-4 px-lg-5 pb-4 pb-lg-5">
+            <div class="alert alert-danger alert-dismissible fade show box-error-payment" role="alert">
+              <span class="text"></span>
+              <button type="button" class="close close-alert-msg">
+                x
+              </button>
+          </div>
+            <form name="AjaxLogin" id="AjaxLogin" method="POST" style="position:relative">
+              <div class="form-group">
+                <input type="email" class="form-control" name="email" placeholder="Adresse email">
+              </div>
+              <div class="form-group">
+                <input type="password" class="form-control" name="password" placeholder="mot de passe">
+                <div class="text-right text-small mt-2">
+                  <a href="account-forgot-password.html" style="visibility:hidden">Forgot Password?</a>
+                </div>
+              </div>
+              <div class="form-group" style="visibility:hidden">
+                <div class="custom-control custom-checkbox text-small">
+                  <input type="checkbox" class="custom-control-input" id="sign-in-remember">
+                  <label class="custom-control-label" for="sign-in-remember">Remember me next time</label>
+                </div>
+              </div>
+              <button class="btn btn-primary btn-block submit" type="submit">Sign In</button>
+              <div class="lds-ripple"><div></div><div></div></div>
+                <div class="success-checkmark">
+                  <div class="check-icon">
+                    <span class="icon-line line-tip"></span>
+                    <span class="icon-line line-long"></span>
+                    <div class="icon-circle"></div>
+                    <div class="icon-fix"></div>
+                  </div>
+                </div>
+            </form>
+            <div class="text-center text-small mt-3" style="visibility:hidden">
+              Don't have an account? <a href="account-sign-up-simple.html">Sign up here</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="bg-primary-3 text-white links-white pb-5 footer-1">
+         <div class="container">
+            <div class="row">
+               <div class="col-xl-auto mr-xl-5 col-md-3 mb-4 mb-md-0">
+                  <h5>Navigation</h5>
+                  <ul class="nav flex-row flex-md-column">
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="landing-1.html" class="nav-link fade-page px-0 py-2">Accueil</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="landing-2.html" class="nav-link fade-page px-0 py-2">Nos produits</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="landing-3.html" class="nav-link fade-page px-0 py-2">Les ingrédiants</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="landing-4.html" class="nav-link fade-page px-0 py-2">Témoignages</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="landing-5.html" class="nav-link fade-page px-0 py-2">Coaching</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="landing-6.html" class="nav-link fade-page px-0 py-2">Nous contacter</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="landing-6.html" class="nav-link fade-page px-0 py-2">Plan du site</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <a href="{{ path('app_logout') }}" data-id="je_minscris-form" class="nav-link px-0 py-2">Deconnexion</a>
+                    {% else %}   
+                        <a href="{{ path('app_login') }}" data-id="je_minscris-form" class="nav-link px-0 py-2">Connexion</a>
+
+                    {% endif %}
+                  </li>
+                  </ul>
+               </div>
+               <div class="col-xl-auto mr-xl-5 col-md-3 mb-4 mb-md-0">
+                  <h5>Nos produits</h5>
+                  <ul class="nav flex-row flex-md-column">
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="company-about-1.html" class="nav-link fade-page px-0 py-2">Minceur</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="blog-listing-1.html" class="nav-link fade-page px-0 py-2">Sommeil</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="help-center-home.html" class="nav-link fade-page px-0 py-2">EveilActif</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="careers-1.html" class="nav-link fade-page px-0 py-2">Circulation</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="case-studies.html" class="nav-link fade-page px-0 py-2">ActifPousse</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="pricing-plans.html" class="nav-link fade-page px-0 py-2">PeauParfaite</a>
+                     </li>
+                  </ul>
+               </div>
+               <div class="col-xl-auto mr-xl-5 col-md-3 mb-4 mb-md-0">
+                  <h5>Informations</h5>
+                  <ul class="nav flex-row flex-md-column">
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="company-about-1.html" class="nav-link fade-page px-0 py-2">Partenariat et Affiliation</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="blog-listing-1.html" class="nav-link fade-page px-0 py-2">Paiement sécurisé</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="help-center-home.html" class="nav-link fade-page px-0 py-2">Charte de confidentialité</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="careers-1.html" class="nav-link fade-page px-0 py-2">C.G.U.</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="case-studies.html" class="nav-link fade-page px-0 py-2">C.G.V.</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="pricing-plans.html" class="nav-link fade-page px-0 py-2">Cookies</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="pricing-plans.html" class="nav-link fade-page px-0 py-2">Mentions légales</a>
+                     </li>
+                  </ul>
+               </div>
+               <div class="col-lg mt-md-5 mt-lg-0 order-lg-3 order-xl-4">
+                  <h5>Pour les bavards...</h5>
+                  <div class="card card-body bg-white">
+                     <p style=" margin-bottom: 0; ">Tél : 01 75 85 83 83</p>
+                     <p style=" margin-bottom: 0; margin-top: 0.5rem; ">hello(at)respir.co</p>
+                  </div>
+                  <ul class="list-unstyled d-flex mb-0 mt-4">
+                     <li class="mx-3" style=" margin-left: 0px !important; ">
+                        <a href="#" class="hover-fade-out">
+                        <img src="assets/img/icons/social/twitter.svg" alt="Twitter" class="icon icon-xs bg-white" data-inject-svg>
+                        </a>
+                     </li>
+                     <li class="mx-3">
+                        <a href="#" class="hover-fade-out">
+                        <img src="assets/img/icons/social/instagram.svg" alt="Github" class="icon icon-xs bg-white" data-inject-svg>
+                        </a>
+                     </li>
+                     <li class="mx-3">
+                        <a href="#" class="hover-fade-out">
+                        <img src="assets/img/icons/social/facebook.svg" alt="Facebook" class="icon icon-xs bg-white" data-inject-svg>
+                        </a>
+                     </li>
+                  </ul>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col">
+                  <hr>
+               </div>
+            </div>
+            <div class="row flex-column flex-lg-row align-items-center justify-content-center justify-content-lg-between text-center text-lg-left">
+               <div class="col-auto">
+                  <div class="d-flex flex-column flex-sm-row align-items-center text-small">
+                     <div class="text-muted">
+                        Transactions 100% sécurisées grâce au cryptage SSL.
+                     </div>
+                  </div>
+               </div>
+               <div class="col-auto mt-3 mt-lg-0">
+                  <ul class="list-unstyled d-flex mb-0 payment-list">
+                     <li class="mx-2"> 
+                        <img src="https://www.brulafine.com/assets/images/card-cb.svg" alt="Shelley McNabb avatar image"> 
+                     </li>
+                     <li class="mx-2"> 
+                        <img src="https://www.brulafine.com/assets/images/card-mc.svg" alt="Shelley McNabb avatar image"> 
+                     </li>
+                     <li class="mx-2"> 
+                        <img src="https://www.brulafine.com/assets/images/card-mc-secured.svg" alt="Shelley McNabb avatar image" style=" height: 20px; "> 
+                     </li>
+                     <li class="mx-2"> 
+                        <img src="https://www.brulafine.com/assets/images/card-visa.svg" alt="Shelley McNabb avatar image"> 
+                     </li>
+                     <li class="mx-2"> 
+                        <img src="https://www.brulafine.com/assets/images/card-visa-secured.svg" alt="Shelley McNabb avatar image"> 
+                     </li>
+                  </ul>
+               </div>
+            </div>
+            <div class="row flex-column flex-lg-row align-items-center justify-content-center justify-content-lg-between text-center text-lg-left">
+               <div class="col-auto">
+                  <div class="d-flex flex-column flex-sm-row align-items-center text-small">
+                     <div class="text-muted" style=" font-size: 11px;margin: 20px 0px; ">
+                        Pour votre santé, mangez au moins cinq fruits et légumes par jour - www.mangerbouger.fr
+                        Les produits Castalis sont des compléments alimentaires. À ce titre, ils ne se substituent en aucun cas à une alimentation saine, variée et équilibrée. Les informations et données diffusées sur le site proviennent de sources légitimes et valides et elles sont élaborées avec le plus grand soin et la plus grande précision. Cependant ces informations, données, affirmations et déclarations n’ont été approuvées par aucune agence gouvernementale ou toute autre autorité médicale. Les compléments alimentaires sains, naturels et de haute qualité, produits par Castalis, n’ont pas pour but de diagnostiquer, traiter, soigner, guérir, prévenir et/ou empêcher les maladies. L’origine naturelle, saine, végétale et végane des ingrédients que nous utilisons dans nos produits en fait des compléments alimentaires de tout premier choix. Ils ne nécessitent aucune prescription médicale. Cependant, nous vous invitons à consulter impérativement votre médecin avant de commencer à consommer des compléments alimentaires, à suivre un régime ou à participer à un programme de coaching, notamment sportif. En effet, chaque personne est unique, les résultats individuels peuvent varier et certaines contre-indications personnelles peuvent exister. Cette consultation avec votre médecin traitant vous permettra de vérifier que les ingrédients utilisés dans nos compléments alimentaires sont compatibles avec votre cas particulier et les traitements médicaux que vous suivez déjà ou pouvez être amenés à suivre. Votre bien-être est notre objectif numéro un.
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="row flex-column flex-lg-row align-items-center justify-content-center justify-content-lg-between text-center text-lg-left">
+               <div class="col-auto">
+                  <div class="d-flex flex-column flex-sm-row align-items-center text-small">
+                     <div class="text-muted">
+                        © EDA Solutions, 2020
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </footer>
+      <a href="#top" class="btn btn-primary rounded-circle btn-back-to-top" data-smooth-scroll data-aos="fade-up" data-aos-offset="2000" data-aos-mirror="true" data-aos-once="false">
+      <img src="assets/img/icons/interface/icon-arrow-up.svg" alt="Icon" class="icon bg-white" data-inject-svg>
+      </a>
+
+{% endblock %}
+{% block javascripts %}
+  <!-- Required vendor scripts (Do not remove) -->
+  <script type="text/javascript" src="{{ asset('assets/js/jquery.min.js')}}"></script>
+  <script type="text/javascript" src="{{ asset('assets/js/popper.min.js')}}"></script>
+  <script type="text/javascript" src="{{ asset('assets/js/bootstrap.js')}}"></script>
+
+  <!-- Optional Vendor Scripts (Remove the plugin script here and comment initializer script out of index.js if site does not use that feature) -->
+
+  <!-- AOS (Animate On Scroll - animates elements into view while scrolling down) -->
+  <script type="text/javascript" src="{{ asset('assets/js/aos.js')}}"></script>
+  <!-- Clipboard (copies content from browser into OS clipboard) -->
+  <script type="text/javascript" src="{{ asset('assets/js/clipboard.min.js')}}"></script>
+  <!-- Fancybox (handles image and video lightbox and galleries) -->
+  <script type="text/javascript" src="{{ asset('assets/js/jquery.fancybox.min.js')}}"></script>
+  <!-- Flatpickr (calendar/date/time picker UI) -->
+  <script type="text/javascript" src="{{ asset('assets/js/flatpickr.min.js')}}"></script>
+  <!-- Flickity (handles touch enabled carousels and sliders) -->
+  <script type="text/javascript" src="{{ asset('assets/js/flickity.pkgd.min.js')}}"></script>
+  <!-- Ion rangeSlider (flexible and pretty range slider elements) -->
+  <script type="text/javascript" src="{{ asset('assets/js/ion.rangeSlider.min.js')}}"></script>
+  <!-- Isotope (masonry layouts and filtering) -->
+  <script type="text/javascript" src="{{ asset('assets/js/isotope.pkgd.min.js')}}"></script>
+  <!-- jarallax (parallax effect and video backgrounds) -->
+  <script type="text/javascript" src="{{ asset('assets/js/jarallax.min.js')}}"></script>
+  <script type="text/javascript" src="{{ asset('assets/js/jarallax-video.min.js')}}"></script>
+  <script type="text/javascript" src="{{ asset('assets/js/jarallax-element.min.js')}}"></script>
+  <!-- jQuery Countdown (displays countdown text to a specified date) -->
+  <script type="text/javascript" src="{{ asset('assets/js/jquery.countdown.min.js')}}"></script>
+  <!-- jQuery smartWizard facilitates steppable wizard content -->
+  <script type="text/javascript" src="{{ asset('assets/js/jquery.smartWizard.min.js')}}"></script>
+  <!-- Plyr (unified player for Video, Audio, Vimeo and Youtube) -->
+  <script type="text/javascript" src="{{ asset('assets/js/plyr.polyfilled.min.js')}}"></script>
+  <!-- Prism (displays formatted code boxes) -->
+  <script type="text/javascript" src="{{ asset('assets/js/prism.js')}}"></script>
+  <!-- ScrollMonitor (manages events for elements scrolling in and out of view) -->
+  <script type="text/javascript" src="{{ asset('assets/js/scrollMonitor.js')}}"></script>
+  <!-- Smooth scroll (animation to links in-page)-->
+  <script type="text/javascript" src="{{ asset('assets/js/smooth-scroll.polyfills.min.js')}}"></script>
+  <!-- SVGInjector (replaces img tags with SVG code to allow easy inclusion of SVGs with the benefit of inheriting colors and styles)-->
+  <script type="text/javascript" src="{{ asset('assets/js/svg-injector.umd.production.js')}}"></script>
+  <!-- TwitterFetcher (displays a feed of tweets from a specified account)-->
+  <script type="text/javascript" src="{{ asset('assets/js/twitterFetcher_min.js')}}"></script>
+  <!-- Typed text (animated typing effect)-->
+  <script type="text/javascript" src="{{ asset('assets/js/typed.min.js')}}"></script>
+  <!-- Required theme scripts (Do not remove) -->
+  <script type="text/javascript" src="{{ asset('assets/js/theme.js')}}"></script>
+  
+    <link href="{{ asset('assets/Notification/css/ussal-notification.css')}}" rel="stylesheet" type="text/css" media="all" />
+
+  <script type="text/javascript" src="{{ asset('assets/Notification/js/ussal-notification.js')}}"></script>
+  <!-- Removes page load animation when window is finished loading -->
+  <script src="https://js.stripe.com/v3/"></script>
+  <script type="text/javascript">
+    window.addEventListener("load",function(){
+      document.querySelector('body').classList.add('loaded');
+    });
+    $('.toggle-cart').click(function(){
+      $('.cart-wrapper').toggleClass('open');
+    })
+    $(".open-modal-payment").click(function(){
+      $("#modal-payment").modal({backdrop: "static"});
+    });
+    $("#modal-payment").on('click', '.open-sign-in-modal', (function(event){
+      $("#sign-in-modal").modal({backdrop: "static"});
+    }));
+    $('.close-alert-msg').click(function(){
+      $('#modal-payment .alert-dismissible').css('display','none');
+    });
+  </script>
+
+<script type="text/javascript">
+  function toogleNotif(set) {
+    var notif = localStorage.getItem('notif_');
+    if(set){
+          localStorage.setItem('notif_', !notif);
+          notif = localStorage.getItem('notif_');
+    }
+    if(notif){
+      $("#show-massage").hide();
+    }else{
+      $("#show-massage").show();
+
+    }
+  }
+  function toggleMute() {
+          var video=document.getElementById("videoHeader");
+          if(video.muted){
+            video.muted = false;
+          } else {
+            debugger;
+            video.muted = true;
+          }
+          var sound = localStorage.getItem('sound');
+          localStorage.setItem('sound', !sound);
+  }
+
+   var LENGTH_CARD = 0;
+   var prods = [];
+
+   function addToCardForm(id,price,name,img){
+      var modal = $("#add-product-modal");
+      $("#add-product-modal .product-image").attr('src','{{asset("assets/img/products")}}/'+img);
+      $("#add-product-modal .product-name").html(name);
+      $("#add-product-modal .product-id-input").val(id);
+      $("#add-product-modal .product-price").html(price+"€");
+      $("#add-product-modal .product-price-input").html(id);
+      $("#add-product-modal .product-quantity-input").val(1);
+   }
+
+   function itemProduct(id,img, name, quantity, price, oldprice){
+      return '<div class="product-item product-'+id+'">'+
+            '<img src="{{asset("assets/img/products")}}/'+img+'" class="product-img">'+
+            '<ul class="detail-list">'+
+              '<li class="detail-item product-name">'+
+                name+
+              '</li>'+
+              '<li class="detail-item product-qte">'+
+               quantity+' x '+price+'€ <strike>'+oldprice+'€</strike>'+
+              '</li>'+
+              '<li class="detail-item product-etat">'+
+                '<span style="color: #009b7 !important; cursor: pointer; font-weight: 700;" onclick="addToCard('+id+',0)">supprimé</span>'+
+              '</li>'+
+            '</ul>'+
+          '</div>';
+   }
+   function itemFormule(id, name, quantity, price){
+      return '<div class="product-item formule-'+id+'">'+
+            '<img src="{{asset("assets/img/products/avatar.png")}}" class="product-img">'+
+            '<ul class="detail-list">'+
+              '<li class="detail-item product-name">Abonnement '+
+                name+
+              '</li>'+
+              '<li class="detail-item product-qte">'+
+               +price+'€ valables <span>'+quantity+' mois</span>'+
+              '</li>'+
+              '<li class="detail-item product-etat">'+
+                '<a href="javascript:void" onclick=" addFormuleToCard('+id+',0)">supprimé</a>'+
+              '</li>'+
+            '</ul>'+
+          '</div>';
+   }
+
+   function itemCoupon(id,name, value){
+      return '<li class="item coupon-'+id+'">'+
+                '<span>Réduction:</span>'+
+                '<span>'+name+' (-'+value+')</span>'+
+              '</li>';
+   }
+   function addCouponToCard(target,qty=1){
+      var code = $(target).val();
+      addToCard(code,qty,"coupon");
+   }
+   function addFormuleToCard(id,qty=1){
+      addToCard(id,qty,"formule");
+    }
+  function synch_card(){
+    var x = window.localStorage.getItem('panier');
+    if(x){
+       prods = JSON.parse(x);
+
+       prods.forEach(function(item, index){
+          console.log("add "+item.type+" : "+item.id);
+          addToCard(item.id,item.qty,item.type);
+       })
+
+       window.localStorage.removeItem('panier');
+    }
+  } 
+  function addToCard(id=-1,qty=-1,type="product"){
+    $.ajax({
+         contentType: "application/json",
+         dataType: "json",
+         url: "{{ path('api_use_connected') }}",
+         beforeSend: function( xhr ) {
+          $('.btn-add-to-card').css('pointer-events','none');
+          $('.btn-add-to-card').text('Ajout...');
+         }
+       })
+    .done(function( data ) {
+       if(data.status==200){
+          addToCard_connected(id,qty,type);
+          
+       }else{
+          addToCard_not_connected(id,qty,type);
+       }
+    });
+  }
+  function refreshCard(show){
+    $.ajax({
+                 contentType: "application/json",
+                 dataType: "json",
+                 url: "{{ path('api_use_connected') }}",
+                 beforeSend: function( xhr ) {
+                 }
+               })
+            .done(function( data ) {
+               if(data.status==200){
+                  refreshCard_connected(show);
+                  
+               }else{
+                  refreshCard_not_connected(show);
+               }
+            });
+  }
+        function addToCard_connected(id=-1,qty=-1,type="product"){
+            if(id == -1){
+               id = $("#add-product-modal .product-id-input").val();
+            }
+            if(qty == -1){
+               qty = $("#add-product-modal .product-quantity-input").val();
+            }
+            $.ajax({
+                 contentType: "application/json",
+                 dataType: "json",
+                 data:{
+                     product:id,
+                     quantity:qty,
+                     type:type
+                 },
+                 url: "{{ path('commande_add_to_card') }}",
+                 beforeSend: function( xhr ) {}
+               })
+            .done(function( data ) {
+               if(data.status==200){
+                  refreshCard(true);
+                  notification("Modification du Panier",data.message,"success");
+                  
+                  LENGTH_CARD++;
+                  if(prods.length == LENGTH_CARD ){
+                    if($paidLaunch){
+                      $('#modal-payment button.submit').text('Initialisation paiement');
+                      $paidLaunch = false;
+                      proceedPayment();
+                    }
+                  }
+               }else{
+                  notification("Modification du Panier",data.message,"error");
+               }
+               $('.btn-add-to-card').css('pointer-events','auto');
+               $('.btn-add-to-card').text('Ajout au panier');
+               $('#add-product-modal').modal('hide');
+            });
+        }
+        function refreshCard_connected(show){
+            $.ajax({
+              contentType: "application/json",
+              dataType: "json",
+              url: "{{ path('commande_get_card') }}",
+              beforeSend: function( xhr ) {
+                
+              }
+            })
+            .done(function( data ) {
+              console.log(data);
+                if(data.panier.coupons.length == 0 && data.panier.formules.length == 0 && data.panier.products.length==0){
+                  $('.cart-container').css('display', 'none');
+                  $('.empty-cart').css('display', 'block');
+                }
+                else{
+                  $('.cart-container').css('display', 'block');
+                  $('.empty-cart').css('display', 'none');
+                }
+               if(data.status==200){
+                  var total = (data.panier.total-data.panier.reduction)<0?0:data.panier.total-data.panier.reduction;
+                  $(".cart-total-pay").html(total.toFixed(2));
+                  $(".cart-total-reduction").html(data.panier.total.toFixed(2));
+                  $(".card-list-product").html("");
+                   data.panier.products.forEach(function(item, index){
+                     $(".card-list-product").append(itemProduct(item.id_product,item.img, item.name, item.quantity, item.price, item.oldprice));
+                     if(typeof init_product_qty === "function"){
+                        init_product_qty(item.id_product,item.quantity);
+                     }
+                   }); 
+                  $(".card-list-coupon").html("");
+                   data.panier.coupons.forEach(function(item, index){
+                     $(".card-list-coupon").append( itemCoupon(item.id,item.code, item.value));
+                   });
+                  $(".card-list-formule").html("");
+                   data.panier.formules.forEach(function(item, index){
+                     $(".card-list-formule").append( itemFormule(item.id,item.name,item.month,item.price));
+                   });
+               }else{
+                  console.log(data.message);
+               }
+               if(show && !$(".cart-wrapper").hasClass("open"))
+                     $(".cart-wrapper").addClass("open");
+              });
+        }
+        synch_card();
+        
+      /**
+      ** USER NOT CONNECTED
+      **/
+        function addToCard_not_connected(id=-1,qty=-1,type="product"){
+            if(id == -1){
+               id = $("#add-product-modal .product-id-input").val();
+            }
+            if(qty == -1){
+               qty = $("#add-product-modal .product-quantity-input").val();
+            }
+
+            var x = window.localStorage.getItem('panier');
+            var prods = [];
+            if(x){
+               prods = JSON.parse(x);
+            }
+            
+
+            $.ajax({
+                 contentType: "application/json",
+                 dataType: "json",
+                 data:{
+                     product:id,
+                     quantity:qty,
+                     type:type,
+                     products:prods
+                 },
+                 url: "{{ path('commande_add_to_card_not_connected') }}",
+                 beforeSend: function( xhr ) {}
+               })
+            .done(function( data ) {
+               if(data.status==200){
+                  window.localStorage.setItem('panier', JSON.stringify(data.panier) );
+                  refreshCard(true);
+
+                  notification("Modification du Panier",data.message,"success");
+               }else{
+                  notification("Modification du Panier",data.message,"error");
+                  $('#modal-payment button.submit').text('Valider');
+               }
+               $('.btn-add-to-card').css('pointer-events','auto');
+               $('.btn-add-to-card').text('Ajout au panier');
+               $('#add-product-modal').modal('hide');
+            });
+        }
+        function refreshCard_not_connected(show){
+            var x = window.localStorage.getItem('panier');
+            var prods = [];
+            if(x){
+               prods = JSON.parse(x);
+            }
+            $.ajax({
+              contentType: "application/json",
+               dataType: "json",
+               data:{ products:prods },
+              url: "{{ path('commande_get_card_not_connected') }}",
+              beforeSend: function( xhr ) {
+                
+              }
+            })
+            .done(function( data ) {
+              if(data.coupons && data.coupons.length == 0 && data.formules.length == 0 && data.produits.length==0){
+                  $('.cart-container').css('display', 'none');
+                  $('.empty-cart').css('display', 'block');
+                }
+                else{
+                  $('.cart-container').css('display', 'block');
+                  $('.empty-cart').css('display', 'none');
+                }
+               if(data.status==200){
+                  var total = (data.panier.total-data.panier.reduction)<0?0:data.panier.total-data.panier.reduction;
+                  $(".cart-total-pay").html(total.toFixed(2));
+                  $(".cart-total-reduction").html(data.panier.total.toFixed(2));
+                  $(".card-list-product").html("");
+                   data.panier.products.forEach(function(item, index){
+                     $(".card-list-product").append(itemProduct(item.id_product,item.img, item.name, item.quantity, item.price, item.oldprice));
+                   }); 
+                  $(".card-list-coupon").html("");
+                   data.panier.coupons.forEach(function(item, index){
+                     $(".card-list-coupon").append( itemCoupon(item.id,item.code, item.value));
+                   });
+                  $(".card-list-formule").html("");
+                   data.panier.formules.forEach(function(item, index){
+                     $(".card-list-formule").append( itemFormule(item.id,item.name,item.month,item.price));
+                   });
+               }else{
+                  console.log(data.message);
+               }
+               if(show && !$(".cart-wrapper").hasClass("open"))
+                     $(".cart-wrapper").addClass("open");
+              });
+        }
+  
+</script>
+<script type="text/javascript">
+        $paidLaunch = false;
+        var stripe = Stripe("{{STRIPE_PUBLIC_KEY}}");
+
+        var elements = stripe.elements();
+        var style = {
+          base: {
+            color: '#32325d',
+            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+            fontSmoothing: 'antialiased',
+            fontSize: '16px',
+            '::placeholder': {
+              color: '#aab7c4'
+            }
+          },
+          invalid: {
+            color: '#fa755a',
+            iconColor: '#fa755a'
+          }
+        };
+
+        // Create an instance of the card Element.
+        var card = elements.create('card', {
+            style: style,
+            hidePostalCode : true
+        });
+
+        // Add an instance of the card Element into the `card-element` <div>.
+        card.mount('#card-element');
+
+        // Handle real-time validation errors from the card Element.
+        card.addEventListener('change', function(event) {
+          var displayError = document.getElementById('card-errors');
+          if (event.error) {
+            displayError.textContent = event.error.message;
+          } else {
+            displayError.textContent = '';
+          }
+        });
+
+        // Handle form submission.
+        var form = document.getElementById('payment-form');
+        form.addEventListener('submit', function(event) {
+          $('#modal-payment button.submit').css('pointer-events','none');
+            event.preventDefault();
+            function validate(){
+                try{
+                    var validator = $('#payment-form').validate({
+                        rules:{
+                            name:{
+                                required:true
+                            },
+                            email:{
+                                required:true,
+                                email:true
+                            },
+                        }
+                    });
+                    
+                    var $validated = $('#payment-form').valid();
+                    return $validated;
+                }catch(error){
+                    console.log(error)
+                }
+            }
+            var ownerInfo = {
+                owner: {},
+            };
+            stripe.createSource(card, ownerInfo).then(function(result) {
+                if (!validate() || result.error) {
+                  var errorElement = document.getElementById('card-errors');
+                  errorElement.textContent = result.error.message;
+                  $('#modal-payment button.submit').css('pointer-events','auto');
+                } else {
+                  stripeSourceHandler(result.source);
+                }
+            });
+        });
+
+        function stripeSourceHandler(source) {
+          $('#modal-payment button.submit').css('pointer-events','none');
+            $('.lds-ripple').css('display','inline-block');
+            // Insert the source ID into the form so it gets submitted to the server
+            var form = document.getElementById('payment-form');
+            var hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'stripeSource');
+            hiddenInput.setAttribute('value', source.id);
+            form.appendChild(hiddenInput);
+
+            // Submit the form
+            //form.submit();
+
+            checklogin();
+        }
+
+        function checklogin(){
+          $.ajax({
+             contentType: "application/json",
+             dataType: "json",
+             url: "{{ path('api_use_connected_or_exist') }}",
+             data: {
+              name: $('#payment-form input[name=name]').val(),
+              email: $('#payment-form input[name=email]').val()
+             },
+             beforeSend: function( xhr ) {
+              $('#modal-payment button.submit').text('Verification connexion...');
+             }
+           })
+          .done(function( data ) {
+              /* l'user est loggé ou compte nouvellement crée */
+              if(data.status == 200){
+                var x = window.localStorage.getItem('panier');
+                if(x){
+                  $('#modal-payment button.submit').text('Enregistrement de la commande...');
+                  $paidLaunch = true;
+                  synch_card();
+                }
+                else
+                  proceedPayment();
+              }
+              else{
+                $('#modal-payment button.submit').css('pointer-events','auto');
+                $('.lds-ripple').css('display','none');
+                $('#modal-payment button.submit').text('Valider');
+
+                $("#modal-payment .alert-dismissible").show().delay(60000).fadeOut();
+                $('#modal-payment .alert-dismissible').removeClass('alert-success');
+                $('#modal-payment .alert-dismissible').addClass('alert-danger');
+                $('#modal-payment .alert-dismissible .text').html(data.message);
+              }
+          });
+        }
+
+        function proceedPayment(){
+          $('#modal-payment button.submit').text('Initialisation paiement');
+            var form = document.getElementById('payment-form');
+            oData = new FormData(form);
+            var oReq = new XMLHttpRequest();
+            oReq.open("POST", $('#payment-form').attr('action'), true);
+            oReq.onload = function(oEvent) {
+                if (oReq.status == 200) {
+                    $(".success-checkmark").show().delay(3000).fadeOut();
+                    $(".check-icon").show().show().delay(3000).fadeOut();
+                    notification("Paiement commande",oReq.response,"success");
+                    card.clear();
+                    $('#modal-payment button.submit').css('pointer-events','auto');
+                    $('.lds-ripple').css('display','none');
+
+                    $("#modal-payment .alert-dismissible").show().delay(40000).fadeOut();
+                    $('#modal-payment .alert-dismissible').removeClass('alert-danger');
+                    $('#modal-payment .alert-dismissible').addClass('alert-success');
+                    $('#modal-payment .alert-dismissible .text').text(oReq.response);
+                    $('#modal-payment button.submit').text('Valider');
+                    window.localStorage.removeItem('panier');
+                }else {
+                    notification("Paiement commande",oReq.response,"error");
+                    $('#modal-payment button.submit').css('pointer-events','auto');
+                    $('.lds-ripple').css('display','none');
+                    $('#modal-payment button.submit').text('Valider');
+
+                    $("#modal-payment .alert-dismissible").show().delay(60000).fadeOut();
+                    $('#modal-payment .alert-dismissible').removeClass('alert-success');
+                    $('#modal-payment .alert-dismissible').addClass('alert-danger');
+                    $('#modal-payment .alert-dismissible .text').html(oReq.response);
+                }
+            };
+            oReq.send(oData);  
+        }
+
+        $('.oneClickPaid').click(function(e){
+          $(this).text('Initialisation paiement...');
+          $(this).css('pointer-events', 'none');
+          var $url = $(this).attr("href");
+          proceed($url, $(this));
+          e.preventDefault();
+        });
+        function proceed($url, $that){
+          $.ajax({
+              url: $url,
+              type: "GET",
+              dataType: "json",
+              async: true,
+              data: {},
+              success: function(data, status) {
+                $that.css('pointer-events', 'auto');
+                $that.text("Payer en 1 click");
+                notification("Paiement commande","Opération effectuée avec succèss","success");
+                window.localStorage.removeItem('panier');
+                
+              },
+              error: function(xhr, textStatus, errorThrown) {
+                $that.css('pointer-events', 'auto');
+                $that.text("Payer en 1 click");
+                notification("Paiement commande",errorThrown,"error");
+              }
+          });
+        }
+</script>
+
+<script type="text/javascript">
+  function validateContactForm(){
+    try{
+      var validator = $('#AjaxLogin').validate({
+          rules:{
+              email:{
+                  required:true,
+                  email:true
+              }, 
+              password:{
+                  required:true
+              }            
+          }
+      });
+      
+      var $validated = $('#AjaxLogin').valid();
+      return $validated;
+      }catch(error){
+          console.log(error)
+      }
+    }
+
+    var form = document.forms.namedItem("AjaxLogin");
+    form.addEventListener('submit', function(ev) {
+      if( !validateContactForm()){
+        toastr.error("Veuillez renseigner toutes les informations.");
+          $('#AjaxLogin button[type=submit]').text("Je m'inscris !");
+            ev.preventDefault();
+            return false;
+        }
+
+        $('.lds-ripple').css('display','inline-block');
+        $('#AjaxLogin button[type=submit]').css('pointer-events','none');
+       $.ajax({
+            url:"{{path('login_ajax')}}",
+            type:"POST",
+            data: new FormData(this),
+              dataType: 'json',
+              contentType: false,
+              cache: false,
+              processData:false,
+            //data:$('#formTournoi').serialize(),
+            success:function(response) {
+              notification("Connexion","Vous etes connecté maintenant","success");
+              $('.lds-ripple').css('display','none');
+              $('#AjaxLogin button[type=submit]').css('pointer-events','auto');
+              $(".success-checkmark").show().delay(3000).fadeOut();
+              $(".check-icon").show().show().delay(3000).fadeOut();
+              setTimeout(function(){
+                $( "#sign-in-modal button.close" ).trigger( "click" );
+              },1000);
+            },
+            error:function(response){
+              notification("Connexion","Identifiant incorrect","error");
+              $('#AjaxLogin button[type=submit]').button('reset');
+              $('.lds-ripple').css('display','none');
+              $('#AjaxLogin button[type=submit]').css('pointer-events','auto');
+          }
+        });
+        
+      ev.preventDefault();
+    }, false);
+
+</script>
+<script type="text/javascript">
+
+  function init_product_qty(id,qty){
+    $('#product-qty-'+id).html(qty);
+    $('#product-'+id + " .add-product-card ").hide();
+    $('#product-'+id + " .get_quantity ").show();
+
+  }
+  $(document).ready(function() {
+
+     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+         synch_card();
+     {% endif %}
+      refreshCard();
+      toogleNotif(false);
+
+       $(".add-product-card").click(
+                     function(){
+                        var id = parseInt($(this).attr('product'));
+                        var qty = $('#' + $(this).attr('target') + ' .get_quantity');
+                        $(this).hide();
+                        qty.show();
+                        addToCard(id,1,"product");
+
+                     }
+                  );
+
+                   $(".add-product-card-add").click(
+                     function(){
+                        var id = parseInt($(this).attr('product'));
+
+                        var qty = parseInt($('#product-qty-'+id).html());
+                        qty += 1;
+                        $('#product-qty-'+id).html(qty);
+                        addToCard(id,qty,"product");
+                        
+                     }
+                  );
+
+
+                   $(".add-product-card-remove").click(
+                     function(){
+                        var id = parseInt($(this).attr('product'));
+
+                        var qty = parseInt($('#product-qty-'+id).html());
+                        qty -= 1;
+                        $('#product-qty-'+id).html(qty);
+                        addToCard(id,qty,"product");
+                        
+                     }
+                  );
+   });
+</script>
+<div id="config-js">
+
+    {{  render(controller('App\\Controller\\ApiConfigController::getScripts') )  }}
+
+
+
+</div>
+
+
+{% endblock %}
+
+

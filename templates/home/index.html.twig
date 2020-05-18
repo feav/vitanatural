@@ -1,0 +1,901 @@
+{% extends 'layout.html.twig' %}
+{% block title %} {{parent()}} | Accueil {% endblock %}
+{% block meta %}
+<meta name="description" content="">
+{% endblock %}
+{% block dataStructured %}{% endblock %}
+{% block stylesheets %}
+{{parent()}}
+<style type="text/css">
+   nav.navbar.navbar-expand-lg.navbar-dark {
+       background: transparent;
+   }
+   nav.navbar.navbar-expand-lg.navbar-dark.position-fixed.scrolled {
+       background: white;
+   }
+
+   .img-thumb{
+      height: 450px;
+   }
+   .img-thumb img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+   }
+   .thumb-middle{
+      display: flex;
+       align-items: flex-start;
+       justify-content: space-between;
+   }
+   .thumb-middle > * {
+       width: 100%;
+   }
+   .thumb-middle .image-center img{
+      width: 100%;
+       height: 100%;
+       object-fit: cover;
+   }
+
+
+   .image-grid{
+     display: grid;
+     grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+     /*grid-gap: 1rem;*/
+   }
+   .image-grid a {
+     height: 12rem;
+     width: 100%;
+     -o-object-fit: cover;
+        object-fit: cover;
+   }
+   .thumb-middle .image-grid{
+     display: grid;
+     grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+     /*grid-gap: 1rem;*/
+   }
+   .thumb-middle .image-grid a {
+     height: 12rem;
+     width: 100%;
+     -o-object-fit: cover;
+        object-fit: cover;
+   }
+   .image-grid a img {
+     height: 100%;
+     width: 100%;
+     object-fit: cover;
+     -o-object-fit: cover;
+        object-fit: cover;
+   }
+   @media(max-width: 992px){
+      .thumb-middle .image-center{display: none;}
+   }
+   @media(max-width: 768px){
+      .thumb-middle{display: block;}
+   }
+   .image-grid.grid-bottom{
+      display: none;
+   }
+   .img-thumb {
+       display: none;
+    }
+</style>
+{% endblock %}
+{% block css_hide_nav %}
+{% endblock %}
+
+{% block body_web %}
+
+<!--     <div class="bg-gradient text-white p-0 o-hidden jarallax" data-overlay data-jarallax data-speed="0.5">
+      <section class="pb-0">
+        <img src="assets/img/heros/hero-2.jpg" alt="Image" class="jarallax-img opacity-40">
+        <div class="container min-vh-40 d-flex flex-column justify-content-center">
+          <div class="row justify-content-center text-center">
+            <div class="col-md-9 col-lg-8 col-xl-7">
+              <h1 class="display-3">We’re on the grow</h1>
+              <p class="lead mb-0">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa.</p>
+              <a href="#" class="btn btn-lg mt-4 mt-lg-5 btn-primary">Find An Opening</a>
+            </div>
+          </div>
+        </div>
+        <div class="divider divider-bottom bg-primary-3"></div>
+      </section>
+    </div> -->
+
+      <div data-overlay class="bg-primary-3 jarallax text-white" data-jarallax data-speed="0.2">
+        
+         <section class="pb-0"> 
+          <img src="assets/img/home.jpeg" alt="Background" class="jarallax-img opacity-70">
+            <div class="container pb-5">
+               <div class="row section-title justify-content-center text-center">
+                  <div class="col-md-9 col-lg-8 col-xl-9">
+                     <h2 class="display-4" style="
+                        margin-bottom: 5px;
+                        font-weight: 100;
+                        ">Nutridia, l'arme redoutable pour perdre vos kilos en trop</h2>
+                     <div class="lead" style="
+                        font-size: 29px;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        ">Objectif -2,7 kg en 7 jours *</div>
+                  </div>
+               </div>
+            </div>
+            <div class="divider divider-bottom bg-primary-1 mt-5"></div>
+         </section>
+      </div>
+      <section class="pt-0 pb-0">
+         <div class="container">
+            <div class="row align-items-center justify-content-center justify-content-lg-between text-center text-lg-left" style="
+               margin-top: -150px;
+               ">
+               <div class="col-md-10 col-lg-7 col-xl-6 pl-lg-5 pl-xl-0">
+                  <img src="https://www.brulafine.com/assets/images/product/hero.png" style="
+                     height: auto;
+                     width: 530px;
+                     ">
+               </div>
+               <div class="col-md-8 col-lg-4 col-xl mt-4 mt-md-5 mt-lg-0" style="padding-top: 13px;border-radius: 6px;box-shadow: 0px -165px 120px 2px rgba(0, 0, 0, 0.09) !important;">
+                  
+                  <!-- <div class="rounded o-hidden jarallax" data-jarallax-video="https://www.youtube.com/embed/5LdC6k3oT2I" data-speed="1">
+                     <div class="d-flex min-vh-40 align-items-center">
+                     </div>
+                  </div> -->
+
+                 <div class="rounded o-hidden">
+                  <iframe class="plyr"  width="100%" height="300px" src="https://www.youtube.com/embed/5LdC6k3oT2I" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+
+                  <p class="lead" style="
+                     margin-top: 15px;
+                     font-size: 15px;
+                     margin-bottom: 15px;
+                     font-weight: 500;
+                     line-height: 20px;
+                     ">Une gélule composée de trois actifs brûleurs de graisse naturels particulièrement efficaces pour vaincre les kilos en trop *</p>
+                  <a href="#" class="btn btn-primary-3 btn-lg" style="
+                     border-radius: 6px;
+                     font-weight: 500;
+                     font-size: 18px;
+                     padding: 15px 30px;
+                     ">Achetez maintenant</a>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      <section style=" padding-top: 100px; ">
+         <div class="container">
+            <div class="row justify-content-center rowly">
+               <div class="row col-lg-3 col-md-6 col-xs-12" style=" margin: 0; padding: 0; ">
+                  <div style="margin: auto;" class="col-lg-4 col-md-6 col-xs-12"><img alt="miniature" style="width: 60px;height: auto;" src="https://www.brulafine.com/assets/images/footer-icon-01.svg"></div>
+                  <div style="padding: 15px 0px;font-weight: 500;color: #1671f5;margin: auto;" class="col-lg-8 col-md-6 col-xs-12">
+                     <p style="
+                        text-align: left;
+                        margin-bottom: 0;
+                        font-weight: 700;
+                        ">100% NATUREL</p>
+                     <p style="
+                        font-size: 11px;
+                        text-align: left;
+                        margin-bottom: 0;
+                        ">Ingrédients végétaux,
+                        sains et efficaces.
+                     </p>
+                  </div>
+               </div>
+               <div class="row col-lg-3 col-md-6 col-xs-12" style=" margin: 0; padding: 0; ">
+                  <div style="margin: auto;" class="col-lg-4 col-md-6 col-xs-12"><img alt="miniature" style="width: 60px;height: auto;" src="https://www.brulafine.com/assets/images/footer-icon-04.svg"></div>
+                  <div style="padding: 15px 0px;font-weight: 500;color: #1671f5;margin: auto;" class="col-lg-8 col-md-6 col-xs-12">
+                     <p style="
+                        text-align: left;
+                        margin-bottom: 0;
+                        font-weight: 700;
+                        ">FABRIQUÉ EN FRANCE</p>
+                     <p style="
+                        font-size: 11px;
+                        text-align: left;
+                        margin-bottom: 0;
+                        ">Engagement local,
+                        Production locale.
+                     </p>
+                  </div>
+               </div>
+               <div class="row col-lg-3 col-md-6 col-xs-12" style=" margin: 0; padding: 0; ">
+                  <div style="margin: auto;" class="col-lg-4 col-md-6 col-xs-12"><img alt="miniature" style="width: 60px;height: auto;" src="https://www.brulafine.com/assets/images/footer-icon-07.svg"></div>
+                  <div style="padding: 15px 0px;font-weight: 500;color: #1671f5;margin: auto;" class="col-lg-8 col-md-6 col-xs-12">
+                     <p style="
+                        text-align: left;
+                        margin-bottom: 0;
+                        font-weight: 700;
+                        ">PAR UN LABORATOIRE</p>
+                     <p style="
+                        font-size: 11px;
+                        text-align: left;
+                        margin-bottom: 0;
+                        ">Toutes nos cures ont été crée par un laboratoire Français.</p>
+                  </div>
+               </div>
+               <div class="row col-lg-3 col-md-6 col-xs-12" style=" margin: 0; padding: 0; ">
+                  <div style="margin: auto;" class="col-lg-4 col-md-6 col-xs-12"><img alt="miniature" style="width: 60px;height: auto;" src="https://www.brulafine.com/assets/images/footer-icon-05.svg"></div>
+                  <div style="padding: 15px 0px;font-weight: 500;color: #1671f5;margin: auto;" class="col-lg-8 col-md-6 col-xs-12">
+                     <p style="
+                        text-align: left;
+                        margin-bottom: 0;
+                        font-weight: 700;
+                        ">LIVRAISON GRATUITE</p>
+                     <p style="
+                        font-size: 11px;
+                        text-align: left;
+                        margin-bottom: 0;
+                        ">Frais de port offerts en rejoignant le Club Nutridia.</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section class="bg-light o-hidden">
+         <div class="container">
+            <div class="row section-title justify-content-center text-center">
+               <div class="col-md-9 col-lg-8 col-xl-7">
+                  <h3 class="display-4">L'arme triple action pour perdre du poids.</h3>
+                  <div class="lead">Sans contrainte, Sans privation, Nutridia sera votre meilleure allié pour perdre vos kilos en trop qui agira comme Brûleur de Graisse, Anti-Fatigue et Coupe Faim.</div>
+               </div>
+            </div>
+            <div class="container">
+               <div class="row">
+                  <div class="col">
+                     <ul class="nav nav-pills lead mb-4 mb-md-5 justify-content-center" id="myTab" role="tablist">
+                        <li class="nav-item">
+                           <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Brûleur de Graisse</a>
+                        </li>
+                        <li class="nav-item">
+                           <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Anti Fatigue</a>
+                        </li>
+                        <li class="nav-item">
+                           <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Coupe faim</a>
+                        </li>
+                     </ul>
+                     <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab">
+                           <div class="row align-items-center justify-content-around">
+                              <div class="col-lg-6 col-xl-5 text-center text-lg-left mb-4 mb-md-5 mb-lg-0">
+                                 <div class="pr-lg-4 pr-xl-5 aos-init aos-animate" data-aos="fade-right">
+                                    <h3 class="h1">Une perte de poids <mark data-aos="highlight-text" data-aos-delay="250" class="aos-init aos-animate" style="
+                                       background-image: linear-gradient(120deg, #009b72 0%, #f7f9fc 100%);
+                                       ">rapide et durable</mark>.</h3>
+                                    <p style="
+                                       font-weight: 500;
+                                       margin-bottom: 20px;
+                                       color: #009b72;
+                                       ">72% des régimes se conclu souvent en un gain de poids quelques temps après. Notre cure vous permet de garder votre ligne.</p>
+                                    <div class="d-flex flex-wrap justify-content-center justify-content-lg-start">
+                                       <div class="mb-3 mr-4 ml-lg-0 mr-lg-4 aos-init aos-animate" data-aos="fade-left" data-aos-delay="100">
+                                          <div class="d-flex align-items-center">
+                                             <div class="rounded-circle bg-success-alt">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="injected-svg m-2 icon icon-xs bg-success" data-src="assets/img/icons/interface/icon-check.svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                   <path d="M20 6L9 17L4 12" stroke="#2C3038" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg>
+                                             </div>
+                                             <h6 class="mb-0 ml-3" style="font-weight: 500;">L'extrait naturel de thé vert avec EGCG aide à augmenter le métabolisme et à stimuler l'oxydation des graisses.</h6>
+                                          </div>
+                                       </div>
+                                       <div class="mb-3 mr-4 ml-lg-0 mr-lg-4 aos-init aos-animate" data-aos="fade-left" data-aos-delay="200">
+                                          <div class="d-flex align-items-center">
+                                             <div class="rounded-circle bg-success-alt">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="injected-svg m-2 icon icon-xs bg-success" data-src="assets/img/icons/interface/icon-check.svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                   <path d="M20 6L9 17L4 12" stroke="#2C3038" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg>
+                                             </div>
+                                             <h6 class="mb-0 ml-3" style="
+                                                font-weight: 500;
+                                                ">Le Kola aide à l'accompagnement de l'amincissement.</h6>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-lg-6 col-xl-7 aos-init aos-animate" data-aos="fade-left">
+                                 <img src="https://imgur.com/0kENnl8.png" alt="Screenshot" class="img-fluid rounded shadow border">
+                              </div>
+                           </div>
+                        </div>
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                           <div class="row align-items-center justify-content-around">
+                              <div class="col-lg-6 col-xl-5 text-center text-lg-left mb-4 mb-md-5 mb-lg-0">
+                                 <div class="pr-lg-4 pr-xl-5 aos-init aos-animate" data-aos="fade-right">
+                                    <h3 class="h1">Ne soyez plus <mark data-aos="highlight-text" data-aos-delay="250" class="aos-init aos-animate" style="
+                                       background-image: linear-gradient(120deg, #009b72 0%, #f7f9fc 100%);
+                                       ">fatigué</mark>.</h3>
+                                    <p style="
+                                       font-weight: 500;
+                                       margin-bottom: 20px;
+                                       color: #009b72;
+                                       ">Un anti-fatigue est indispensable pour toute perte de poids, celle-ci fatigue le corps et vous fait resentir un sentiment de fatigue.</p>
+                                    <div class="d-flex flex-wrap justify-content-center justify-content-lg-start">
+                                       <div class="mb-3 mr-4 ml-lg-0 mr-lg-4 aos-init aos-animate" data-aos="fade-left" data-aos-delay="100">
+                                          <div class="d-flex align-items-center">
+                                             <div class="rounded-circle bg-success-alt">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="injected-svg m-2 icon icon-xs bg-success" data-src="assets/img/icons/interface/icon-check.svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                   <path d="M20 6L9 17L4 12" stroke="#2C3038" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg>
+                                             </div>
+                                             <h6 class="mb-0 ml-3" style="font-weight: 500;">La vitamine C /ou/ La vitamine B3 contribue à réduire la fatigue.</h6>
+                                          </div>
+                                       </div>
+                                       <div class="mb-3 mr-4 ml-lg-0 mr-lg-4 aos-init aos-animate" data-aos="fade-left" data-aos-delay="200">
+                                          <div class="d-flex align-items-center">
+                                             <div class="rounded-circle bg-success-alt">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="injected-svg m-2 icon icon-xs bg-success" data-src="assets/img/icons/interface/icon-check.svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                   <path d="M20 6L9 17L4 12" stroke="#2C3038" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg>
+                                             </div>
+                                             <h6 class="mb-0 ml-3" style="
+                                                font-weight: 500;
+                                                ">La vitamine B6 /ou/ La thiamine /ou/ Le magnesium /ou/ La niacine /ou/ Le fer contribue à un métabolisme énergétique normal.</h6>
+                                          </div>
+                                       </div>
+                                       <div class="mb-3 mr-4 ml-lg-0 mr-lg-4 aos-init aos-animate" data-aos="fade-left" data-aos-delay="300">
+                                          <div class="d-flex align-items-center">
+                                             <div class="rounded-circle bg-success-alt">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="injected-svg m-2 icon icon-xs bg-success" data-src="assets/img/icons/interface/icon-check.svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                   <path d="M20 6L9 17L4 12" stroke="#2C3038" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg>
+                                             </div>
+                                             <h6 class="mb-0 ml-3" style="
+                                                font-weight: 500;
+                                                ">Le chrome contribue au maintien d'une glycémie normale.</h6>
+                                          </div>
+                                       </div>
+                                       <div class="mb-3 mr-4 ml-lg-0 mr-lg-4 aos-init aos-animate" data-aos="fade-left" data-aos-delay="400">
+                                          <div class="d-flex align-items-center">
+                                             <div class="rounded-circle bg-success-alt">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="injected-svg m-2 icon icon-xs bg-success" data-src="assets/img/icons/interface/icon-check.svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                   <path d="M20 6L9 17L4 12" stroke="#2C3038" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg>
+                                             </div>
+                                             <h6 class="mb-0 ml-3" style="
+                                                font-weight: 500;
+                                                ">Les folates /ou/ Le magnésium contribue(nt) à réduire la fatigue.</h6>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-lg-6 col-xl-7 aos-init aos-animate" data-aos="fade-left">
+                                 <img src="https://imgur.com/iEowgc9.png" alt="Screenshot" class="img-fluid rounded shadow border">
+                              </div>
+                           </div>
+                        </div>
+                        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                           <div class="row align-items-center justify-content-around">
+                              <div class="col-lg-6 col-xl-5 text-center text-lg-left mb-4 mb-md-5 mb-lg-0">
+                                 <div class="pr-lg-4 pr-xl-5 aos-init aos-animate" data-aos="fade-right">
+                                    <h3 class="h1">Vous n'aurez pas à <mark data-aos="highlight-text" data-aos-delay="250" class="aos-init aos-animate" style="
+                                       background-image: linear-gradient(120deg, #009b72 0%, #f7f9fc 100%);
+                                       ">vous forcez</mark>.</h3>
+                                    <p style="
+                                       font-weight: 500;
+                                       margin-bottom: 20px;
+                                       color: #009b72;
+                                       ">Il est connu qu'un régime est synonyme de privation, avec Nutridia ne vous privé plus et manger à votre faim.</p>
+                                    <div class="d-flex flex-wrap justify-content-center justify-content-lg-start">
+                                       <div class="mb-3 mr-4 ml-lg-0 mr-lg-4 aos-init aos-animate" data-aos="fade-left" data-aos-delay="100">
+                                          <div class="d-flex align-items-center">
+                                             <div class="rounded-circle bg-success-alt">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="injected-svg m-2 icon icon-xs bg-success" data-src="assets/img/icons/interface/icon-check.svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                   <path d="M20 6L9 17L4 12" stroke="#2C3038" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg>
+                                             </div>
+                                             <h6 class="mb-0 ml-3" style="font-weight: 500;">La consommation d'avoine cause la satiété et peut aider dans le contrôle du poid dû à l'effet de satiété.</h6>
+                                          </div>
+                                       </div>
+                                       <div class="mb-3 mr-4 ml-lg-0 mr-lg-4 aos-init aos-animate" data-aos="fade-left" data-aos-delay="200">
+                                          <div class="d-flex align-items-center">
+                                             <div class="rounded-circle bg-success-alt">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="injected-svg m-2 icon icon-xs bg-success" data-src="assets/img/icons/interface/icon-check.svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                   <path d="M20 6L9 17L4 12" stroke="#2C3038" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg>
+                                             </div>
+                                             <h6 class="mb-0 ml-3" style="
+                                                font-weight: 500;
+                                                ">Le guarana renforce l'immunité, le guarana réprime le sentiment de faim, le guarana réprime la fatigue.</h6>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-lg-6 col-xl-7 aos-init aos-animate" data-aos="fade-left">
+                                 <img src="https://imgur.com/VVCIn8U.png" alt="Screenshot" class="img-fluid rounded shadow border">
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section>
+         <div class="container">
+            <div class="row align-items-center justify-content-around">
+               <div class="col-md-9 col-lg-6 col-xl-7 mb-4 mb-lg-0 order-lg-2 pl-lg-5">
+                  <div>
+                     <h2 class="h1 text-center text-lg-left">Une trilogie brûle-graisse au service de votre minceur !</h2>
+                     <div class="d-flex flex-wrap justify-content-center justify-content-lg-start">
+                        <div class="my-4">
+                           <div class="d-flex">
+                              <div class="mr-3 mr-md-4">
+                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="injected-svg icon bg-primary" data-src="assets/img/icons/theme/navigation/route.svg">
+                                    <title>Icon For Route</title>
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                       <polygon points="0 0 24 0 24 24 0 24" opacity="0"></polygon>
+                                       <path d="M8,7 C7.44771525,7 7,6.55228475 7,6 C7,5.44771525 7.44771525,5 8,5 L16,5 C18.209139,5 20,6.790861 20,9 C20,11.209139 18.209139,13 16,13 L8,13 C6.8954305,13 6,13.8954305 6,15 C6,16.1045695 6.8954305,17 8,17 L17,17 C17.5522847,17 18,17.4477153 18,18 C18,18.5522847 17.5522847,19 17,19 L8,19 C5.790861,19 4,17.209139 4,15 C4,12.790861 5.790861,11 8,11 L16,11 C17.1045695,11 18,10.1045695 18,9 C18,7.8954305 17.1045695,7 16,7 L8,7 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"></path>
+                                       <path d="M9.79289322,3.79289322 C10.1834175,3.40236893 10.8165825,3.40236893 11.2071068,3.79289322 C11.5976311,4.18341751 11.5976311,4.81658249 11.2071068,5.20710678 L8.20710678,8.20710678 C7.81658249,8.59763107 7.18341751,8.59763107 6.79289322,8.20710678 L3.79289322,5.20710678 C3.40236893,4.81658249 3.40236893,4.18341751 3.79289322,3.79289322 C4.18341751,3.40236893 4.81658249,3.40236893 5.20710678,3.79289322 L7.5,6.08578644 L9.79289322,3.79289322 Z" fill="#000000" fill-rule="nonzero" transform="translate(7.500000, 6.000000) rotate(-270.000000) translate(-7.500000, -6.000000) "></path>
+                                       <path d="M18.7928932,15.7928932 C19.1834175,15.4023689 19.8165825,15.4023689 20.2071068,15.7928932 C20.5976311,16.1834175 20.5976311,16.8165825 20.2071068,17.2071068 L17.2071068,20.2071068 C16.8165825,20.5976311 16.1834175,20.5976311 15.7928932,20.2071068 L12.7928932,17.2071068 C12.4023689,16.8165825 12.4023689,16.1834175 12.7928932,15.7928932 C13.1834175,15.4023689 13.8165825,15.4023689 14.2071068,15.7928932 L16.5,18.0857864 L18.7928932,15.7928932 Z" fill="#000000" fill-rule="nonzero" transform="translate(16.500000, 18.000000) scale(1, -1) rotate(270.000000) translate(-16.500000, -18.000000) "></path>
+                                    </g>
+                                 </svg>
+                              </div>
+                              <div>
+                                 <h5>Triple efficacité renforcée</h5>
+                                 <div>Sans contrainte, 1 gélules par jour,
+                                    les résultats sont là !
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="my-4">
+                           <div class="d-flex">
+                              <div class="mr-3 mr-md-4">
+                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="injected-svg icon bg-primary" data-src="assets/img/icons/theme/layout/layout-left-panel-2.svg">
+                                    <title>Icon For Layout-left-panel-2</title>
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                       <rect opacity="0" x="0" y="0" width="24" height="24"></rect>
+                                       <path d="M10,4 L21,4 C21.5522847,4 22,4.44771525 22,5 L22,7 C22,7.55228475 21.5522847,8 21,8 L10,8 C9.44771525,8 9,7.55228475 9,7 L9,5 C9,4.44771525 9.44771525,4 10,4 Z M10,10 L21,10 C21.5522847,10 22,10.4477153 22,11 L22,13 C22,13.5522847 21.5522847,14 21,14 L10,14 C9.44771525,14 9,13.5522847 9,13 L9,11 C9,10.4477153 9.44771525,10 10,10 Z M10,16 L21,16 C21.5522847,16 22,16.4477153 22,17 L22,19 C22,19.5522847 21.5522847,20 21,20 L10,20 C9.44771525,20 9,19.5522847 9,19 L9,17 C9,16.4477153 9.44771525,16 10,16 Z" fill="#000000"></path>
+                                       <rect fill="#000000" opacity="0.3" x="2" y="4" width="5" height="16" rx="1"></rect>
+                                    </g>
+                                 </svg>
+                              </div>
+                              <div>
+                                 <h5>C-Konjac, coupe-faim végétal</h5>
+                                 <div>En association avec le coup-faim naturel le plus puissant, Brulafine offre des résultats encore plus efficaces et durables.</div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="my-4">
+                           <div class="d-flex">
+                              <div class="mr-3 mr-md-4">
+                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="injected-svg icon bg-primary" data-src="assets/img/icons/theme/layout/layout-left-panel-2.svg">
+                                    <title>Icon For Layout-left-panel-2</title>
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                       <rect opacity="0" x="0" y="0" width="24" height="24"></rect>
+                                       <path d="M10,4 L21,4 C21.5522847,4 22,4.44771525 22,5 L22,7 C22,7.55228475 21.5522847,8 21,8 L10,8 C9.44771525,8 9,7.55228475 9,7 L9,5 C9,4.44771525 9.44771525,4 10,4 Z M10,10 L21,10 C21.5522847,10 22,10.4477153 22,11 L22,13 C22,13.5522847 21.5522847,14 21,14 L10,14 C9.44771525,14 9,13.5522847 9,13 L9,11 C9,10.4477153 9.44771525,10 10,10 Z M10,16 L21,16 C21.5522847,16 22,16.4477153 22,17 L22,19 C22,19.5522847 21.5522847,20 21,20 L10,20 C9.44771525,20 9,19.5522847 9,19 L9,17 C9,16.4477153 9.44771525,16 10,16 Z" fill="#000000"></path>
+                                       <rect fill="#000000" opacity="0.3" x="2" y="4" width="5" height="16" rx="1"></rect>
+                                    </g>
+                                 </svg>
+                              </div>
+                              <div>
+                                 <h5>Essayez nos produits en toute sérénité</h5>
+                                 <div>Grâce à notre option exclusive : “Satisfait ou Remboursé” !</div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-9 col-lg-6 col-xl-5 order-lg-1">
+
+
+                  <img src="https://www.brulafine.com/assets/images/product/hero.png" alt="Image" class="img-fluid">
+               </div>
+            </div>
+         </div>
+      </section>
+      <section class="p-0 bg-primary row no-gutters o-hidden">
+         <div class="col-lg-5 col-xl-6 d-flex align-items-center justify-content-center">
+            <a data-fancybox="" href="https://vimeo.com/166034462#t=32s" class="btn btn-lg btn-light rounded-circle position-absolute aos-init aos-animate" data-aos="zoom-in" data-aos-delay="400">
+               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="injected-svg icon icon-lg bg-dark pl-1" data-src="assets/img/icons/interface/icon-media-play.svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <path d="M18.2403 11.5659C18.5762 11.7578 18.5762 12.2422 18.2403 12.4341L5.74807 19.5725C5.41474 19.763 5 19.5223 5 19.1384L5 4.86159C5 4.47768 5.41474 4.23699 5.74807 4.42747L18.2403 11.5659Z" fill="#2C3038"></path>
+               </svg>
+            </a>
+            <img src="https://imgur.com/OB4BBK7.png" alt="Image" class="w-100 h-100">
+            <div class="divider divider-side bg-primary d-none d-lg-block"></div>
+         </div>
+         <div class="col-lg-7 col-xl-6">
+            <section>
+               <div class="container">
+                  <div class="row justify-content-center">
+                     <div class="col col-md-10 col-xl-9">
+                        <div class="text-white text-center text-lg-left">
+                           <h3 class="h1">Cure crée par un laboratoire Français et produit en France.</h3>
+                           <p class="lead">
+                              Nous nous souçions de votre santé, c'est pourquoi nous avons pris le partie d'avoir fait appel à un Laboratoire Français avec une composition 100% naturel sans danger pour vous avec un maximum d'efficacité.
+                           </p>
+                        </div>
+                        <div class="d-flex flex-wrap justify-content-center justify-content-lg-start mt-4 mt-md-5">
+                           <div class="mx-2 ml-sm-0 ml-sm-0 mb-2 bg-white rounded p-2 pr-3 p-md-3 pr-md-4">
+                              <div class="d-flex align-items-center">
+                                 <img src="https://cdn1.iconfinder.com/data/icons/flat-green-organic-natural-badges/500/100-vegan-4-512.png" alt="Image" class="img-fluid" style=" height: 27px; ">
+                                 <h6 class="mb-0 ml-2">Véganes</h6>
+                              </div>
+                           </div>
+                           <div class="mx-2 ml-sm-0 ml-sm-0 mb-2 bg-white rounded p-2 pr-3 p-md-3 pr-md-4">
+                              <div class="d-flex align-items-center">
+                                 <img src="https://cdn0.iconfinder.com/data/icons/vegan-4/64/broccoli-food-vegan-supermarket-512.png" alt="Image" class="img-fluid" style=" height: 27px; ">
+                                 <h6 class="mb-0 ml-2">Sains et Naturels</h6>
+                              </div>
+                           </div>
+                           <div class="mx-2 ml-sm-0 ml-sm-0 mb-2 bg-white rounded p-2 pr-3 p-md-3 pr-md-4">
+                              <div class="d-flex align-items-center">
+                                 <img src="https://cdn0.iconfinder.com/data/icons/vegan-4/64/broccoli-food-vegan-supermarket-512.png" alt="Image" class="img-fluid" style=" height: 27px; ">
+                                 <h6 class="mb-0 ml-2">Sans OGM</h6>
+                              </div>
+                           </div>
+                           <div class="mx-2 ml-sm-0 ml-sm-0 mb-2 bg-white rounded p-2 pr-3 p-md-3 pr-md-4">
+                              <div class="d-flex align-items-center">
+                                 <img src="https://cdn0.iconfinder.com/data/icons/vegan-4/64/broccoli-food-vegan-supermarket-512.png" alt="Image" class="img-fluid" style=" height: 27px; ">
+                                 <h6 class="mb-0 ml-2">Sans Colorants</h6>
+                              </div>
+                           </div>
+                           <div class="mx-2 ml-sm-0 ml-sm-0 mb-2 bg-white rounded p-2 pr-3 p-md-3 pr-md-4">
+                              <div class="d-flex align-items-center">
+                                 <img src="https://cdn0.iconfinder.com/data/icons/vegan-4/64/broccoli-food-vegan-supermarket-512.png" alt="Image" class="img-fluid" style=" height: 27px; ">
+                                 <h6 class="mb-0 ml-2">Sans Conservateurs</h6>
+                              </div>
+                           </div>
+                           <div class="mx-2 ml-sm-0 ml-sm-0 mb-2 bg-white rounded p-2 pr-3 p-md-3 pr-md-4">
+                              <div class="d-flex align-items-center">
+                                 <img src="https://cdn0.iconfinder.com/data/icons/vegan-4/64/broccoli-food-vegan-supermarket-512.png" alt="Image" class="img-fluid" style=" height: 27px; ">
+                                 <h6 class="mb-0 ml-2">Sans Gluten</h6>
+                              </div>
+                           </div>
+                           <div class="mx-2 ml-sm-0 ml-sm-0 mb-2 bg-white rounded p-2 pr-3 p-md-3 pr-md-4">
+                              <div class="d-flex align-items-center">
+                                 <img src="https://cdn0.iconfinder.com/data/icons/vegan-4/64/broccoli-food-vegan-supermarket-512.png" alt="Image" class="img-fluid" style=" height: 27px; ">
+                                 <h6 class="mb-0 ml-2">Sans HPMC</h6>
+                              </div>
+                           </div>
+                           <div class="mx-2 ml-sm-0 ml-sm-0 mb-2 bg-white rounded p-2 pr-3 p-md-3 pr-md-4">
+                              <div class="d-flex align-items-center">
+                                 <img src="https://cdn0.iconfinder.com/data/icons/vegan-4/64/broccoli-food-vegan-supermarket-512.png" alt="Image" class="img-fluid" style=" height: 27px; ">
+                                 <h6 class="mb-0 ml-2">Sans Dioxyde de titane</h6>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </section>
+         </div>
+      </section>
+      <!--<section>
+         <div class="container">
+           <div class="row section-title justify-content-center text-center">
+             <div class="col-md-9 col-lg-8 col-xl-7">
+               <h3 class="display-4">Même les <mark data-aos="highlight-text" data-aos-delay="200" class="aos-init aos-animate" style=" background-image: linear-gradient(120deg, rgb(240, 59, 126) 0%, rgb(251, 129, 174) 100%); ">plus grands</mark> ont besoin de Nutridia !</h3>
+               <div class="lead">Les personnalités public qui font confiance à Nutridia.</div>
+             </div>
+           </div>
+         </div>
+         <div class="o-hidden">
+           <div class="highlight-selected" data-flickity='{ "imagesLoaded": true, "wrapAround":true }'>
+             <div class="carousel-cell text-center col-9 col-md-7 col-lg-5" style="width: 370px;">
+               <img class="img-fluid rounded" src="assets/img/blog/thumb-3.jpg" alt="blog.3.image">
+             </div>
+             <div class="carousel-cell text-center col-9 col-md-7 col-lg-5" style="width: 370px;">
+               <img class="img-fluid rounded" src="assets/img/blog/thumb-4.jpg" alt="blog.4.image">
+             </div>
+             <div class="carousel-cell text-center col-9 col-md-7 col-lg-5" style="width: 370px;">
+               <img class="img-fluid rounded" src="assets/img/blog/thumb-5.jpg" alt="blog.5.image">
+             </div>
+             <div class="carousel-cell text-center col-9 col-md-7 col-lg-5" style="width: 370px;">
+               <img class="img-fluid rounded" src="assets/img/blog/thumb-8.jpg" alt="blog.6.image">
+             </div>
+             <div class="carousel-cell text-center col-9 col-md-7 col-lg-5" style="width: 370px;">
+               <img class="img-fluid rounded" src="assets/img/blog/thumb-6.jpg" alt="blog.7.image">
+             </div>
+             <div class="carousel-cell text-center col-9 col-md-7 col-lg-5" style="width: 370px;">
+               <img class="img-fluid rounded" src="assets/img/blog/thumb-7.jpg" alt="blog.8.image">
+             </div>
+           </div>
+         </div>
+         </section>-->
+      <!--<div class="row justify-content-center" style="
+         margin: 0;
+         ">
+         <div class="col-lg-6 col-md-6 col-xs-12" style="margin: 0;padding: 0;width: 50%;background: center / contain no-repeat url(https://p6.storage.canalblog.com/61/03/483319/54353106.jpg);background-size: cover;">
+             
+             <div style="
+         background-image: linear-gradient(134deg, #80d89beb, #65ca84);
+         width: 100%;
+         padding: 50px 0;
+         "><img alt="miniature" style="width: 275px;height: auto;display: block;margin-left: auto;margin-right: auto;" src="https://www.brulafine.com/assets/images/product/hero.png"><p style="text-align: center;font-weight: 600;font-size: 20px;color: #ffffff;margin-top: 5px;margin-bottom: 10px;">Cure <mark data-aos="highlight-text" data-aos-delay="200" class="aos-init aos-animate" style="background-image: linear-gradient(120deg, rgb(37, 113, 183) 0%, rgb(59, 153, 239) 100%);background-size: 100 1em !important;">Minceur</mark></p><p style="text-align: center;font-weight: 900;font-size: 17px;color: #252525;background: #ffffff;width: 100px;margin: auto;border-radius: 50px;padding: 7px 0px;"><span style=" background: #3998ef; border-radius: 50px; color: #ffffff; padding: 0px 8px; margin-right: 5px; ">-</span> 1 <span style=" background: #3998ef; border-radius: 50px; color: #ffffff; padding: 0px 6px; margin-left: 5px; ">+</span></p><div style=" text-align: center; margin-top: 5px; "><a href="#" style=" color: #ffffff; font-size: 14px; text-align: center; font-weight: 500; ">En savoir plus</a></div></div>
+         </div><div class="col-lg-6 col-md-6 col-xs-12" style="margin: 0;padding: 0;width: 50%;background: center / contain no-repeat url(https://static.aujardin.info/cache/th/img10/nandina-domestica-cv-firepower-fruit-600x450.jpg);background-size: cover;">
+             
+             <div style="
+         background-image: linear-gradient(134deg, #f395a3d6, #b51f26e0);
+         width: 100%;
+         padding: 50px 0;
+         "><img alt="miniature" style="width: 275px;height: auto;display: block;margin-left: auto;margin-right: auto;" src="https://www.brulafine.com/assets/images/product/hero.png"><p style="text-align: center;font-weight: 600;font-size: 20px;color: #ffffff;margin-top: 5px;margin-bottom: 10px;">Cure <mark data-aos="highlight-text" data-aos-delay="200" class="aos-init aos-animate" style="background-image: linear-gradient(120deg, rgb(37, 113, 183) 0%, rgb(59, 153, 239) 100%);background-size: 100 1em !important;">Minceur</mark></p><div style="display: block;margin-left: auto;margin-right: auto;"><a href="#" class="btn btn-primary" style=" width: 160px; display: block; margin-left: auto; margin-right: auto; height: 39px; font-size: 13px; line-height: 15px; color: #fff; background-color: #ffafbd; border-color: #ffffff; font-weight: 600; ">AJOUTER</a></div><div style=" text-align: center; margin-top: 5px; "><a href="#" style=" color: #ffffff; font-size: 14px; text-align: center; font-weight: 500; ">En savoir plus</a></div></div>
+         </div><div class="col-lg-6 col-md-6 col-xs-12" style="margin: 0;padding: 0;width: 50%;background: center / contain no-repeat url(https://cdn.netdoktor.de/0e/lavendel-1_id_82651-c51f33f89ea10d5f753b00d846a9dc.jpg);background-size: cover;">
+             
+             <div style="
+         background-image: linear-gradient(134deg, #7262a0e0, #241349d9);
+         width: 100%;
+         padding: 50px 0;
+         "><img alt="miniature" style="width: 275px;height: auto;display: block;margin-left: auto;margin-right: auto;" src="https://www.brulafine.com/assets/images/product/hero.png"><p style="text-align: center;font-weight: 600;font-size: 20px;color: #ffffff;margin-top: 5px;margin-bottom: 10px;">Cure <mark data-aos="highlight-text" data-aos-delay="200" class="aos-init aos-animate" style="background-image: linear-gradient(120deg, rgb(37, 113, 183) 0%, rgb(59, 153, 239) 100%);background-size: 100 1em !important;">Minceur</mark></p><p style="text-align: center;font-weight: 900;font-size: 17px;color: #252525;background: #ffffff;width: 100px;margin: auto;border-radius: 50px;padding: 7px 0px;"><span style=" background: #3998ef; border-radius: 50px; color: #ffffff; padding: 0px 8px; margin-right: 5px; ">-</span> 1 <span style=" background: #3998ef; border-radius: 50px; color: #ffffff; padding: 0px 6px; margin-left: 5px; ">+</span></p><div style=" text-align: center; margin-top: 5px; "><a href="#" style=" color: #ffffff; font-size: 14px; text-align: center; font-weight: 500; ">En savoir plus</a></div></div>
+         </div><div class="col-lg-6 col-md-6 col-xs-12" style="margin: 0;padding: 0;width: 50%;background: center / contain no-repeat url(https://media.istockphoto.com/photos/red-pomegranate-fruit-seed-shallow-depth-of-field-retro-vintage-picture-id1047180074);background-size: cover;">
+             
+             <div style="
+         background-image: linear-gradient(134deg, #fe3c2cdb, #f8d6ccde);
+         width: 100%;
+         padding: 50px 0;
+         "><img alt="miniature" style="width: 275px;height: auto;display: block;margin-left: auto;margin-right: auto;" src="https://www.brulafine.com/assets/images/product/hero.png"><p style="text-align: center;font-weight: 600;font-size: 20px;color: #ffffff;margin-top: 5px;margin-bottom: 10px;">Cure <mark data-aos="highlight-text" data-aos-delay="200" class="aos-init aos-animate" style="background-image: linear-gradient(120deg, rgb(37, 113, 183) 0%, rgb(59, 153, 239) 100%);background-size: 100 1em !important;">Minceur</mark></p><p style="text-align: center;font-weight: 900;font-size: 17px;color: #252525;background: #ffffff;width: 100px;margin: auto;border-radius: 50px;padding: 7px 0px;"><span style=" background: #3998ef; border-radius: 50px; color: #ffffff; padding: 0px 8px; margin-right: 5px; ">-</span> 1 <span style=" background: #3998ef; border-radius: 50px; color: #ffffff; padding: 0px 6px; margin-left: 5px; ">+</span></p><div style=" text-align: center; margin-top: 5px; "><a href="#" style=" color: #ffffff; font-size: 14px; text-align: center; font-weight: 500; ">En savoir plus</a></div></div>
+         </div>
+         
+         
+         </div>-->
+      <section>
+         <div class="container">
+            <div class="row section-title justify-content-center text-center">
+               <div class="col-md-9 col-lg-8 col-xl-8">
+                  <h3 class="display-4" style="
+                     margin-bottom: 0;
+                     ">Témoignages</h3>
+               </div>
+            </div>
+            <div class="row">
+                {% for temoignage in temoignages |slice(0, 3) %}
+                  <div class="col-md-6 col-lg-4 mb-3 mb-md-4 mb-lg-0">
+                     <div class="card h-100 hover-box-shadow" style="
+                        height: auto !important;
+                        ">
+                        <div class="card-body" style="
+                           padding: 25px;
+                           padding-bottom: 0px;
+                           ">
+                           <div class="rounded o-hidden" style="border-radius: 0.3125rem 0.3125rem 0 0 !important;margin: -10px -10px 20px -10px;">
+                              <div class="d-flex position-relative align-items-center justify-content-center rounded">
+                                  <img   class="rounded img-fluid" style="width: 100%;height: 220px;" src="{% if temoignage.image %}{{temoignage.image }}{% else %}{{ asset('assets/img/products/avatar.png') }}{% endif %}">
+                                 </a>
+                              </div>
+                           </div>
+                           <h4 style="
+                              margin-bottom: 0;
+                              font-size: 20px;
+                              ">{{temoignage.name}}</h4>
+                           <p style="
+                              margin-bottom: 5px;
+                              font-size: 14px;
+                              ">{{temoignage.location}}</p>
+                           <div>
+                              {% for i in  1..5  %}
+                                 {% if i <= temoignage.note|number_format  %}
+                                    <img alt="miniature" style="width: 25px;height: auto;margin-bottom: 10px;" src="{{asset('assets/img/star_1.svg')}}">
+                                 {% else %}
+                                    <img alt="miniature" style="width: 25px;height: auto;margin-bottom: 10px;" src="{{asset('assets/img/star_0.svg')}}">
+                                 {% endif %}
+                              {% endfor %}
+                           </div>
+                           <p style="
+                              ">{{temoignage.text|raw }}</p>
+                           <img alt="miniature" style="width: 65px;height: auto;margin-bottom: -45px;" src="https://www.brulafine.com/assets/images/product/hero.png">
+                           <div style="
+                              background: #ef357af7;
+                              color: #ffffff;
+                              font-size: 16px;
+                              text-align: center;
+                              padding: 15px 0px;
+                              border-radius: 0rem 0rem 0.3125rem 0.3125rem;
+                              margin: 0px -25px;
+                              ">{{temoignage.location}}</div>
+                        </div>
+                     </div>
+                  </div>
+               {% else %}
+                  <div>Aucun temoignage enregistre</div>
+          {% endfor %}
+            </div>
+         </div>
+         </div>
+      </section>
+      <section class="pt-0">
+         <div class="container">
+            <div class="row section-title justify-content-center text-center" style="
+               margin-bottom: 20px;
+               ">
+               <div class="col-md-12 col-lg-8 col-xl-12">
+                  <h3 class="display-4" style="
+                     font-size: 50px;
+                     margin-bottom: 20px;
+                     ">Ne vous fier pas à n'importe qui.</h3>
+                  <h3 class="display-4" style="
+                     font-size: 30px;
+                     ">Faite leurs <mark data-aos="highlight-text" data-aos-delay="250" class="aos-init aos-animate" style="
+                     background-image: linear-gradient(120deg, #009b72 0%, #ffffff 100%);
+                     ">confiance</mark>.</h3>
+               </div>
+            </div>
+            <div class="row justify-content-center">
+               <div class="col">
+                  <ul class="avatar-group avatar-group-lg flex-wrap justify-content-center">
+                     <li>
+                        <img src="assets/img/avatars/male-1.jpg" alt="Joshua Lapinsky profile image" class="avatar avatar-xl">
+                     </li>
+                     <li>
+                        <img src="assets/img/avatars/female-1.jpg" alt="Glenda Spence profile image" class="avatar avatar-xl">
+                     </li>
+                     <li>
+                        <img src="assets/img/avatars/male-2.jpg" alt="Michael Trossino profile image" class="avatar avatar-xl">
+                     </li>
+                     <li>
+                        <img src="assets/img/avatars/male-3.jpg" alt="Patrik Janssen profile image" class="avatar avatar-xl">
+                     </li>
+                     <li>
+                        <img src="assets/img/avatars/female-2.jpg" alt="Mirembe Nkrumah profile image" class="avatar avatar-xl">
+                     </li>
+                  </ul>
+               </div>
+            </div>
+            <div class="row justify-content-center mt-4 mt-md-5">
+               <div class="col-auto">
+                  <div class="alert bg-secondary" style="
+                     margin-bottom: 0px;
+                     ">Vous en avez pas eu assez ? <a href="{{path('temoignage')}}">Voir tous les témoignages</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section class="p-0 border-top border-bottom bg-light row no-gutters">
+         <div class="col-lg-5 col-xl-6 order-lg-2">
+            <div class="divider divider-side transform-flip-y bg-light d-none d-lg-block"></div>
+            <img class="flex-fill" src="https://imgur.com/OB4BBK7.png" alt="blog.1.image">
+         </div>
+         <div class="col-lg-7 col-xl-6">
+            <div class="container min-vh-lg-70 min-vh-xl-80 d-flex align-items-center">
+               <div class="row justify-content-center">
+                  <div class="col col-md-10 col-xl-9 py-4 py-sm-5">
+                     <div class="my-4 my-md-5 my-lg-0 my-xl-5">
+                        <h1 class="display-4">Combien de kilo pouvez vous perdre ?</h1>
+                        <p class="lead" style="
+                           font-weight: 400;
+                           /* font-size: 18px; */
+                           ">Laissez notre coach minceur Melisa vous dire combien de kilo vous êtes suseptible de perdre en répondant à quelques questions.</p>
+                        <a href="#" class="btn btn-primary" style=" font-weight: 400; ">Je commence</a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section>
+         <div class="container">
+            <div class="row section-title justify-content-center text-center">
+               <div class="col-md-9 col-lg-8 col-xl-10">
+                  <h3 class="display-4">Les produits <mark data-aos="highlight-text" data-aos-delay="200" class="aos-init aos-animate" style=" background-image: linear-gradient(120deg, rgb(240, 59, 126) 0%, rgb(251, 129, 174) 100%); ">Nutridia</mark></h3>
+                  <div class="lead">C’est une arme redoutable et indispensable dans le cadre de votre régime&thinsp;! Fabriquée en France, Nutridia respecte toutes les normes françaises et européennes en vigueur.</div>
+               </div>
+            </div>
+            <div class="row text-center">
+               {% for product in products  %}
+
+               <div id="product-{{product.id}}" class="col-md-6 col-lg-4 mb-4 mb-md-5 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                  <div class="mx-xl-4">
+                     <img src="https://www.brulafine.com/assets/images/product/hero.png" alt="Kyan logo" style="
+                        height: 110px;
+                        margin-bottom: 5px;
+                        ">
+                     <h5 style="
+                        margin-bottom: 0px;
+                        font-size: 24px;
+                        font-weight: 300;
+                        ">{{product.name}}</h5>
+                     <p style="
+                        font-size: 18px;
+                        font-weight: 600;
+                        color: #009b72;
+                        margin-bottom: 10px;
+                        ">{{product.price}}€ au lieu de {{product.getOldPrice()}}€</p>
+                     <div style="
+                        margin: auto;
+                        display: inline-flex;
+                        ">
+                        <ul class="avatar-group">
+                           <li>
+                              <img src="assets/img/avatars/male-2.jpg" alt="Avatar" class="avatar avatar-sm">
+                           </li>
+                           <li>
+                              <img src="assets/img/avatars/male-3.jpg" alt="Avatar" class="avatar avatar-sm">
+                           </li>
+                           <li>
+                              <img src="assets/img/avatars/male-4.jpg" alt="Avatar" class="avatar avatar-sm">
+                           </li>
+                           <li>
+                              <img src="assets/img/avatars/male-5.jpg" alt="Avatar" class="avatar avatar-sm">
+                           </li>
+                        </ul>
+                     </div>
+                     <a style="display:none" style="font-weight: 400;margin-left: 5px;padding-left: 10px;padding-right: 10px;" class=" get_quantity btn btn-primary">
+                        <span class="add-product-card-remove" target="product-{{product.id}}" product="{{product.id}}"   style="background: #0fb589;border-radius: 50px;color: #ffffff;padding: 0px 8px;margin-right: 5px;">-</span> 
+                        <label id="product-qty-{{product.id}}">1</label>
+                        <span class="add-product-card-add" target="product-{{product.id}}" product="{{product.id}}"   style="background: #0fb589;border-radius: 50px;color: #ffffff;padding: 0px 7px;margin-left: 5px;">+</span>
+                     </a>
+
+                     <a target="product-{{product.id}}" product="{{product.id}}"  class="btn btn-primary add-product-card" style="font-weight: 400;margin-left: 5px;">Ajouter</a>
+                  </div>
+               </div>
+               {% else %}
+                  <div>Aucun produit enregistre</div>
+          {% endfor %}
+            </div>
+         </div>
+      </section>
+      <div class="row section-title justify-content-center text-center" style=" margin-bottom: 0; padding: 4.6875rem 0;">
+         <div class="col-md-9 col-lg-8 col-xl-5">
+            <h3 class="display-4">Satisfait ET <mark data-aos="highlight-text" data-aos-delay="200" class="aos-init aos-animate" style=" background-image: linear-gradient(120deg, rgb(240, 59, 126) 0%, rgb(251, 129, 174) 100%); ">Remboursé</mark></h3>
+            <div class="lead">Pour faire profité un maximum de personne de Nutridia nous vous faisons gagnez 2 cure au choix chaque semaine sur Instagram !</div>
+         </div>
+      </div>
+      <div class="rowly" style=" margin: 0; ">
+
+                 <!-- <div class=""> -->
+                   <div class="img-thumb">
+                   </div>
+
+                   <div class="thumb-middle">
+                     <div class="image-grid grid-left">
+                     </div>
+
+                     <div class="image-center">
+                     </div>
+
+                     <div class="image-grid grid-right">
+                     </div>
+                   </div>
+
+                   <div class="image-grid grid-bottom">
+                   </div>
+                 <!-- </div> -->
+         <!-- <img alt="miniature" style="width: 100%;height: auto;" src="https://imgur.com/e7lw8Og.png">  -->
+      </div>
+
+{% endblock body_web %}
+{% block javascripts %}
+{{parent()}}
+  <script>
+    $.ajax({
+      url:"https://www.instagram.com/nutridia?__a=1",
+      type:'get',
+      success:function(response){
+        posts = response.graphql.user.edge_owner_to_timeline_media.edges;
+        posts_grid_bottom = posts_grid_left = posts_grid_right = '';
+        console.log(posts);
+        for(var i=0;i<posts.length;i++){
+          url = posts[i].node.display_url;
+          if(i == 0)
+            $(".img-thumb").html('<a href="'+url+'" target="_blank"><img src="'+url+'"></a>');
+          else if(i == 1)
+            $(".thumb-middle .image-center").html('<a href="'+url+'" target="_blank"><img src="'+url+'"></a>');
+          else{
+            if(i < 10){
+
+              if(i%2 == 0)
+                posts_grid_left += '<a href="'+url+'" target="_blank"><img src="'+url+'"></a>';
+              else
+                posts_grid_right += '<a href="'+url+'" target="_blank"><img src="'+url+'"></a>';
+            }
+            else{
+              posts_grid_bottom += '<a href="'+url+'" target="_blank"><img src="'+url+'"></a>';  
+            }
+          }
+        }
+        $(".image-grid.grid-left").html(posts_grid_left);
+        $(".image-grid.grid-right").html(posts_grid_right);
+        $(".image-grid.grid-bottom").html(posts_grid_bottom);
+        $(".thumb-middle .image-center").css('height', $(".image-grid.grid-left").height());
+      }
+    });
+  </script>
+
+{% endblock %}

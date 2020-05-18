@@ -1,0 +1,289 @@
+{% extends 'admin/layout.html.twig' %}
+{% block title %} {{parent()}} | Chat {% endblock %}
+
+{% block dataStructured %}{% endblock %}
+
+{% block stylesheets %}
+	{{parent()}}
+    <link href="{{asset('assetsBo/assets/css/apps/mailing-chat.css')}}" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .user-list-box .person-user{
+            border-bottom: 1px solid #525671;
+        }
+        .seach-wrapper{
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            position: relative;
+            overflow: hidden;
+        }
+        .wrapper-search-user{
+            position: absolute;
+            z-index: 1;
+            background: #fff;
+            width: 100%;
+            height: 100%;
+            transition: linear .2s all;
+            top: -73px;
+        }
+        .wrapper-search-user .close-search{
+            position: absolute;
+            right: 2px;
+            font-size: 18px;
+            top: -6px;
+            cursor: pointer;
+            z-index: 2;
+        }
+        .chat-system .user-list-box input{
+            margin-right: 0;
+            font-size: 12px;
+            padding-left: 32px;
+        }
+        #filter-user{
+            margin: auto 10px;
+        }
+        .chat-system .user-list-box .search svg{
+            top: 22px;
+            left: 15px;
+        }
+    </style>
+{% endblock %}
+{% block title_page %}Chat{% endblock %}
+{% block body_bo %}
+
+    <div class="layout-px-spacing">
+        <div class="chat-section layout-top-spacing">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12">
+                    <div class="chat-system">
+                        <div class="hamburger"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu mail-menu d-lg-none"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></div>
+                        <div class="user-list-box">
+                            <div class="seach-wrapper">
+                                <div class="wrapper-search-user">
+                                    <span class="close-search">x</span>
+                                    <div class="search">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65" style="left: 38px"></line></svg>
+                                        <input type="text" class="form-control" placeholder="rechercher utilisateur" id="filter-user" />
+                                    </div>
+                                </div>
+                                <div class="search">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                    <input type="text" class="form-control" placeholder="Discuter avec..." id="filter-discussion" style="margin-left: 10px;" />
+                                </div>
+                                <a title="Nouvelle discussion" class="user-disc-action" href="javascript:void()" style="margin:0 10px">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-plus"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                                </a>
+                            </div>
+                            <div class="people">
+                                <div class="person-user"></div>
+                                {% if discussions is defined %}
+                                {% for disc in discussions %}
+                                    {% if disc.users[0].id == user.id %}
+                                        {% set name = disc.users[1].name %}
+                                        {% set id_user = disc.users[1].id %}
+                                    {% else %}
+                                     {% set name = disc.users[0].name %}
+                                     {% set id_user = disc.users[0].id %}
+                                    {% endif %}
+                                    <a class="person" data-chat="person6" href="{{path('discussion',{'id_user':id_user})}}">
+                                        <div class="user-info">
+                                            <div class="f-head">
+                                                <img src="{{asset('assetsBo/assets/img/90x90.jpg')}}" alt="avatar">
+                                            </div>
+                                            <div class="f-body">
+                                                <div class="meta-info">
+                                                    <span class="user-name" data-name="{{name}}">{{name}}</span>
+                                                    <span class="user-meta-time">
+                                                        {{ disc.messages|length ? disc.messages[disc.messages|length - 1].dateCreate|date('H:i') : "" }}
+                                                    </span>
+                                                </div>
+                                                <span class="preview">
+                                                    {{ disc.messages|length ? disc.messages[disc.messages|length - 1].contenu : "" }}</span>
+                                            </div>
+                                        </div>
+                                    </a> 
+                                {% endfor %}
+                                {% endif %}                                     
+                            </div>
+                        </div>
+                        <div class="chat-box">
+
+                            <div class="chat-not-selected">
+                                <p> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> Click User To Chat</p>
+                            </div>
+                            <div class="chat-box-inner">
+                                {% if discussion is defined %}
+                                    {% if discussion.users[0].id == user.id %}
+                                        {% set name = discussion.users[1].name %}
+                                    {% else %}
+                                     {% set name = discussion.users[0].name %}
+                                    {% endif %}
+                                    <div class="chat-meta-user">
+                                        <div class="current-chat-user-name"><span><img src="{{asset('assetsBo/assets/img/90x90.jpg')}}" alt="dynamic-image"><span class="name">{{name}}</span></span></div>
+
+                                        <div class="chat-action-btn align-self-center">
+                                            <div class="dropdown d-inline-block">
+                                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                                                </a>
+
+                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink-2">
+                                                    <a class="dropdown-item" href="javascript:void(0);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg> Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                                <div class="chat-conversation-box">
+                                    <div id="chat-conversation-box-scroll" class="chat-conversation-box-scroll">
+                                        <div class="chat" data-chat="person6">
+                                        {% if discussion is defined %}
+                                            {% for msg in discussion.messages %}
+                                                <!--<div class="conversation-start">
+                                                    <span>Monday, 1:27 PM</span>
+                                                </div>-->
+                                                {% if msg.destinateur.id != user.id %}
+                                                <div class="bubble you">
+                                                    {{msg.contenu}}
+                                                </div>
+                                                {% else %}
+                                                <div class="bubble me">
+                                                    {{msg.contenu}}
+                                                </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chat-footer">
+                                    <div class="chat-input">
+                                        <form class="chat-form" action="javascript:void(0);">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                            <input type="text" class="mail-write-box form-control" placeholder="Message"/>
+                                        </form>
+                                    </div>
+                                </div>
+                                {% else %}
+                                    <style type="text/css">
+                                        .chat-system .chat-box{height: calc(100vh - 126px)!important;}
+                                    </style> 
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+	{{parent()}}
+    <audio id="audio" preload="auto" src="https://notificationsounds.com/notification-sounds/deduction-588/download/mp3"></audio>
+    <script src="{{asset('assetsBo/assets/js/apps/mailbox-chat.js')}}"></script>
+    <script type="text/javascript">
+        $('#sidebar .menu.menu-chat').addClass('active');
+        {% if discussion is defined %}
+        var wsUrl = '{{ ws_url }}';
+        var $receiver = $('#ws-content');
+        var ws = new WebSocket('ws://' + wsUrl);
+        var defaultChannel = '{{ discussion.id }}';
+        var botName = 'ChatBot';
+        var userId = '{{ user.id }}';
+
+        ws.addEventListener("open", function() {
+            console.log("CONNECTED");
+            ws.send(JSON.stringify({
+                action: 'subscribe',
+                channel: defaultChannel,
+                userId: '{{ user.id }}'
+            }));
+        });
+
+        //se prepare à recevoir un message venant des autres utilisateurs
+        ws.addEventListener("message", function(e) {
+            console.log(e.data);
+            try{
+                if( (JSON.parse(e.data).action == "subscribe") && (JSON.parse(e.data).userId != "{{ user.id }}") ){
+                    toastr.info("Un membre a rejoins la discussion");
+                }
+                else
+                    addMessageToChannel(e.data);
+            }
+            catch(e){
+                // Catch any errors
+            }
+        });
+
+        ws.onclose = function () {
+            //_receiver.innerHTML = 'Connection closed';
+        };
+
+        ws.onerror = function () {
+            //_receiver.innerHTML = 'An error occured!';
+        };
+
+        $('#send-message').click(function(){
+            var content = $('#message-input').val();
+            if(!content || content==''){
+                toastr.error("Le message ne peut pas être vide");
+            }
+            else{
+                $dataMessage = {
+                    action: 'message',
+                    userId: userId,
+                    message: content,
+                    channel: defaultChannel,
+                    date:new Date(),
+                };
+                //addMessageToChannel($dataMessage);
+                ws.send(JSON.stringify($dataMessage));
+                $('#message-input').val('').css('height', 'auto');
+            }
+        })
+        $('.mail-write-box').on('keydown', function(event) {
+            if(event.key === 'Enter') {
+                var chatInput = $(this);
+                var chatMessageValue = chatInput.val();
+                if (chatMessageValue === '') { 
+                    toastr.error("Le message ne peut pas être vide");
+                    return; 
+                }
+                $messageHtml = '<div class="bubble me">' + chatMessageValue + '</div>';
+                var appendMessage = $(this).parents('.chat-system').find('.active-chat').append($messageHtml);
+                const getScrollContainer = document.querySelector('.chat-conversation-box');
+                getScrollContainer.scrollTop = getScrollContainer.scrollHeight;
+                var clearChatInput = chatInput.val('');
+                $dataMessage = {
+                    action: 'message',
+                    userId: userId,
+                    message: chatMessageValue,
+                    channel: defaultChannel,
+                    date:new Date(),
+                };
+                //addMessageToChannel($dataMessage);
+                ws.send(JSON.stringify($dataMessage));
+            }
+        })
+        function addMessageToChannel($dataMessage){
+            var $dataMessage = JSON.parse($dataMessage);
+            if($dataMessage.userId != "{{ user.id }}"){
+                $messageHtml = '<div class="bubble you">' + $dataMessage.message + '</div>';           
+            }
+            else{
+                $messageHtml = '<div class="bubble me">' + chatMessageValue + '</div>';        
+            }
+            var appendMessage = $('.chat-system').find('.active-chat').append($messageHtml);
+                const getScrollContainer = document.querySelector('.chat-conversation-box');
+                getScrollContainer.scrollTop = getScrollContainer.scrollHeight;
+
+            if($dataMessage.userId != userId){
+                toastr.success("Nouveau message");
+                document.getElementById('audio').play()
+            }
+        }
+        {% endif %}
+    </script>
+{% endblock %}
