@@ -19,9 +19,8 @@
    }
    .img-thumb img{
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: none;
+       height: 100%;
+       object-fit: cover;
    }
    .thumb-middle{
       display: flex;
@@ -73,17 +72,9 @@
    @media(max-width: 768px){
       .thumb-middle{display: block;}
    }
-   .image-grid.grid-bottom{
-      display: none;
-   }
-   .img-thumb {
-       display: none;
-    }
+
 </style>
 {% endblock %}
-{% block css_hide_nav %}
-{% endblock %}
-
 {% block body_web %}
 
 <!--     <div class="bg-gradient text-white p-0 o-hidden jarallax" data-overlay data-jarallax data-speed="0.5">
@@ -112,12 +103,12 @@
                      <h2 class="display-4" style="
                         margin-bottom: 5px;
                         font-weight: 100;
-                        ">Nutridia, l'arme redoutable pour perdre vos kilos en trop</h2>
+                        ">Vita, l'arme redoutable pour enlevé vos points noir</h2>
                      <div class="lead" style="
                         font-size: 29px;
                         font-weight: 700;
                         text-transform: uppercase;
-                        ">Objectif -2,7 kg en 7 jours *</div>
+                        ">Objectif peau parfaite en 4 passages</div>
                   </div>
                </div>
             </div>
@@ -164,7 +155,7 @@
          </div>
       </section>
 
-      <section style=" padding-top: 100px; ">
+     <section style=" padding-top: 100px; ">
          <div class="container">
             <div class="row justify-content-center rowly">
                <div class="row col-lg-3 col-md-6 col-xs-12" style=" margin: 0; padding: 0; ">
@@ -174,6 +165,8 @@
                         text-align: left;
                         margin-bottom: 0;
                         font-weight: 700;
+                        font-size: 16px;
+                        color: #2f2f2f;
                         ">100% NATUREL</p>
                      <p style="
                         font-size: 11px;
@@ -191,6 +184,8 @@
                         text-align: left;
                         margin-bottom: 0;
                         font-weight: 700;
+                        font-size: 16px;
+                        color: #2f2f2f;
                         ">FABRIQUÉ EN FRANCE</p>
                      <p style="
                         font-size: 11px;
@@ -208,6 +203,8 @@
                         text-align: left;
                         margin-bottom: 0;
                         font-weight: 700;
+                        font-size: 16px;
+                        color: #2f2f2f;
                         ">PAR UN LABORATOIRE</p>
                      <p style="
                         font-size: 11px;
@@ -223,6 +220,8 @@
                         text-align: left;
                         margin-bottom: 0;
                         font-weight: 700;
+                        font-size: 16px;
+                        color: #2f2f2f;
                         ">LIVRAISON GRATUITE</p>
                      <p style="
                         font-size: 11px;
@@ -234,12 +233,56 @@
             </div>
          </div>
       </section>
-      <section class="bg-light o-hidden">
+    <section class="p-0 bg-primary text-white row no-gutters">
+      <div class="col-lg-5 col-xl-6">
+        <img src="https://cdn.shopify.com/s/files/1/0368/1291/4732/files/Projet_sans_titre_3bbe8d1b-3d76-48dc-b64f-dde433314097_480x480.gif?v=1589322338" alt="Image" class="w-100 h-100" style="
+    height: 556px !important;
+">
+        <div class="divider divider-side bg-primary d-none d-lg-block"></div>
+      </div>
+      <div class="col-lg-7 col-xl-6">
+        <section>
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col col-md-10 col-xl-9">
+                <h3 class="h1">“We are working at almost twice the capacity”</h3>
+                <p class="lead">
+                  Non pulvinar neque laoreet suspendisse interdum Catelyn libero id. Olenna imp leo in vitae turpis massa. Sapien habitant Tyrion.
+                </p>
+                <img src="https://imgur.com/NjhmhRM.png" class="logo scrolled-logo" alt="logo" style="
+    width: 130px;
+    height: auto;
+    margin-right: 10px;
+"><img src="https://imgur.com/ojGAjaf.png" class="logo scrolled-logo" alt="logo" style="
+    width: 130px;
+    height: auto;
+    margin-right: 10px;
+"><img src="https://imgur.com/2Ad5bsW.png" class="logo scrolled-logo" alt="logo" style="
+    width: 140px;
+    height: auto;
+    margin-right: 10px;
+">
+                
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+      <section class="o-hidden">
          <div class="container">
             <div class="row section-title justify-content-center text-center">
-               <div class="col-md-9 col-lg-8 col-xl-7">
-                  <h3 class="display-4">L'arme triple action pour perdre du poids.</h3>
-                  <div class="lead">Sans contrainte, Sans privation, Nutridia sera votre meilleure allié pour perdre vos kilos en trop qui agira comme Brûleur de Graisse, Anti-Fatigue et Coupe Faim.</div>
+               <div class="col-md-9 col-lg-8 col-xl-10">
+                  <img src="https://imgur.com/rDzfdp3.png" class="logo scrolled-logo" alt="logo" style="
+    width: 200px;
+    height: auto;
+    margin-bottom: -95px;
+"><h3 class="display-4" style="
+    font-size: 49px;
+    color: #1d1d1d;
+    font-family: 'Poppins', sans-serif;
+">Détoxifier votre peau !</h3>
+                  
                </div>
             </div>
             <div class="container">
@@ -247,13 +290,13 @@
                   <div class="col">
                      <ul class="nav nav-pills lead mb-4 mb-md-5 justify-content-center" id="myTab" role="tablist">
                         <li class="nav-item">
-                           <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Brûleur de Graisse</a>
+                           <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Enlève vos points noir</a>
                         </li>
                         <li class="nav-item">
-                           <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Anti Fatigue</a>
+                           <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Lutte contre les rides</a>
                         </li>
                         <li class="nav-item">
-                           <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Coupe faim</a>
+                           <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Hydrate</a>
                         </li>
                      </ul>
                      <div class="tab-content" id="myTabContent">
@@ -262,12 +305,12 @@
                               <div class="col-lg-6 col-xl-5 text-center text-lg-left mb-4 mb-md-5 mb-lg-0">
                                  <div class="pr-lg-4 pr-xl-5 aos-init aos-animate" data-aos="fade-right">
                                     <h3 class="h1">Une perte de poids <mark data-aos="highlight-text" data-aos-delay="250" class="aos-init aos-animate" style="
-                                       background-image: linear-gradient(120deg, #009b72 0%, #f7f9fc 100%);
+                                       background-image: linear-gradient(120deg, #8bc889 0%, #f7f9fc 100%);
                                        ">rapide et durable</mark>.</h3>
                                     <p style="
                                        font-weight: 500;
                                        margin-bottom: 20px;
-                                       color: #009b72;
+                                       color: #8bc889;
                                        ">72% des régimes se conclu souvent en un gain de poids quelques temps après. Notre cure vous permet de garder votre ligne.</p>
                                     <div class="d-flex flex-wrap justify-content-center justify-content-lg-start">
                                        <div class="mb-3 mr-4 ml-lg-0 mr-lg-4 aos-init aos-animate" data-aos="fade-left" data-aos-delay="100">
@@ -296,7 +339,7 @@
                                  </div>
                               </div>
                               <div class="col-lg-6 col-xl-7 aos-init aos-animate" data-aos="fade-left">
-                                 <img src="https://imgur.com/0kENnl8.png" alt="Screenshot" class="img-fluid rounded shadow border">
+                                 <img src="https://imgur.com/sCzqwpQ.png" alt="Screenshot" class="img-fluid rounded shadow border">
                               </div>
                            </div>
                         </div>
@@ -305,12 +348,12 @@
                               <div class="col-lg-6 col-xl-5 text-center text-lg-left mb-4 mb-md-5 mb-lg-0">
                                  <div class="pr-lg-4 pr-xl-5 aos-init aos-animate" data-aos="fade-right">
                                     <h3 class="h1">Ne soyez plus <mark data-aos="highlight-text" data-aos-delay="250" class="aos-init aos-animate" style="
-                                       background-image: linear-gradient(120deg, #009b72 0%, #f7f9fc 100%);
+                                       background-image: linear-gradient(120deg, #8bc889 0%, #f7f9fc 100%);
                                        ">fatigué</mark>.</h3>
                                     <p style="
                                        font-weight: 500;
                                        margin-bottom: 20px;
-                                       color: #009b72;
+                                       color: #8bc889;
                                        ">Un anti-fatigue est indispensable pour toute perte de poids, celle-ci fatigue le corps et vous fait resentir un sentiment de fatigue.</p>
                                     <div class="d-flex flex-wrap justify-content-center justify-content-lg-start">
                                        <div class="mb-3 mr-4 ml-lg-0 mr-lg-4 aos-init aos-animate" data-aos="fade-left" data-aos-delay="100">
@@ -363,7 +406,7 @@
                                  </div>
                               </div>
                               <div class="col-lg-6 col-xl-7 aos-init aos-animate" data-aos="fade-left">
-                                 <img src="https://imgur.com/iEowgc9.png" alt="Screenshot" class="img-fluid rounded shadow border">
+                                 <img src="https://imgur.com/Lr13n2y.png" alt="Screenshot" class="img-fluid rounded shadow border">
                               </div>
                            </div>
                         </div>
@@ -372,12 +415,12 @@
                               <div class="col-lg-6 col-xl-5 text-center text-lg-left mb-4 mb-md-5 mb-lg-0">
                                  <div class="pr-lg-4 pr-xl-5 aos-init aos-animate" data-aos="fade-right">
                                     <h3 class="h1">Vous n'aurez pas à <mark data-aos="highlight-text" data-aos-delay="250" class="aos-init aos-animate" style="
-                                       background-image: linear-gradient(120deg, #009b72 0%, #f7f9fc 100%);
+                                       background-image: linear-gradient(120deg, #8bc889 0%, #f7f9fc 100%);
                                        ">vous forcez</mark>.</h3>
                                     <p style="
                                        font-weight: 500;
                                        margin-bottom: 20px;
-                                       color: #009b72;
+                                       color: #8bc889;
                                        ">Il est connu qu'un régime est synonyme de privation, avec Nutridia ne vous privé plus et manger à votre faim.</p>
                                     <div class="d-flex flex-wrap justify-content-center justify-content-lg-start">
                                        <div class="mb-3 mr-4 ml-lg-0 mr-lg-4 aos-init aos-animate" data-aos="fade-left" data-aos-delay="100">
@@ -416,12 +459,20 @@
             </div>
          </div>
       </section>
-      <section>
-         <div class="container">
-            <div class="row align-items-center justify-content-around">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg" alt="Image" class="img-fluid" style="
+    width: 100%;
+    height: 20px;
+    margin-top: -4px;
+">
+      <section class="bg-primary-3 text-white pb-0 jarallax" data-jarallax data-speed="0.75" style="
+    margin-top: -4px;
+">
+      <img src="https://www.galaxie-voyage.com/wp-content/uploads/2017/12/paris-le-jour.jpg" alt="Hero" class="jarallax-img opacity-30">
+      <div class="container min-vh-40 d-flex flex-column justify-content-center">
+        <div class="row align-items-center justify-content-around">
                <div class="col-md-9 col-lg-6 col-xl-7 mb-4 mb-lg-0 order-lg-2 pl-lg-5">
                   <div>
-                     <h2 class="h1 text-center text-lg-left">Une trilogie brûle-graisse au service de votre minceur !</h2>
+                     <h2 class="h1 text-center text-lg-left">Proche de vous !</h2>
                      <div class="d-flex flex-wrap justify-content-center justify-content-lg-start">
                         <div class="my-4">
                            <div class="d-flex">
@@ -437,10 +488,8 @@
                                  </svg>
                               </div>
                               <div>
-                                 <h5>Triple efficacité renforcée</h5>
-                                 <div>Sans contrainte, 1 gélules par jour,
-                                    les résultats sont là !
-                                 </div>
+                                 <h5>Support de 9h à 18h du lundi au vendredi</h5>
+                                 <div>Un support Chat, Email et Téléphone Français et Anglais est à votre écoute avec une réponse en 24h.</div>
                               </div>
                            </div>
                         </div>
@@ -457,8 +506,8 @@
                                  </svg>
                               </div>
                               <div>
-                                 <h5>C-Konjac, coupe-faim végétal</h5>
-                                 <div>En association avec le coup-faim naturel le plus puissant, Brulafine offre des résultats encore plus efficaces et durables.</div>
+                                 <h5>Livraison Gratuite en France</h5>
+                                 <div>Une livraison Gratuite jusqu'à chez-vous et à l'internationnal.</div>
                               </div>
                            </div>
                         </div>
@@ -475,8 +524,8 @@
                                  </svg>
                               </div>
                               <div>
-                                 <h5>Essayez nos produits en toute sérénité</h5>
-                                 <div>Grâce à notre option exclusive : “Satisfait ou Remboursé” !</div>
+                                 <h5>Une marque crée par deux Français</h5>
+                                 <div>La marque VitaNatural est le fruit de plusieurs années de développement afin d'obtenir un masque naturel et efficace.</div>
                               </div>
                            </div>
                         </div>
@@ -486,11 +535,123 @@
                <div class="col-md-9 col-lg-6 col-xl-5 order-lg-1">
 
 
-                  <img src="https://www.brulafine.com/assets/images/product/hero.png" alt="Image" class="img-fluid">
+                  <img src="https://imgur.com/ooMm2Xx.png" alt="Image" class="img-fluid">
                </div>
             </div>
-         </div>
-      </section>
+      </div>
+      <div class="divider divider-bottom bg"></div>
+    </section>
+    <section>
+      <div class="container">
+        <div class="row section-title justify-content-center text-center">
+          <div class="col-md-9 col-lg-8 col-xl-10">
+                  <img src="https://imgur.com/rDzfdp3.png" class="logo scrolled-logo" alt="logo" style="
+    width: 200px;
+    height: auto;
+    margin-bottom: -95px;
+"><h3 class="display-4" style="
+    font-size: 49px;
+    color: #1d1d1d;
+    font-family: 'Poppins', sans-serif;
+">Rapide et efficace.</h3>
+                  
+               </div>
+               
+        </div>
+        <div class="row text-center">
+               <div class="col-md-6 col-lg-4 mb-4 mb-md-5 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                  <div class="mx-xl-4" style="
+    border: 1px solid #EAEDF2;
+    border-radius: 10px;
+">
+                     <h5 style="
+                        margin-bottom: 0px;
+                        margin-top: 15px;
+                        font-size: 34px;
+                        font-weight: 600;
+                        color: #c8e4c7;
+                        font-family: 'Poppins', sans-serif;
+                        ">1.</h5><h5 style="
+                        margin-bottom: 10px;
+                        font-size: 24px;
+                        font-weight: 300;
+                        ">Humidifier</h5><h5 style="
+                        margin-bottom: 10px;
+                        font-size: 15px;
+                        font-weight: 500;
+                        padding: 0px 30px;
+                        ">Ouvrez les pores de votre visage à l'aide d'un linge chaud de 3 à 7 minutes ou appliquez-le après une douche.</h5><img src="https://imgur.com/j0CCKZt.png" alt="Kyan logo" style="
+                        height: 250px;
+                        ">
+                     
+                     
+                     
+                     
+                  </div>
+               </div><div class="col-md-6 col-lg-4 mb-4 mb-md-5 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                  <div class="mx-xl-4" style="
+    border: 1px solid #EAEDF2;
+    border-radius: 10px;
+">
+                     <h5 style="
+                        margin-bottom: 0px;
+                        margin-top: 15px;
+                        font-size: 34px;
+                        font-weight: 600;
+                        color: #c8e4c7;
+                        font-family: 'Poppins', sans-serif;
+                        ">2.</h5><h5 style="
+                        margin-bottom: 10px;
+                        font-size: 24px;
+                        font-weight: 300;
+                        ">Appliquer</h5><h5 style="
+                        margin-bottom: 10px;
+                        font-size: 15px;
+                        font-weight: 500;
+                        padding: 0px 30px;
+                        ">Appliquer uniformément sur le nez, le visage, le front et le menton, etc.</h5><img src="https://imgur.com/dPLdHzE.png" alt="Kyan logo" style="
+                        height: 250px;
+                        ">
+                     
+                     
+                     
+                     
+                  </div>
+               </div><div class="col-md-6 col-lg-4 mb-4 mb-md-5 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                  <div class="mx-xl-4" style="
+    border: 1px solid #EAEDF2;
+    border-radius: 10px;
+">
+                     <h5 style="
+                        margin-bottom: 0px;
+                        margin-top: 15px;
+                        font-size: 34px;
+                        font-weight: 600;
+                        color: #c8e4c7;
+                        font-family: 'Poppins', sans-serif;
+                        ">3.</h5><h5 style="
+                        margin-bottom: 10px;
+                        font-size: 24px;
+                        font-weight: 300;
+                        ">Rincer</h5><h5 style="
+                        margin-bottom: 10px;
+                        font-size: 15px;
+                        font-weight: 500;
+                        padding: 0px 30px;
+                        ">Attendez 15 à 25 minutes, retirez le masque lorsqu'il est complètement sec puis rincer à l'eau claire.</h5><img src="https://imgur.com/wuwDbxe.png" alt="Kyan logo" style="
+                        height: 250px;
+                        ">
+                     
+                     
+                     
+                     
+                  </div>
+               </div>
+               
+               
+            </div>
+      </div>
+    </section>
       <section class="p-0 bg-primary row no-gutters o-hidden">
          <div class="col-lg-5 col-xl-6 d-flex align-items-center justify-content-center">
             <a data-fancybox="" href="https://vimeo.com/166034462#t=32s" class="btn btn-lg btn-light rounded-circle position-absolute aos-init aos-animate" data-aos="zoom-in" data-aos-delay="400">
@@ -635,6 +796,65 @@
          
          
          </div>-->
+     <section>
+      <div class="container">
+        <div class="row section-title justify-content-center text-center">
+          <div class="col-md-9 col-lg-8 col-xl-10">
+                  <img src="https://imgur.com/rDzfdp3.png" class="logo scrolled-logo" alt="logo" style="
+    width: 200px;
+    height: auto;
+    margin-bottom: -95px;
+"><h3 class="display-4" style="
+    font-size: 49px;
+    color: #1d1d1d;
+    font-family: 'Poppins', sans-serif;
+">Les ingrédiants</h3>
+                  
+               </div>
+        </div>
+        <div class="row" style="
+    margin: auto;
+">
+          <div class="col-lg-12 mb-3 mb-lg-5">
+            <div class="row align-items-center">
+              <div class="col-sm-4 mb-3 mb-sm-0">
+                <img src="https://www.bienmanger.com/tinyMceData/images/contents/475/content_lg.jpg" alt="Image" class="img-fluid rounded">
+              </div>
+              <div class="col">
+                <h4>Thé vert</h4>
+                <p>Le thé vert est naturellement riche en antioxydants, qui aident à protéger l'organisme contre les radicaux libres. Il a également été démontré que le thé vert a la capacité de rajeunir les vieilles cellules de la peau qui sont à la fin de leur cycle de vie, avec l'avantage supplémentaire d'avoir des propriétés anti-inflammatoires.</p>
+                
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 mb-3 mb-lg-5">
+            <div class="row align-items-center">
+              <div class="col-sm-4 mb-3 mb-sm-0">
+                <img src="https://fac.img.pmdstatic.net/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2Ffac.2F2018.2F11.2F28.2Ff2bdec7f-bbad-46c5-9220-1e51a427f5d3.2Ejpeg/1200x1200/quality/80/crop-from/center/top-10-des-aliments-les-plus-riches-en-vitamine-c.jpeg" alt="Image" class="img-fluid rounded">
+              </div>
+              <div class="col">
+                <h4>La vitamine C</h4>
+                <p>Un puissant antioxydant pour améliorer la pureté du teint et restaurer l'aspect uniforme de la peau.</p>
+                
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 mb-3 mb-lg-5">
+            <div class="row align-items-center">
+              <div class="col-sm-4 mb-3 mb-sm-0">
+                <img src="assets/img/square-3.jpg" alt="Image" class="img-fluid rounded">
+              </div>
+              <div class="col">
+                <h4>Extraits botaniques</h4>
+                <p>Gorgés d'antioxydants anti-âge, les extraits botaniques aident à calmer, apaiser et rééquilibrer la peau.</p>
+                
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </section>
       <section>
          <div class="container">
             <div class="row section-title justify-content-center text-center">
@@ -656,7 +876,9 @@
                            ">
                            <div class="rounded o-hidden" style="border-radius: 0.3125rem 0.3125rem 0 0 !important;margin: -10px -10px 20px -10px;">
                               <div class="d-flex position-relative align-items-center justify-content-center rounded">
-                                  <img   class="rounded img-fluid" style="width: 100%;height: 220px;" src="{% if temoignage.image %}{{temoignage.image }}{% else %}{{ asset('assets/img/products/avatar.png') }}{% endif %}">
+                                 <img class="rounded img-fluid" src="{{asset('assets/img/avatars/male-2.jpg')}}" alt="Video cover image">
+                                 <a data-fancybox href="https://vimeo.com/166034462#t=32s" class="btn btn-lg btn-light rounded-circle position-absolute" data-aos="zoom-in">
+                                   <img src="{{asset('assets/img/icons/interface/icon-media-play.svg')}}" alt="Media Play Icon" class="icon icon-lg bg-dark pl-1" data-inject-svg>
                                  </a>
                               </div>
                            </div>
@@ -667,16 +889,8 @@
                            <p style="
                               margin-bottom: 5px;
                               font-size: 14px;
-                              ">{{temoignage.location}}</p>
-                           <div>
-                              {% for i in  1..5  %}
-                                 {% if i <= temoignage.note|number_format  %}
-                                    <img alt="miniature" style="width: 25px;height: auto;margin-bottom: 10px;" src="{{asset('assets/img/star_1.svg')}}">
-                                 {% else %}
-                                    <img alt="miniature" style="width: 25px;height: auto;margin-bottom: 10px;" src="{{asset('assets/img/star_0.svg')}}">
-                                 {% endif %}
-                              {% endfor %}
-                           </div>
+                              ">Paris, France</p>
+                           <img alt="miniature" style="width: 115px;height: auto;margin-bottom: 15px;" src="https://le-chariot-de-course.fr/wp-content/uploads/2018/09/etoile-4.5.jpg">
                            <p style="
                               ">{{temoignage.text|raw }}</p>
                            <img alt="miniature" style="width: 65px;height: auto;margin-bottom: -45px;" src="https://www.brulafine.com/assets/images/product/hero.png">
@@ -712,7 +926,7 @@
                   <h3 class="display-4" style="
                      font-size: 30px;
                      ">Faite leurs <mark data-aos="highlight-text" data-aos-delay="250" class="aos-init aos-animate" style="
-                     background-image: linear-gradient(120deg, #009b72 0%, #ffffff 100%);
+                     background-image: linear-gradient(120deg, #8bc889 0%, #ffffff 100%);
                      ">confiance</mark>.</h3>
                </div>
             </div>
@@ -747,29 +961,8 @@
             </div>
          </div>
       </section>
-      <section class="p-0 border-top border-bottom bg-light row no-gutters">
-         <div class="col-lg-5 col-xl-6 order-lg-2">
-            <div class="divider divider-side transform-flip-y bg-light d-none d-lg-block"></div>
-            <img class="flex-fill" src="https://imgur.com/OB4BBK7.png" alt="blog.1.image">
-         </div>
-         <div class="col-lg-7 col-xl-6">
-            <div class="container min-vh-lg-70 min-vh-xl-80 d-flex align-items-center">
-               <div class="row justify-content-center">
-                  <div class="col col-md-10 col-xl-9 py-4 py-sm-5">
-                     <div class="my-4 my-md-5 my-lg-0 my-xl-5">
-                        <h1 class="display-4">Combien de kilo pouvez vous perdre ?</h1>
-                        <p class="lead" style="
-                           font-weight: 400;
-                           /* font-size: 18px; */
-                           ">Laissez notre coach minceur Melisa vous dire combien de kilo vous êtes suseptible de perdre en répondant à quelques questions.</p>
-                        <a href="#" class="btn btn-primary" style=" font-weight: 400; ">Je commence</a>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </section>
-      <section>
+      
+    <!--  <section>
          <div class="container">
             <div class="row section-title justify-content-center text-center">
                <div class="col-md-9 col-lg-8 col-xl-10">
@@ -778,9 +971,7 @@
                </div>
             </div>
             <div class="row text-center">
-               {% for product in products  %}
-
-               <div id="product-{{product.id}}" class="col-md-6 col-lg-4 mb-4 mb-md-5 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+               <div class="col-md-6 col-lg-4 mb-4 mb-md-5 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
                   <div class="mx-xl-4">
                      <img src="https://www.brulafine.com/assets/images/product/hero.png" alt="Kyan logo" style="
                         height: 110px;
@@ -790,13 +981,13 @@
                         margin-bottom: 0px;
                         font-size: 24px;
                         font-weight: 300;
-                        ">{{product.name}}</h5>
+                        ">Objectif Minceur</h5>
                      <p style="
                         font-size: 18px;
                         font-weight: 600;
-                        color: #009b72;
+                        color: #8bc889;
                         margin-bottom: 10px;
-                        ">{{product.price}}€ au lieu de {{product.getOldPrice()}}€</p>
+                        ">39€ au lieu de 59€</p>
                      <div style="
                         margin: auto;
                         display: inline-flex;
@@ -816,26 +1007,92 @@
                            </li>
                         </ul>
                      </div>
-                     <a style="display:none" style="font-weight: 400;margin-left: 5px;padding-left: 10px;padding-right: 10px;" class=" get_quantity btn btn-primary">
-                        <span class="add-product-card-remove" target="product-{{product.id}}" product="{{product.id}}"   style="background: #0fb589;border-radius: 50px;color: #ffffff;padding: 0px 8px;margin-right: 5px;">-</span> 
-                        <label id="product-qty-{{product.id}}">1</label>
-                        <span class="add-product-card-add" target="product-{{product.id}}" product="{{product.id}}"   style="background: #0fb589;border-radius: 50px;color: #ffffff;padding: 0px 7px;margin-left: 5px;">+</span>
-                     </a>
-
-                     <a target="product-{{product.id}}" product="{{product.id}}"  class="btn btn-primary add-product-card" style="font-weight: 400;margin-left: 5px;">Ajouter</a>
+                     <a href="#" class="btn btn-primary" style="font-weight: 400;margin-left: 5px;">Ajouter</a>
                   </div>
                </div>
-               {% else %}
-                  <div>Aucun produit enregistre</div>
-          {% endfor %}
+               <div class="col-md-6 col-lg-4 mb-4 mb-md-5 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                  <div class="mx-xl-4">
+                     <img src="https://www.brulafine.com/assets/images/product/hero.png" alt="Kyan logo" style="
+                        height: 110px;
+                        margin-bottom: 5px;
+                        ">
+                     <h5 style="
+                        margin-bottom: 0px;
+                        font-size: 24px;
+                        font-weight: 300;
+                        ">Objectif Drainer</h5>
+                     <p style="
+                        font-size: 18px;
+                        font-weight: 600;
+                        color: #8bc889;
+                        margin-bottom: 10px;
+                        ">39€ au lieu de 59€</p>
+                     <div style="
+                        margin: auto;
+                        display: inline-flex;
+                        ">
+                        <ul class="avatar-group">
+                           <li>
+                              <img src="assets/img/avatars/male-2.jpg" alt="Avatar" class="avatar avatar-sm">
+                           </li>
+                           <li>
+                              <img src="assets/img/avatars/male-3.jpg" alt="Avatar" class="avatar avatar-sm">
+                           </li>
+                           <li>
+                              <img src="assets/img/avatars/male-4.jpg" alt="Avatar" class="avatar avatar-sm">
+                           </li>
+                           <li>
+                              <img src="assets/img/avatars/male-5.jpg" alt="Avatar" class="avatar avatar-sm">
+                           </li>
+                        </ul>
+                     </div>
+                     <a href="#" style="font-weight: 400;margin-left: 5px;padding-left: 10px;padding-right: 10px;" class="btn btn-primary"><span style="background: #0fb589;border-radius: 50px;color: #ffffff;padding: 0px 8px;margin-right: 5px;">-</span> 1 <span style="background: #0fb589;border-radius: 50px;color: #ffffff;padding: 0px 7px;margin-left: 5px;">+</span></a>
+                  </div>
+               </div>
+               <div class="col-md-6 col-lg-4 mb-4 mb-md-5 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                  <div class="mx-xl-4">
+                     <img src="https://www.brulafine.com/assets/images/product/hero.png" alt="Kyan logo" style="
+                        height: 110px;
+                        margin-bottom: 5px;
+                        ">
+                     <h5 style="
+                        margin-bottom: 0px;
+                        font-size: 24px;
+                        font-weight: 300;
+                        ">Objectif Détox</h5>
+                     <p style="
+                        font-size: 18px;
+                        font-weight: 600;
+                        color: #8bc889;
+                        margin-bottom: 10px;
+                        ">39€ au lieu de 59€</p>
+                     <div style="
+                        margin: auto;
+                        display: inline-flex;
+                        ">
+                        <ul class="avatar-group">
+                           <li>
+                              <img src="assets/img/avatars/male-2.jpg" alt="Avatar" class="avatar avatar-sm">
+                           </li>
+                           <li>
+                              <img src="assets/img/avatars/male-3.jpg" alt="Avatar" class="avatar avatar-sm">
+                           </li>
+                           <li>
+                              <img src="assets/img/avatars/male-4.jpg" alt="Avatar" class="avatar avatar-sm">
+                           </li>
+                           <li>
+                              <img src="assets/img/avatars/male-5.jpg" alt="Avatar" class="avatar avatar-sm">
+                           </li>
+                        </ul>
+                     </div>
+                     <a href="#" class="btn btn-primary" style="font-weight: 400;margin-left: 5px;">Ajouter</a>
+                  </div>
+               </div>
             </div>
          </div>
-      </section>
+      </section>-->
       <div class="row section-title justify-content-center text-center" style=" margin-bottom: 0; padding: 4.6875rem 0;">
-         <div class="col-md-9 col-lg-8 col-xl-5">
-            <h3 class="display-4">Satisfait ET <mark data-aos="highlight-text" data-aos-delay="200" class="aos-init aos-animate" style=" background-image: linear-gradient(120deg, rgb(240, 59, 126) 0%, rgb(251, 129, 174) 100%); ">Remboursé</mark></h3>
-            <div class="lead">Pour faire profité un maximum de personne de Nutridia nous vous faisons gagnez 2 cure au choix chaque semaine sur Instagram !</div>
-         </div>
+        
       </div>
       <div class="rowly" style=" margin: 0; ">
 
