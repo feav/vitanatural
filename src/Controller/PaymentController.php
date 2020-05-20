@@ -156,12 +156,12 @@ class PaymentController extends AbstractController
     public function sendMail($mailer, $user, $panier, $commande_pdf, $amount){
 
         if(count($panier->getCommandes())){
-            $content = "<p>Bonjour ".$user->getName().", <br> Vous avez acheté d'ePodsOne pour ".$panier->getTotalPrice()."€<br>
+            $content = "<p>Bonjour ".$user->getName().", <br> Vous avez fait des achats pour ".$panier->getTotalPrice()."€<br>
             Livraison Gratuite (Essai de 3 jours) pour un de nos abonnements</p>";
             $url = $this->generateUrl('home');
             try {
                 $mail = (new \Swift_Message('Confirmation commande'))
-                    ->setFrom(array('alexngoumo.an@gmail.com' => 'EpodsOne'))
+                    ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
                     ->setTo([$user->getEmail()=>$user->getName()])
                     ->setCc("alexngoumo.an@gmail.com")
                     ->attach(\Swift_Attachment::fromPath($commande_pdf))
@@ -184,7 +184,7 @@ class PaymentController extends AbstractController
             $url = $this->generateUrl('home');
             try {
                 $mail = (new \Swift_Message('Abonnement réussit'))
-                    ->setFrom(array('alexngoumo.an@gmail.com' => 'EpodsOne'))
+                    ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
                     ->setTo([$user->getEmail()=>$user->getName()])
                     ->setCc("alexngoumo.an@gmail.com")
                     //->attach(\Swift_Attachment::fromPath($commande_pdf))
@@ -290,7 +290,7 @@ class PaymentController extends AbstractController
                         $url = $this->generateUrl('home');
                         try {
                             $mail = (new \Swift_Message('Abonnement Payé'))
-                                ->setFrom(array('alexngoumo.an@gmail.com' => 'EpodsOne'))
+                                ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
                                 ->setTo([$user->getEmail()=>$user->getName()])
                                 ->setCc("alexngoumo.an@gmail.com")
                                 //->attach(\Swift_Attachment::fromPath($commande_pdf))
@@ -317,7 +317,7 @@ class PaymentController extends AbstractController
                         $url = $this->generateUrl('home');
                         try {
                             $mail = (new \Swift_Message('Abonnement renouvellé'))
-                                ->setFrom(array('alexngoumo.an@gmail.com' => 'EpodsOne'))
+                                ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
                                 ->setTo([$user->getEmail()=>$user->getName()])
                                 ->setCc("alexngoumo.an@gmail.com")
                                 //->attach(\Swift_Attachment::fromPath($commande_pdf))
@@ -425,7 +425,7 @@ class PaymentController extends AbstractController
         $url = $this->generateUrl('home', [], UrlGenerator::ABSOLUTE_URL);
         try {
             $mail = (new \Swift_Message("Résiliation d'abonement"))
-                ->setFrom(array('alexngoumo.an@gmail.com' => 'EpodsOne'))
+                ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
                 ->setTo([$user->getEmail()=>$user->getName()])
                 ->setCc("alexngoumo.an@gmail.com")
                 ->setBody(
