@@ -29,14 +29,12 @@
     .item-elt-foot .nav .nav-link{display: inline-block;}
         
     .toast__container{z-index: 99999!important}
-    .navbar img.logo{width: 140px}
+    /*.navbar img.logo{width: 140px}*/
     .navbar img.logo.scrolled-logo {display: none;}
-    .navbar.scrolled img.logo.default-logo {display: none;}
-    .navbar.scrolled img.logo.scrolled-logo {display: block;}
-    .floating-wpp{
-      bottom: 20px;
-      z-index: 9999;
-    }
+    .navbar.scrolled img.logo.default-logo {display: block !important;}
+    .navbar.scrolled img.logo.scrolled-logo {display: none !important}
+
+    .floating-wpp{bottom: 20px;z-index: 9999;}
     .floating-wpp .floating-wpp-button{
       width: 55px!important;
       height: 55px!important;
@@ -64,6 +62,10 @@
       font-size: 14px;
     }
     .cart-wrapper.open{right: 0}
+    .cart-wrapper .product-item{
+      display: flex;
+      margin-top: 11px;
+    }
     .cart-wrapper .product-item img.product-img {
       height: 60px;
       width: 80px;
@@ -108,6 +110,28 @@
       color: #888;
     }
 
+
+    .cart-container .control-qte{
+      width: 32px;
+      text-align: center;
+      border: 1px solid #8888885c;
+      border-radius: 4px;
+      height: max-content;
+    }
+    .cart-container .control-qte > *{width: 100%}
+    .cart-container .qte-change{
+      height: 15px;
+      display: block;
+      cursor: pointer;
+    }
+    .cart-container .input-qte{
+      border:none;
+      text-align: center;
+      border-top: 1px solid #8888885c;
+      border-bottom: 1px solid #8888885c;
+      height: 18px;
+      font-size: 12px;
+    }
     /**
      * The CSS shown here will not be introduced in the Quickstart guide, but shows
      * how you can use CSS to style your Element's container.
@@ -589,7 +613,10 @@
    @media(max-width: 768px){
       .thumb-middle{display: block;}
    }
-   
+   .cart-container .form-control {
+      display: block;
+      width: 60%;
+    }
     </style>
 
 {% endblock %}
@@ -622,8 +649,8 @@
         
 
         <a class="navbar-brand navbar-brand-dynamic-color" href="{{path('home')}}">
-               <img src="https://imgur.com/JoDUDKQ.png" class="logo scrolled-logo" alt="logo">
-               <img src="https://imgur.com/zhUVFuo.png" class="logo default-logo" alt="logo">
+               <img src="https://i.imgur.com/n6vhM8P.png" class="logo scrolled-logo" alt="logo">
+               <img src="https://i.imgur.com/qgKGYM6.png" class="logo default-logo" alt="logo">
         </a>
             <div class="d-flex align-items-center order-lg-3 right-close">
                <button aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target=".navbar-collapse" data-toggle="collapse" type="button">
@@ -639,14 +666,14 @@
         <div class="collapse navbar-collapse order-3 order-lg-2 justify-content-lg-center">
           <ul class="navbar-nav my-3 my-lg-0">
             <li class="nav-item"> <a href="{{path('home')}}" class="nav-link">Accueil</a></li>
-            <li class="nav-item"> <a href="#" class="nav-link">Ingrédients</a></li>
-            <li class="nav-item"> <a href="#" class="nav-link">La marque</a></li>
+            <li class="nav-item"> <a href="{{path('home')}}#ingredients" class="nav-link">Ingrédients</a></li>
+            <li class="nav-item"> <a  href="{{path('marque')}}" class="nav-link">La marque</a></li>
             <li class="nav-item"> <a href="{{path('temoignage')}}" class="nav-link">Témoignages</a></li>
             <li class="nav-item"> <a href="#" class="nav-link">Questions</a></li>
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
               <li class="nav-item">
                 <div>
-                  <a aria-expanded="false" aria-haspopup="true" class="nav-link nav-item" data-toggle="dropdown-grid" href="{{path('account')}}" role="button">Mon compte</a>
+                  <a aria-expanded="false" aria-haspopup="true" class="nav-link nav-item" href="{{path('account')}}" role="button">Mon compte</a>
                 </div>
               </li>
             {% endif %}
@@ -1085,19 +1112,41 @@
       $("#add-product-modal .product-price-input").html(id);
       $("#add-product-modal .product-quantity-input").val(1);
    }
+   function updateQty(id, action){
+    $qtyInput = $('.control-qte .input-qte-'+id);
+      var qty = parseInt($qtyInput.val());
+      if(action == 0 && qty >0){
+        qty -= 1;
+        $qtyInput.val(qty);
+      }
+      else if(action == 1){
+        qty += 1;
+        $qtyInput.val(qty);
+      }
+      else{
+        notification("Modification du quantité","la quantité n'est pas bonne","error");
+        return false;
+      }
+      addToCard(id, qty);
+   }
 
    function itemProduct(id,img, name, quantity, price, oldprice){
+      var qty = '<span class="qte-change qty-plus" onclick="updateQty('+id+',1)">+</span>'+
+              '<input class="input-qte input-qte-'+id+'" type="text" value="'+quantity+'">'+
+              '<span class="qte-change qty-min" onclick="updateQty('+id+',0)">-</span>';
+      if(parseInt(price.toFixed(1))==0){
+        qty = '<label>'+quantity+'</label>';
+      }
       return '<div class="product-item product-'+id+'">'+
             '<img src="{{asset("assets/img/products")}}/'+img+'" class="product-img">'+
+            '<div class="control-qte">'+
+              qty +
+            '</div>'+
             '<ul class="detail-list">'+
               '<li class="detail-item product-name">'+
-                name+
+                (parseInt(price.toFixed(1))? name : 'Offert : '+ name )+
               '</li>'+
-              '<li class="detail-item product-qte">'+
-               quantity+' x '+price+'€ <strike>'+oldprice+'€</strike>'+
-              '</li>'+
-              '<li class="detail-item product-etat">'+
-                '<span style="color: #009b7 !important; cursor: pointer; font-weight: 700;" onclick="addToCard('+id+',0)">supprimé</span>'+
+              '<li class="detail-item product-qte">'+' x '+price+'€ <strike>'+oldprice+'€</strike>'+
               '</li>'+
             '</ul>'+
           '</div>';
@@ -1133,17 +1182,32 @@
       addToCard(id,qty,"formule");
     }
   function synch_card(){
-    var x = window.localStorage.getItem('panier');
-    if(x){
-       prods = JSON.parse(x);
-
-       prods.forEach(function(item, index){
-          console.log("add "+item.type+" : "+item.id);
-          addToCard(item.id,item.qty,item.type);
+    $.ajax({
+         contentType: "application/json",
+         dataType: "json",
+         url: "{{ path('api_use_connected') }}",
+         beforeSend: function( xhr ) {
+          $('.btn-add-to-card').css('pointer-events','none');
+          $('.btn-add-to-card').text('Ajout...');
+         }
        })
+    .done(function( data ) {
+       if(data.status==200){
+          var x = window.localStorage.getItem('panier');
+          if(x){
+             prods = JSON.parse(x);
 
-       window.localStorage.removeItem('panier');
-    }
+             prods.forEach(function(item, index){
+                console.log("add "+item.type+" : "+item.id);
+                addToCard(item.id,item.qty,item.type);
+             })
+
+             window.localStorage.removeItem('panier');
+          }
+          
+       }
+    });
+    
   } 
   function addToCard(id=-1,qty=-1,type="product"){
     $.ajax({
@@ -1343,6 +1407,10 @@
                   $(".card-list-product").html("");
                    data.panier.products.forEach(function(item, index){
                      $(".card-list-product").append(itemProduct(item.id_product,item.img, item.name, item.quantity, item.price, item.oldprice));
+
+                       if(typeof init_product_qty === "function" && item.price != 0){
+                            init_product_qty(item.id_product,item.quantity);
+                        }
                    }); 
                   $(".card-list-coupon").html("");
                    data.panier.coupons.forEach(function(item, index){
@@ -1628,6 +1696,7 @@
 <script type="text/javascript">
 
   function init_product_qty(id,qty){
+    console.log("Show quantity of product");
     $('#product-qty-'+id).html(qty);
     $('#product-'+id + " .add-product-card ").hide();
     $('#product-'+id + " .get_quantity ").show();
@@ -1640,7 +1709,27 @@
      {% endif %}
       refreshCard();
       toogleNotif(false);
+      var lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
 
+      if ("IntersectionObserver" in window) {
+        let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              let lazyImage = entry.target;
+              lazyImage.src = lazyImage.dataset.src;
+              lazyImage.srcset = lazyImage.dataset.srcset;
+              lazyImage.classList.remove("lazy");
+              lazyImageObserver.unobserve(lazyImage);
+            }
+          });
+        });
+
+        lazyImages.forEach(function(lazyImage) {
+          lazyImageObserver.observe(lazyImage);
+        });
+      } else {
+        // Possibly fall back to a more compatible method here
+      }
        $(".add-product-card").click(
                      function(){
                         var id = parseInt($(this).attr('product'));
@@ -1676,6 +1765,7 @@
                         
                      }
                   );
+
    });
 </script>
 <div id="config-js">

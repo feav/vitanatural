@@ -68,6 +68,18 @@ class HomeController extends AbstractController
         ]);
     }
     /**
+     * @Route("/marque", name="marque")
+     */
+    public function marque()
+    {
+        $products = $this->prodService->findAll();
+ 
+        return $this->render('home/marque.html.twig', [
+            'controller_name' => 'Vitalnaturel',
+            'products' => $products,
+        ]);
+    }
+    /**
      * @Route("/temoignage", name="temoignage")
      */
     public function temoignage(FormuleRepository $formuleRepository,TemoignageRepository $temoignageRepository)

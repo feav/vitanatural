@@ -68,7 +68,6 @@ class Product
         $this->formules = new ArrayCollection();
         $this->commandes = new ArrayCollection();
     }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -216,5 +215,17 @@ class Product
         }
 
         return $this;
+    }
+
+    public function getNumberOfGift(int $qty): ?int
+    {
+        return $qty - 1;
+    }
+    public function getPriceTotal(int $qty): ?int
+    {
+        if($qty<=1)
+            return $this->getPrice();
+
+        return ($this->getPrice() - 5.0);
     }
 }

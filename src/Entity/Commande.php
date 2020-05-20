@@ -41,11 +41,17 @@ class Commande
      */
     private $total_price;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $gratuit;
+
     public function __construct()
     {
         $this->total_price = 0;
         $this->price = 0;
         $this->quantity = 0;
+        $this->gratuit = 0;
     }
 
     public function getId(): ?int
@@ -121,4 +127,18 @@ class Commande
     public function __toString():string{
         return $this->price." x ".$this->quantity;
     }
+
+    public function getGratuit(): ?int
+    {
+        return $this->gratuit;
+    }
+
+    public function setGratuit(?int $gratuit): self
+    {
+        $this->gratuit = $gratuit;
+
+        return $this;
+    }
+
+    
 }
