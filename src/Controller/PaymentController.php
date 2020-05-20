@@ -5,17 +5,21 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repository\UserRepository;
 use App\Repository\AbonnementRepository;
+use App\Repository\CommandeRepository;
 use App\Repository\PanierRepository;
 use App\Service\StripeService;
 use App\Service\UserService;
+use App\Service\GlobalService;
 use App\Entity\User;
 use App\Entity\Abonnement;
 use App\Entity\Panier;
+use App\Entity\Commande;
 
 use Stripe\Stripe;
 use \Stripe\Charge;
@@ -30,15 +34,19 @@ class PaymentController extends AbstractController
     private $user_s;
     private $userRepository;
     private $panierRepository;
+    private $commandeRepository;
     private $entityManager;
     private $abonnementRepository;
+    private $global_s;
 
-    public function __construct(ParameterBagInterface $params_dir, UserRepository $userRepository, UserService $user_s, StripeService $stripe_s, AbonnementRepository $abonnementRepository, PanierRepository $panierRepository){
+    public function __construct(ParameterBagInterface $params_dir, UserRepository $userRepository, UserService $user_s, StripeService $stripe_s, AbonnementRepository $abonnementRepository, PanierRepository $panierRepository, CommandeRepository $commandeRepository, GlobalService $global_s){
         $this->params_dir = $params_dir;
         $this->stripe_s = $stripe_s;
         $this->user_s = $user_s;
+        $this->global_s = $global_s;
         $this->userRepository = $userRepository;
         $this->panierRepository = $panierRepository;
+        $this->commandeRepository = $commandeRepository;
         $this->abonnementRepository = $abonnementRepository;
     }
     /**
@@ -75,7 +83,11 @@ class PaymentController extends AbstractController
                 $message = $preparePaid['message'];
                 if($preparePaid['paid']){
                     $amount = $preparePaid['amount'];
-                    $result = $this->stripe_s->proceedPayment($user, $preparePaid['amount']);
+                    if($this->global_s->isAbonnementValide($user->getId()))
+                        $amount = $preparePaid['amount'] + (int)$this->stripe_s->getValueByKey('LIVRAISON_AMOUNT');
+                    $response = $this->stripe_s->proceedPayment($user, $amount);
+                    $this->stripe_s->saveChargeToRefund($panier, $response['charge']);
+                    $result = $response['message'];
                 }
             }
             $flashBag = $this->get('session')->getFlashBag()->clear();
@@ -90,7 +102,11 @@ class PaymentController extends AbstractController
                 $message = $preparePaid['message'];
                 if($preparePaid['paid']){
                     $amount = $preparePaid['amount'];
-                    $result = $this->stripe_s->proceedPayment($user, $preparePaid['amount']);
+                    if($this->global_s->isAbonnementValide($user->getId()))
+                        $amount = $preparePaid['amount'] + (int)$this->stripe_s->getValueByKey('LIVRAISON_AMOUNT');
+                    $response = $this->stripe_s->proceedPayment($user, $amount);
+                    $result = $response['message'];
+                    $this->stripe_s->saveChargeToRefund($panier, $response['charge']);
                 }
             }
             elseif($user->getStripeCustomId() !=""){
@@ -98,7 +114,12 @@ class PaymentController extends AbstractController
                 $message = $preparePaid['message'];
                 if($preparePaid['paid']){
                     $amount = $preparePaid['amount'];
-                    $result = $this->stripe_s->proceedPayment($user, $preparePaid['amount']);
+                    if($this->global_s->isAbonnementValide($user->getId()))
+                        $amount = $preparePaid['amount'] + (int)$this->stripe_s->getValueByKey('LIVRAISON_AMOUNT');
+                    $response = $this->stripe_s->proceedPayment($user, $amount);
+                    $this->stripe_s->saveChargeToRefund($panier, $response['charge']);
+                    $result = $response['message'];
+                    
                 }
             }
             else
@@ -135,12 +156,12 @@ class PaymentController extends AbstractController
     public function sendMail($mailer, $user, $panier, $commande_pdf, $amount){
 
         if(count($panier->getCommandes())){
-            $content = "<p>Bonjour ".$user->getName().", <br> Vous avez acheté d'ePodsOne pour ".$panier->getTotalPrice()."€<br>
+            $content = "<p>Bonjour ".$user->getName().", <br> Vous avez fait des achats pour ".$panier->getTotalPrice()."€<br>
             Livraison Gratuite (Essai de 3 jours) pour un de nos abonnements</p>";
             $url = $this->generateUrl('home');
             try {
                 $mail = (new \Swift_Message('Confirmation commande'))
-                    ->setFrom(array('alexngoumo.an@gmail.com' => 'EpodsOne'))
+                    ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
                     ->setTo([$user->getEmail()=>$user->getName()])
                     ->setCc("alexngoumo.an@gmail.com")
                     ->attach(\Swift_Attachment::fromPath($commande_pdf))
@@ -163,7 +184,7 @@ class PaymentController extends AbstractController
             $url = $this->generateUrl('home');
             try {
                 $mail = (new \Swift_Message('Abonnement réussit'))
-                    ->setFrom(array('alexngoumo.an@gmail.com' => 'EpodsOne'))
+                    ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
                     ->setTo([$user->getEmail()=>$user->getName()])
                     ->setCc("alexngoumo.an@gmail.com")
                     //->attach(\Swift_Attachment::fromPath($commande_pdf))
@@ -214,14 +235,18 @@ class PaymentController extends AbstractController
         $message = $preparePaid['message'];
         if($preparePaid['paid']){
             $amount = $preparePaid['amount'];
-            $result = $this->stripe_s->proceedPayment($user, $preparePaid['amount']);
+            if($this->global_s->isAbonnementValide($user->getId()))
+                $amount = $preparePaid['amount'] + (int)$this->stripe_s->getValueByKey('LIVRAISON_AMOUNT');
+            $response = $this->stripe_s->proceedPayment($user, $amount);
+            $this->stripe_s->saveChargeToRefund($panier, $response['charge']);
+            $result = $response['message'];
         }
 
         if($result == ""){
             $panier->setStatus(1);
             $panier->setPaiementDate(new \Datetime());
             $this->entityManager->flush();
-            
+
             $assetFile = $this->params_dir->get('file_upload_dir');
             if (!file_exists($request->server->get('DOCUMENT_ROOT') .'/'. $assetFile)) {
                 mkdir($request->server->get('DOCUMENT_ROOT') .'/'. $assetFile, 0705);
@@ -253,7 +278,7 @@ class PaymentController extends AbstractController
         foreach ($abonnements as $key => $value) {
             $result = "";
             $user = $value->getUser();
-            if($value->getActive()){
+            if($value->getActive() && $user->getStripeCustomId()){
                 $date = $value->getStart();
                 $date->add(new \DateInterval('P'.$value->getFormule()->getTryDays().'D'));
                 
@@ -265,7 +290,7 @@ class PaymentController extends AbstractController
                         $url = $this->generateUrl('home');
                         try {
                             $mail = (new \Swift_Message('Abonnement Payé'))
-                                ->setFrom(array('alexngoumo.an@gmail.com' => 'EpodsOne'))
+                                ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
                                 ->setTo([$user->getEmail()=>$user->getName()])
                                 ->setCc("alexngoumo.an@gmail.com")
                                 //->attach(\Swift_Attachment::fromPath($commande_pdf))
@@ -292,7 +317,7 @@ class PaymentController extends AbstractController
                         $url = $this->generateUrl('home');
                         try {
                             $mail = (new \Swift_Message('Abonnement renouvellé'))
-                                ->setFrom(array('alexngoumo.an@gmail.com' => 'EpodsOne'))
+                                ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
                                 ->setTo([$user->getEmail()=>$user->getName()])
                                 ->setCc("alexngoumo.an@gmail.com")
                                 //->attach(\Swift_Attachment::fromPath($commande_pdf))
@@ -352,7 +377,7 @@ class PaymentController extends AbstractController
         $user = $this->getUser();
         $amount = $panier->getTotalPrice() - $panier->getTotalReduction();
         $amount = ( $amount <0 ) ? 0 : $amount;
-        $message = "";
+        $message = "Paiement Effectué avec Succèss";
         if(count($panier->getAbonnements())){
             $message = "Votre abonnement sera facturé apres la periode d'essaie";   
         }
@@ -365,12 +390,88 @@ class PaymentController extends AbstractController
             return ['paid'=>false, 'message'=>"Votre abonnement sera facturé apres la periode d'essaie", 'amount'=>0];
         }
         elseif(count($panier->getAbonnements())){
-            $message = "Paiement Effectué avec Succèss";
+            $message = "Paiement Effectué avec Succèss. Votre abonnement sera facturé apres la periode d'essaie";
             $abonnement = $panier->getAbonnements()[0];
             $abonnementAmount = $abonnement->getFormule()->getPrice();
             $amount -= $abonnementAmount;
         }
         return ['paid'=>true, 'message'=>$message, 'amount'=>$amount];
+    }
+
+
+    /**
+     * @Route("/resiliation-abonnement/{id}", name="abonnement_resilie", methods={"GET"})
+     */
+    public function resile(Request $request, $id, \Swift_Mailer $mailer)
+    {   
+        $user = $this->getUser();
+        $entityManager = $this->getDoctrine()->getManager();
+        $abonnement = $this->abonnementRepository->find($id);
+        if($abonnement->getStart() >= new \DateTime()){
+            $flashBag = $this->get('session')->getFlashBag()->clear();
+            $this->addFlash('warning', "La periode d'essaie de cet abonnement est passée, vous ne pouvez plus le resilier");
+            return $this->redirectToRoute('account');
+        }
+        if(!$abonnement->getActive()){
+            $flashBag = $this->get('session')->getFlashBag()->clear();
+            $this->addFlash('warning', "cet abonnement n'est pas actif");
+            return $this->redirectToRoute('account');
+        }
+        $abonnement->setResilie(1);
+        $abonnement->setActive(0);
+        $entityManager->flush();
+
+        $content = "<p>Votre abonnement a bien été resilié</p>";
+        $url = $this->generateUrl('home', [], UrlGenerator::ABSOLUTE_URL);
+        try {
+            $mail = (new \Swift_Message("Résiliation d'abonement"))
+                ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
+                ->setTo([$user->getEmail()=>$user->getName()])
+                ->setCc("alexngoumo.an@gmail.com")
+                ->setBody(
+                    $this->renderView(
+                        'emails/mail_template.html.twig',['content'=>$content, 'url'=>$url]
+                    ),
+                    'text/html'
+                );
+            $mailer->send($mail);
+        } catch (Exception $e) {
+            print_r($e->getMessage());
+        }            
+        $flashBag = $this->get('session')->getFlashBag()->clear();
+        $this->addFlash('success', "Abonnement resilié");
+        return $this->redirectToRoute('account');
+    }
+
+
+    /**
+     * @Route("/demande-remboursement/{id}", name="demande_remboursement", methods={"GET"})
+     */
+    public function remboursement(Request $request, $id, \Swift_Mailer $mailer){
+        $entityManager = $this->getDoctrine()->getManager();
+        $panier = $this->panierRepository->find($id);
+        $panier->setRemboursement(1);
+        $entityManager->flush();
+
+        $urlPanier = $this->generateUrl('panier_index', [], UrlGenerator::ABSOLUTE_URL);
+        $url = $this->generateUrl('home', [], UrlGenerator::ABSOLUTE_URL);
+        $content = "<p>l'utilisateur <b>".$this->getUser()->getEmail()."</b> vient de faire une demande de remboursement.<br> connectez-vous à la plateforme afin de valider cette demande.<br><a href='".$urlPanier."'>".$urlPanier."</a></p>";
+        try {
+            $mail = (new \Swift_Message("Demande de remboursement"))
+                ->setFrom([$this->getUser()->getEmail()=>$this->getUser()->getName()])
+                ->setTo("bahuguillaume@gmail.com")
+                ->setBody(
+                    $this->renderView(
+                        'emails/mail_template.html.twig',['content'=>$content, 'url'=>$url]
+                    ),
+                    'text/html'
+                );
+            $mailer->send($mail);
+        } catch (Exception $e) {
+            print_r($e->getMessage());
+        }     
+        $this->addFlash('success', "Votre demande de remboursement a été envoyé");
+        return $this->redirectToRoute('account');       
     }
 
 }
