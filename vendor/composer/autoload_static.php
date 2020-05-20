@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit50ec89b8eb630e4e948f54e83b7b7e98
+class ComposerStaticInit62c81ed53bff89e9f2b5908aef6c900d
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
@@ -13,8 +13,8 @@ class ComposerStaticInit50ec89b8eb630e4e948f54e83b7b7e98
         '92c8763cd6170fce6fcfe7e26b4e8c10' => __DIR__ . '/..' . '/symfony/phpunit-bridge/bootstrap.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '6a47392539ca2329373e0d33e1dba053' => __DIR__ . '/..' . '/symfony/polyfill-intl-icu/bootstrap.php',
-        '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
         'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
+        '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
         'ad155f8f1cf0d418fe49e248db8c661b' => __DIR__ . '/..' . '/react/promise/src/functions_include.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
@@ -182,8 +182,8 @@ class ComposerStaticInit50ec89b8eb630e4e948f54e83b7b7e98
         'phpDocumentor\\Reflection\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
-            1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
-            2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+            1 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+            2 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
         ),
         'Zend\\EventManager\\' => 
         array (
@@ -615,10 +615,10 @@ class ComposerStaticInit50ec89b8eb630e4e948f54e83b7b7e98
         ),
         'Doctrine\\Common\\' => 
         array (
-            0 => __DIR__ . '/..' . '/doctrine/common/lib/Doctrine/Common',
+            0 => __DIR__ . '/..' . '/doctrine/reflection/lib/Doctrine/Common',
             1 => __DIR__ . '/..' . '/doctrine/event-manager/lib/Doctrine/Common',
             2 => __DIR__ . '/..' . '/doctrine/persistence/lib/Doctrine/Common',
-            3 => __DIR__ . '/..' . '/doctrine/reflection/lib/Doctrine/Common',
+            3 => __DIR__ . '/..' . '/doctrine/common/lib/Doctrine/Common',
         ),
         'Doctrine\\Bundle\\MigrationsBundle\\' => 
         array (
@@ -681,10 +681,10 @@ class ComposerStaticInit50ec89b8eb630e4e948f54e83b7b7e98
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit50ec89b8eb630e4e948f54e83b7b7e98::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit50ec89b8eb630e4e948f54e83b7b7e98::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit50ec89b8eb630e4e948f54e83b7b7e98::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit50ec89b8eb630e4e948f54e83b7b7e98::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit62c81ed53bff89e9f2b5908aef6c900d::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit62c81ed53bff89e9f2b5908aef6c900d::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit62c81ed53bff89e9f2b5908aef6c900d::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit62c81ed53bff89e9f2b5908aef6c900d::$classMap;
 
         }, null, ClassLoader::class);
     }

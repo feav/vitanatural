@@ -132,7 +132,6 @@ class ApiPanierController extends AbstractController
     }
     public function addItemToCard(): Response
     {
-
        $type = $_GET['type'];
        $quantity = $_GET['quantity'];
 
@@ -173,21 +172,39 @@ class ApiPanierController extends AbstractController
                 $product = $this->productService->findById($product);
                 if($product){
 
-                    $commande = $this->commandeRepository->findOneBy(array('product' =>  $product, 'panier'=>$panier ));
+                    $commande = $this->commandeRepository->findOneBy(array('product' =>  $product, 'panier'=>$panier, 'gratuit' => 0 ));
+
+                    $commande_offerte = $this->commandeRepository->findOneBy(array('product' =>  $product, 'panier'=>$panier, 'gratuit' => 1 ));
+
+                    // var_dump($commande_offerte);
+                    if(!$commande_offerte){
+                            $commande_offerte = new Commande();
+                            $commande_offerte->setGratuit(1);
+                            $commande_offerte->setPanier($panier);
+                            $commande_offerte->setProduct($product);
+                            $panier->addCommande( $commande_offerte );
+                    }
+
                     if($commande){
-                            $message = "La quantite du produit a ete mise a jour";
-                            if($quantity == $commande->getQuantity())
-                                $message = "La quantite du produit est la meme";
-                            $commande->setQuantity($quantity);
+                        $message = "La quantite du produit a ete mise a jour, ".$product->getNumberOfGift($quantity).' Offets';
+                        if($quantity == $commande->getQuantity() )
+                            $message = "La quantite du produit est la meme, ".$product->getNumberOfGift($quantity).' Offets';
+                        $commande->setQuantity($quantity);
+                        $commande->setPrice($product->getPriceTotal($quantity));
+
                     }else{
                             $commande = new Commande();
                             $commande->setPanier($panier);
                             $commande->setProduct($product);
-                            $commande->setPrice($product->getPrice());
                             $commande->setQuantity($quantity);
+                            $commande->setPrice($product->getPriceTotal($quantity));
                             $panier->addCommande( $commande );
-                            $message = "Le produit a ete a ajoute a votre panier";
+                            $message = "Le produit a ete a ajoute a votre panier, ".$product->getNumberOfGift($quantity).' Offets' ;
+
                     }
+
+                    $commande_offerte->setPrice(0);
+                    $commande_offerte->setQuantity($product->getNumberOfGift($quantity));
 
                 }else{
                     return new Response( json_encode(array('status' => 300, 'message' => "Ce produit n'existe pas dans notre boutique" )) );
@@ -331,13 +348,24 @@ class ApiPanierController extends AbstractController
                         $total += $product->getPrice()*( (float) $value['qty'] );
                         $produis[] = array(
                             'name' => $product->getName(),
-                            'product_price' => $product->getPrice(),
-                            'price' => $product->getPrice()*( (float) $value['qty'] ),
-                            'quantity' => $value['qty'],
-                            'id_product' => $product->getId(),
-                            'oldprice' => $product->getOldPrice(),
+                            'product_price' => floatval($product->getPrice()),
+                            'price' => floatval($product->getPriceTotal($value['qty'])*( (float) $value['qty'] ) ),
+                            'quantity' => intval($value['qty']),
+                            'id_product' => (int)  $product->getId(),
+                            'oldprice' => (float) $product->getOldPrice(),
                             'img' => $product->getImage(),
                         );
+                        if(intval($value['offert'])){
+                            $produis[] = array(
+                                'name' => $product->getName(),
+                                'product_price' => (float) $product->getPrice(),
+                                'price' => 0,
+                                'quantity' => (int) $value['offert'],
+                                'id_product' => $product->getId()."_",
+                                'oldprice' => (float) $product->getOldPrice(),
+                                'img' => $product->getImage(),
+                            );
+                        }
                     }
                 }
 
@@ -418,14 +446,16 @@ class ApiPanierController extends AbstractController
                                     $message = "La quantite du produit est la meme";
                                 }else{
                                     $products[$key]['qty'] = $quantity;
+                                    $products[$key]['offert'] = $product->getNumberOfGift($quantity);
                                 }
                             }
                         }
                     }else{
                             $products[] = array(
                                 'id' => $product->getId(),
-                                'qty' => $quantity,
+                                'qty' => intval($quantity),
                                 'type' => $type,
+                                'offert' => $product->getNumberOfGift($quantity)
                             );
                             $message = "Le produit a ete a ajoute a votre panier";
                     }
