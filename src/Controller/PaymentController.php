@@ -49,6 +49,15 @@ class PaymentController extends AbstractController
         $this->commandeRepository = $commandeRepository;
         $this->abonnementRepository = $abonnementRepository;
     }
+
+    /**
+     * @Route("/paiement-cart", name="paiement_cart", methods={"GET"})
+     */
+    public function paiement(): Response
+    {
+        return $this->render('home/paiement.html.twig', []);
+    }
+
     /**
      * @Route("/checkout", name="checkout_product")
      */
