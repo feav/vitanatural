@@ -61,7 +61,7 @@
       width: 290px;
       background: #fff;
       z-index: 1055;
-      padding: 45px 20px 10px;
+      padding: 25px 20px 10px;
       transition: linear .2s right;
       right: -290px;
       overflow-y: auto;
@@ -73,14 +73,15 @@
       display: flex;
       margin-top: 11px;
     }
+    .cart-wrapper .product-item .img-contaniner{
+      width: 80px;
+      text-align: center;
+      margin-right: 13px;
+    }
     .cart-wrapper .product-item img.product-img {
       height: 60px;
-      width: 80px;
+      max-width: 100%;
       object-fit: cover;
-      border-radius: 5px;
-      /*box-shadow: 0px 5px 15px -5px rgba(0, 0, 0, 0.1);*/
-      float: left;
-      margin-right: 13px;
     }
     .cart-wrapper .product-item ul.detail-list {
       padding-left: 14px;
@@ -88,9 +89,10 @@
     .cart-wrapper .form-coupon{
       display: flex;
       align-items: stretch;
+      margin-top: 15px;
     }
     .cart-wrapper .form-coupon .valide-coupon {
-      background: #009b72;
+      background: #d81b60;
       color: #fff;
       width: 105px;
       display: flex;
@@ -101,7 +103,7 @@
     .cart-wrapper .totaux{
       padding: 0;
       line-height: 27px;
-      margin-top: 25px;
+      margin-top: 18px;
     }
     .cart-wrapper .totaux > .item > span:last-child {
       font-weight: 800;
@@ -630,7 +632,7 @@
     }
     .cart-container .list-recap .recap-item{
       font-size: 14px;
-      margin-top: 10px;
+      margin-top: 4px;
     }
     .cart-container .list-recap .recap-item >.recap-value {
       float: right;
@@ -1163,7 +1165,7 @@
         qty = '<label>'+quantity+'</label>';
       }
       return '<div class="product-item product-'+id+'">'+
-            '<img src="{{asset("assets/img/products")}}/'+img+'" class="product-img">'+
+            '<div class="img-contaniner"><img src="{{asset("assets/img/products")}}/'+img+'" class="product-img"></div>'+
             '<div class="control-qte">'+
               qty +
             '</div>'+
