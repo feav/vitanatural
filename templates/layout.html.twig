@@ -1651,13 +1651,14 @@
         }
 
         $('.oneClickPaid').click(function(e){
-          $(this).text('Initialisation paiement...');
           $(this).css('pointer-events', 'none');
           var $url = $(this).attr("href");
           proceed($url, $(this));
           e.preventDefault();
         });
         function proceed($url, $that){
+          $realText = $that.text();
+          $that.text('Initialisation paiement...');
           $.ajax({
               url: $url,
               type: "GET",
@@ -1666,15 +1667,15 @@
               data: {},
               success: function(data, status) {
                 $that.css('pointer-events', 'auto');
-                $that.text("Payer en 1 click");
+                $that.text($realText);
                 notification("Paiement commande","Opération effectuée avec succèss","success");
                 window.localStorage.removeItem('panier');
                 
               },
-              error: function(xhr, textStatus, errorThrown) {
+              error: function(xhr, responseText, errorThrown) {
                 $that.css('pointer-events', 'auto');
-                $that.text("Payer en 1 click");
-                notification("Paiement commande",errorThrown,"error");
+                $that.text($realText);
+                notification("Paiement commande",xhr.responseText,"error");
               }
           });
         }
