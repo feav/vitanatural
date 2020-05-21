@@ -43,9 +43,8 @@ class ApiConfigController extends AbstractController
     }
     public function getField($name):Response{
         $config = $this->configRepository->findOneByMkey($name);
-        if($config){
-            $retour = $config->getValue();
-        }
+        $retour = $config ? $config->getValue() : "";
+        
         return new Response($retour);
     }
 
