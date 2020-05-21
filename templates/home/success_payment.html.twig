@@ -1,0 +1,35 @@
+{% extends 'layout.html.twig' %}
+{% block title %} {{parent()}} | paiement {% endblock %}
+{% block meta %}
+<meta name="description" content="">
+{% endblock %}
+{% block dataStructured %}{% endblock %}
+{% block stylesheets %}
+{{parent()}}
+  <style type="text/css">
+    .container-page{
+      margin-top: 90px;
+      height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .paid-success{
+      font-size: 35px;
+      text-align: center;
+    }
+  </style>
+{% endblock %}
+{% block body_web %}
+<section class="container container-page" style="margin-top: 90px;">
+   <div class="paid-success"> 
+      <div class="felicitation" style="color:#d81b60">Felicitation!!!</div>
+      <div class="message">Paiement effectué avec succèss </div>
+      <div style="margin-top: 19px;"><a href="{{path('marque')}}" class="btn btn-primary">Retour aux produit</a></div>
+   </div>
+</section>
+{% endblock body_web %}
+{% block javascripts %}
+{{parent()}}
+</script>
+{% endblock %}

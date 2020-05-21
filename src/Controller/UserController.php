@@ -143,4 +143,26 @@ class UserController extends AbstractController
         else
             return new Response(json_encode(array('status' => 500, 'message' => "Echec Création de compte" )));
     }
+
+    /**
+     * @Route("/update-user-xhr", name="update_user_xhr")
+     */
+    public function updateUserXhr(Request $request)
+    {
+        $user = $this->getUser();
+        if($user){
+            if(isset($_POST['user'])){
+                $user_data = $_POST['user'];
+                $this->user_s->updateUser($user_data,$user);
+            
+                $response = new Response("Les informations ont ete mises a jour" , 200);
+            }
+        }else{
+         $response = new Response("Utilisateur non connecte" , 500);
+        }
+
+        
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
 }

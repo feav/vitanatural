@@ -25,6 +25,8 @@
       --success: #d81b60ed;
     }
     a{color: #d81b60}
+    a.btn{color: #fff}
+    a.btn:hover, a.btn:active{color: #555A64}
     button, .btn{outline: none!important;}
     .cart-btn{padding: 1px 13px}
     .item-elt-foot{
@@ -213,7 +215,7 @@
     }
     .lds-ripple div {
       position: absolute;
-      border: 4px solid green;
+      border: 4px solid #d81b60;
       opacity: 1;
       border-radius: 50%;
       animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
@@ -842,7 +844,7 @@
                   <label class="custom-control-label" for="sign-in-remember">Remember me next time</label>
                 </div>
               </div>
-              <button class="btn btn-primary btn-block submit" type="submit">Sign In</button>
+              <button class="btn btn-primary btn-block submit" type="submit">Connexion</button>
               <div class="lds-ripple"><div></div><div></div></div>
                 <div class="success-checkmark">
                   <div class="check-icon">
@@ -1325,7 +1327,7 @@
                     if($paidLaunch){
                       $('#modal-payment button.submit').text('Initialisation paiement...');
                       $paidLaunch = false;
-                      proceedPayment();
+                      proceedPayment2();
                     }
                   }
                }else{
@@ -1652,6 +1654,29 @@
             };
             oReq.send(oData);  
         }
+        function proceedPayment2(){
+          $('.btn-next').text('Initialisation paiement...');
+            var form = document.getElementById('form-stripe');
+            oData = new FormData(form);
+            var oReq = new XMLHttpRequest();
+            oReq.open("POST", $('#form-stripe').attr('action'), true);
+            oReq.onload = function(oEvent) {
+                if (oReq.status == 200) {
+                    $(".success-checkmark").show().delay(3000).fadeOut();
+                    $(".check-icon").show().show().delay(3000).fadeOut();
+                    notification("Paiement commande",oReq.response,"success");
+                    card.clear();
+                    submitting('reset');
+                    window.localStorage.removeItem('panier');
+                    window.location.href = "{{path('success_payment')}}";
+                }else {
+                    notification("Paiement commande",oReq.response,"error");
+                    submitting('reset');
+                }
+            };
+            oReq.send(oData);  
+        }
+
 
         $('.oneClickPaid').click(function(e){
           $(this).css('pointer-events', 'none');
@@ -1673,7 +1698,7 @@
                 $that.text($realText);
                 notification("Paiement commande","Opération effectuée avec succèss","success");
                 window.localStorage.removeItem('panier');
-                
+                window.location.href = "{{path('success_payment')}}";
               },
               error: function(xhr, responseText, errorThrown) {
                 $that.css('pointer-events', 'auto');

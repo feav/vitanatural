@@ -136,7 +136,7 @@ class UserService{
     public function send_mail(\Swift_Mailer $mailer, $email, $phone, $name,$surname, $message){
         try {
             $mail = (new \Swift_Message('Message - Contact '.$name))
-                ->setFrom(array('feavfeav@gmail.com' => 'EpodsOne'))
+                ->setFrom(array('feavfeav@gmail.com' => 'Vitanatural'))
                 ->setTo('feavfeav@gmail.com')
                 ->setCc('feavfeav@gmail.com')
                 ->setBody(" je suis ".$name." ".$surname." repondant au numero : ".$phone.". ".$message,
@@ -160,10 +160,10 @@ class UserService{
         $this->em->persist($user);
         $this->em->flush();
 
-        $content = "<p> Bienvenue ".$user->getName().",<br>Un compte vous a été automatiquement crée. Voici vos identifiants: <br> Email: ".$user->getEmail()." / Mot de passe: ".$fullPassword."</p>";
+        $content = "<p>Bonjour et Bienvenue ".$user->getName().",<br>Un compte vous a été crée automatiquement. Voici vos identifiants de connexion: <br> Email: ".$user->getEmail()." / Mot de passe: ".$fullPassword."</p>";
         try {
-        $mail = (new \Swift_Message('Création crée'))
-            ->setFrom(array('alexngoumo.an@gmail.com' => 'EpodsOne'))
+        $mail = (new \Swift_Message('Confirmation inscription'))
+            ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
             ->setTo([$user->getEmail()=>$user->getName()])
             ->setCc("alexngoumo.an@gmail.com")
             /*->setBody(

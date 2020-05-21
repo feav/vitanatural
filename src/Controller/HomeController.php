@@ -106,6 +106,8 @@ class HomeController extends AbstractController
             'controller_name' => 'Brulafine'
         ]);
     }
+
+    
     /**
      * @Route("/account/facture/{id}", name="billing")
      */

@@ -92,8 +92,6 @@ class PaymentController extends AbstractController
                 $message = $preparePaid['message'];
                 if($preparePaid['paid']){
                     $amount = $preparePaid['amount'];
-                    if($this->global_s->isAbonnementValide($user->getId()))
-                        $amount = $preparePaid['amount'] + (int)$this->stripe_s->getValueByKey('LIVRAISON_AMOUNT');
                     $response = $this->stripe_s->proceedPayment($user, $amount);
                     $this->stripe_s->saveChargeToRefund($panier, $response['charge']);
                     $result = $response['message'];
@@ -111,8 +109,6 @@ class PaymentController extends AbstractController
                 $message = $preparePaid['message'];
                 if($preparePaid['paid']){
                     $amount = $preparePaid['amount'];
-                    if($this->global_s->isAbonnementValide($user->getId()))
-                        $amount = $preparePaid['amount'] + (int)$this->stripe_s->getValueByKey('LIVRAISON_AMOUNT');
                     $response = $this->stripe_s->proceedPayment($user, $amount);
                     $result = $response['message'];
                     $this->stripe_s->saveChargeToRefund($panier, $response['charge']);
@@ -123,8 +119,6 @@ class PaymentController extends AbstractController
                 $message = $preparePaid['message'];
                 if($preparePaid['paid']){
                     $amount = $preparePaid['amount'];
-                    if($this->global_s->isAbonnementValide($user->getId()))
-                        $amount = $preparePaid['amount'] + (int)$this->stripe_s->getValueByKey('LIVRAISON_AMOUNT');
                     $response = $this->stripe_s->proceedPayment($user, $amount);
                     $this->stripe_s->saveChargeToRefund($panier, $response['charge']);
                     $result = $response['message'];
@@ -244,8 +238,6 @@ class PaymentController extends AbstractController
         $message = $preparePaid['message'];
         if($preparePaid['paid']){
             $amount = $preparePaid['amount'];
-            if($this->global_s->isAbonnementValide($user->getId()))
-                $amount = $preparePaid['amount'] + (int)$this->stripe_s->getValueByKey('LIVRAISON_AMOUNT');
             $response = $this->stripe_s->proceedPayment($user, $amount);
             $this->stripe_s->saveChargeToRefund($panier, $response['charge']);
             $result = $response['message'];
@@ -483,4 +475,10 @@ class PaymentController extends AbstractController
         return $this->redirectToRoute('account');       
     }
 
-}
+    /**
+      * @Route("/success-payment", name="success_payment", methods={"GET"})
+     */
+    public function payementSucces(){
+        return $this->render('home/success_payment.html.twig');
+    }
+}   
