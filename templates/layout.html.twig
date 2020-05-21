@@ -128,6 +128,7 @@
       border: 1px solid #8888885c;
       border-radius: 4px;
       height: max-content;
+      margin-left: 10px;
     }
     .cart-container .control-qte > *{width: 100%}
     .cart-container .qte-change{
@@ -1174,7 +1175,7 @@
               '<li class="detail-item product-name">'+
                 (parseInt(price.toFixed(1))? name : 'Offert : '+ name )+
               '</li>'+
-              '<li class="detail-item product-qte">'+' x '+price+'€ <strike>'+oldprice+'€</strike>'+
+              '<li class="detail-item product-qte">'+' x '+price+'€ <strike>'+(parseFloat(oldprice).toFixed(1)*quantity)+'€</strike>'+
               '</li>'+
             '</ul>'+
           '</div>';
@@ -1459,15 +1460,17 @@
                   var total = (data.panier.total-data.panier.reduction)<0?0:data.panier.total-data.panier.reduction;
                   $(".cart-total-pay").html(total.toFixed(2));
                   $(".cart-total-reduction").html(data.panier.total.toFixed(2));
-                  $(".card-list-product").html("");
+                  $(".card-list-product").html(""); 
+                  var reductions = 0;
                   itemRecap(data.panier.products, data.panier.total, total.toFixed(2), data.panier.reduction);
                    data.panier.products.forEach(function(item, index){
                      $(".card-list-product").append(itemProduct(item.id_product,item.img, item.name, item.quantity, item.price, item.oldprice));
-
+                       reductions += item.oldprice*item.quantity;
                        if(typeof init_product_qty === "function" && item.price != 0){
                             init_product_qty(item.id_product,item.quantity);
                         }
                    }); 
+                  $(".cart-total-reduction").html( (reductions+ parseFloat(data.panier.reduction)).toFixed(2));
                   $(".card-list-coupon").html("");
                    data.panier.coupons.forEach(function(item, index){
                      $(".card-list-coupon").append( itemCoupon(item.id,item.code, item.value));
