@@ -282,6 +282,8 @@ class ApiPanierController extends AbstractController
                             $abonnement->setUser($user);
                             $abonnement->setState(0);
 
+                            $panier->addAbonnement($abonnement);
+                            
                             $this->entityManager->persist($abonnement);
                             $this->entityManager->flush();
                             $message = "La formule a ete a ajoutee a votre panier";

@@ -1330,7 +1330,16 @@
                       proceedPayment2();
                     }
                   }
+                  if($paidOneClick){
+                    console.log($paidOneClick);
+                    $paidOneClick = false;
+                    $('.btn-commander').css('pointer-events', 'none');
+                    var $url = "{{path('direct_paid')}}";
+                    proceed($url, $('.btn-commander'));
+                    e.preventDefault();
+                  }
                }else{
+                  $('.btn-commander').text('Commander');
                   notification("Modification du Panier",data.message,"error");
                }
                $('.btn-add-to-card').css('pointer-events','auto');
@@ -1487,6 +1496,7 @@
 </script>
 <script type="text/javascript">
         $paidLaunch = false;
+        $paidOneClick = false;
         var stripe = Stripe("{{STRIPE_PUBLIC_KEY}}");
 
         var elements = stripe.elements();

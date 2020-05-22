@@ -13,6 +13,7 @@ use App\Repository\UserRepository;
 use App\Repository\AbonnementRepository;
 use App\Repository\CommandeRepository;
 use App\Repository\PanierRepository;
+use App\Repository\FormuleRepository;
 use App\Service\StripeService;
 use App\Service\UserService;
 use App\Service\GlobalService;
@@ -38,8 +39,9 @@ class PaymentController extends AbstractController
     private $entityManager;
     private $abonnementRepository;
     private $global_s;
+    private $formuleRepository;
 
-    public function __construct(ParameterBagInterface $params_dir, UserRepository $userRepository, UserService $user_s, StripeService $stripe_s, AbonnementRepository $abonnementRepository, PanierRepository $panierRepository, CommandeRepository $commandeRepository, GlobalService $global_s){
+    public function __construct(ParameterBagInterface $params_dir, UserRepository $userRepository, UserService $user_s, StripeService $stripe_s, AbonnementRepository $abonnementRepository, PanierRepository $panierRepository, CommandeRepository $commandeRepository, GlobalService $global_s, FormuleRepository $formuleRepository){
         $this->params_dir = $params_dir;
         $this->stripe_s = $stripe_s;
         $this->user_s = $user_s;
@@ -48,6 +50,7 @@ class PaymentController extends AbstractController
         $this->panierRepository = $panierRepository;
         $this->commandeRepository = $commandeRepository;
         $this->abonnementRepository = $abonnementRepository;
+        $this->formuleRepository = $formuleRepository;
     }
 
     /**
@@ -158,6 +161,30 @@ class PaymentController extends AbstractController
 
     public function sendMail($mailer, $user, $panier, $commande_pdf, $amount){
 
+        /*if(count($panier->getAbonnements())){
+            $abonnement = $panier->getAbonnements()[0];
+            $tryDays = $abonnement->getFormule()->getTryDays();
+            if($tryDays == 0){
+                $content = "<p>Bonjour ".$user->getName().", <br> Confirmation de votre abonnement. <p>";
+                $url = $this->generateUrl('home');
+                try {
+                    $mail = (new \Swift_Message('Confirmation Abonnement'))
+                        ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
+                        ->setTo([$user->getEmail()=>$user->getName()])
+                        ->setCc("alexngoumo.an@gmail.com")
+                        ->attach(\Swift_Attachment::fromPath($commande_pdf))
+                        ->setBody(
+                            $this->renderView(
+                                'emails/mail_template.html.twig',['content'=>$content, 'url'=>$url]
+                            ),
+                            'text/html'
+                        );
+                    $mailer->send($mail);
+                } catch (Exception $e) {
+                    print_r($e->getMessage());
+                } 
+            }
+        }*/
         if(count($panier->getCommandes())){
             $content = "<p>Bonjour ".$user->getName().", <br> Vous avez fait des achats pour ".$panier->getTotalPrice()."€<br>
             Livraison Gratuite (Essai de 3 jours) pour un de nos abonnements</p>";
@@ -183,14 +210,13 @@ class PaymentController extends AbstractController
             $abonnement = $panier->getAbonnements()[0];
             $mois_annee = ($abonnement->getFormule()->getMonth() == 12) ? "ans" : $abonnement->getFormule()->getMonth()."mois";
 
-            $content = "<p>Bien joué ".$user->getName()."! Confirmation de votre essai de ".$abonnement->getFormule()->getTryDays()." jours à notre abonnement de Livraison Gratuite en  illimité pour ".$abonnement->getFormule()->getPrice()."€/".$mois_annee.". <br><br>Il vous reste ".$abonnement->getFormule()->getTryDays()." jours d’essai pour commander et obtenir la Livraison Gratuite en  illimité sur notre boutique au lieu de 10€.<br><br>Vous serez débité de ".$abonnement->getFormule()->getPrice()."€/".$mois_annee." à partir du ". $this->getFullDate($abonnement->getEnd())." au moment de la  fin de votre essai.<br><br> Si vous souhaitez résilier veuillez vous connecter sur notre boutique et faire votre  demande de résiliation de manière automatique.<br><br>Vos informations de connexion vous ont été envoyés à cette email (<small>".$user->getEmail()."</small>) lors de votre tout premier achat";
+            $content = "<p>Bien joué ".$user->getName()." Confirmation de votre abonnement</p>";
             $url = $this->generateUrl('home');
             try {
                 $mail = (new \Swift_Message('Abonnement réussit'))
                     ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
                     ->setTo([$user->getEmail()=>$user->getName()])
                     ->setCc("alexngoumo.an@gmail.com")
-                    //->attach(\Swift_Attachment::fromPath($commande_pdf))
                     ->setBody(
                         $this->renderView(
                             'emails/mail_template.html.twig',['content'=>$content, 'url'=>$url]
@@ -201,7 +227,7 @@ class PaymentController extends AbstractController
             } catch (Exception $e) {
                 print_r($e->getMessage());
             }            
-        }     
+        }    
         return 1; 
     }
 
@@ -234,6 +260,10 @@ class PaymentController extends AbstractController
         else
             return new Response("Vous n'avez aucun panier en attente de paiement", 500);
         
+        /*$amount = $panier->getTotalPrice();
+        $response = $this->stripe_s->proceedPayment($user, $amount);
+        $this->stripe_s->saveChargeToRefund($panier, $response['charge']);
+        $result = $response['message'];*/
         $preparePaid = $this->preparePaid($panier, $mailer);
         $message = $preparePaid['message'];
         if($preparePaid['paid']){
@@ -243,6 +273,7 @@ class PaymentController extends AbstractController
             $result = $response['message'];
         }
 
+        $message = $result;
         if($result == ""){
             $panier->setStatus(1);
             $panier->setPaiementDate(new \Datetime());
@@ -396,6 +427,13 @@ class PaymentController extends AbstractController
             $abonnementAmount = $abonnement->getFormule()->getPrice();
             $amount -= $abonnementAmount;
         }
+        if(count($panier->getAbonnements())){
+            $abonnement = $panier->getAbonnements()[0];
+            $tryDays = $abonnement->getFormule()->getTryDays();
+            if($tryDays == 0){
+                return ['paid'=>true, 'message'=>"Paiement Effectué avec Succèss", 'amount'=>$panier->getTotalPrice()];
+            }
+        }
         return ['paid'=>true, 'message'=>$message, 'amount'=>$amount];
     }
 
@@ -479,6 +517,9 @@ class PaymentController extends AbstractController
       * @Route("/success-payment", name="success_payment", methods={"GET"})
      */
     public function payementSucces(){
-        return $this->render('home/success_payment.html.twig');
+        $formule = $this->formuleRepository->findAll();
+        return $this->render('home/success_payment.html.twig', [
+            'formules' => $formule
+        ]);
     }
 }   
