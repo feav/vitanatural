@@ -68,15 +68,35 @@ class HomeController extends AbstractController
         ]);
     }
     /**
-     * @Route("/marque", name="marque")
+     * @Route("/masque-anti-point-noir-au-thé-vert", name="marque")
      */
-    public function marque()
+    public function marque(FormuleRepository $formuleRepository,TemoignageRepository $temoignageRepository)
     {
         $products = $this->prodService->findAll();
+        $formule = $formuleRepository->findAll();
+        $temoignage = $temoignageRepository->findAll();
  
         return $this->render('home/marque.html.twig', [
             'controller_name' => 'Vitalnaturel',
             'products' => $products,
+            'formules' => $formule,
+            'temoignages' => $temoignage
+        ]);
+    }
+    /**
+     * @Route("/marque", name="marque_")
+     */
+    public function marque2(FormuleRepository $formuleRepository,TemoignageRepository $temoignageRepository)
+    {
+        $products = $this->prodService->findAll();
+        $formule = $formuleRepository->findAll();
+        $temoignage = $temoignageRepository->findAll(); 
+ 
+        return $this->render('home/marque_.html.twig', [
+            'controller_name' => 'Vitalnaturel',
+            'products' => $products,
+            'formules' => $formule,
+            'temoignages' => $temoignage
         ]);
     }
     /**
