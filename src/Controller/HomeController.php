@@ -68,7 +68,7 @@ class HomeController extends AbstractController
         ]);
     }
     /**
-     * @Route("/masque-anti-point-noir-au-thé-vert", name="marque")
+     * @Route("/masque-anti-point-noir-au-the-vert", name="marque")
      */
     public function marque(FormuleRepository $formuleRepository,TemoignageRepository $temoignageRepository)
     {
