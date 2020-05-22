@@ -44,11 +44,10 @@
                                 <tbody>
                     {% for config in configs %}
                                     <tr>
-                                                                                <td>{{ config.mkey }}</td>
+                                                                                <td><a href="{{ path('config_edit', {'id': config.id}) }}">{{ config.mkey }}</a></td>
                                                                                 <td>{{ config }}</td>
                                                                                 <td>{{ config.value }}</td>
                                                                                 <td>
-                                            <a href="{{ path('config_edit', {'id': config.id}) }}">edit</a>
                                             {{ include('config/_delete_form.html.twig') }}
                                         </td>
                                     </tr>
