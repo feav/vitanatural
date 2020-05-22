@@ -128,6 +128,7 @@
       border: 1px solid #8888885c;
       border-radius: 4px;
       height: max-content;
+      margin-left: 10px;
     }
     .cart-container .control-qte > *{width: 100%}
     .cart-container .qte-change{
@@ -1174,7 +1175,7 @@
               '<li class="detail-item product-name">'+
                 (parseInt(price.toFixed(1))? name : 'Offert : '+ name )+
               '</li>'+
-              '<li class="detail-item product-qte">'+' x '+price+'€ <strike>'+oldprice+'€</strike>'+
+              '<li class="detail-item product-qte">'+' x '+price+'€ <strike>'+(parseFloat(oldprice).toFixed(1)*quantity)+'€</strike>'+
               '</li>'+
             '</ul>'+
           '</div>';
@@ -1468,15 +1469,17 @@
                   var total = (data.panier.total-data.panier.reduction)<0?0:data.panier.total-data.panier.reduction;
                   $(".cart-total-pay").html(total.toFixed(2));
                   $(".cart-total-reduction").html(data.panier.total.toFixed(2));
-                  $(".card-list-product").html("");
+                  $(".card-list-product").html(""); 
+                  var reductions = 0;
                   itemRecap(data.panier.products, data.panier.total, total.toFixed(2), data.panier.reduction);
                    data.panier.products.forEach(function(item, index){
                      $(".card-list-product").append(itemProduct(item.id_product,item.img, item.name, item.quantity, item.price, item.oldprice));
-
+                       reductions += item.oldprice*item.quantity;
                        if(typeof init_product_qty === "function" && item.price != 0){
                             init_product_qty(item.id_product,item.quantity);
                         }
                    }); 
+                  $(".cart-total-reduction").html( (reductions+ parseFloat(data.panier.reduction)).toFixed(2));
                   $(".card-list-coupon").html("");
                    data.panier.coupons.forEach(function(item, index){
                      $(".card-list-coupon").append( itemCoupon(item.id,item.code, item.value));
@@ -1858,6 +1861,25 @@
 
    });
 </script>
+
+<!-- Facebook Pixel Code -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', "{{  render(controller('App\\Controller\\ApiConfigController::getField',{name:'FACEBOOK_PIXEL_JS_'}) )  }}");
+  fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id={{  render(controller('App\\Controller\\ApiConfigController::getField',{name:'FACEBOOK_PIXEL_JS_'}) )  }}&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Facebook Pixel Code -->
+
 <div id="config-js">
 
     {{  render(controller('App\\Controller\\ApiConfigController::getScripts') )  }}
