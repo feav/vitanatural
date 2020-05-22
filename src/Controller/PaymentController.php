@@ -186,8 +186,7 @@ class PaymentController extends AbstractController
             }
         }*/
         if(count($panier->getCommandes())){
-            $content = "<p>Bonjour ".$user->getName().", <br> Vous avez fait des achats pour ".$panier->getTotalPrice()."€<br>
-            Livraison Gratuite (Essai de 3 jours) pour un de nos abonnements</p>";
+            $content = "<p>Bonjour ".$user->getName().", <br> Vous avez fait des achats pour ".$panier->getTotalPrice()."€</p>";
             $url = $this->generateUrl('home');
             try {
                 $mail = (new \Swift_Message('Confirmation commande'))
