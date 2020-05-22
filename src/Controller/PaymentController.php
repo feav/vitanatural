@@ -148,7 +148,7 @@ class PaymentController extends AbstractController
                 'is_download'=>['value'=>true, 'save_path'=>$save_path],
                 'total_price'=>$amount
             ];
-            $dompdf = $this->generatePdf('emails/facture.html.twig', $panier , $params);
+            //$dompdf = $this->generatePdf('emails/facture.html.twig', $panier , $params);
 
             $this->sendMail($mailer, $user, $panier, $save_path, $amount);
             
@@ -194,7 +194,7 @@ class PaymentController extends AbstractController
                     ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
                     ->setTo([$user->getEmail()=>$user->getName()])
                     ->setCc("alexngoumo.an@gmail.com")
-                    ->attach(\Swift_Attachment::fromPath($commande_pdf))
+                    //->attach(\Swift_Attachment::fromPath($commande_pdf))
                     ->setBody(
                         $this->renderView(
                             'emails/mail_template.html.twig',['content'=>$content, 'url'=>$url]
@@ -290,7 +290,7 @@ class PaymentController extends AbstractController
                 'is_download'=>['value'=>true, 'save_path'=>$save_path],
                 'total_price'=>$amount
             ];
-            $dompdf = $this->generatePdf('emails/facture.html.twig', $panier , $params);
+            //$dompdf = $this->generatePdf('emails/facture.html.twig', $panier , $params);
             $this->sendMail($mailer, $user, $panier, $save_path, $amount);
             $response = new Response(json_encode($message), 200);
         }
