@@ -478,13 +478,23 @@
     .navbar.navbar-toggled-show.navbar-dark .navbar-toggler svg [stroke]:not([stroke="none"]){stroke: #fff!important;}
     .navbar .shopping-cart{
       color: #fff;
+      padding: 10px;
+    }
+    .navbar .shopping-cart:hover {
+      color: #d81b5f;
+    }
+    .btn-primary.btn:hover  {
+        color: #d81b60 !important;
     }
     @media(max-width: 992px){
+      .navbar-dark .navbar-toggler {
+          margin-right: 1rem;
+      }
       .separe-nav-xs{
         width: 2px;
         height: 30px;
         background: #fff;
-        margin: 0 .5rem 0 1rem;
+        margin: 0 1rem 0 1rem;
       }
       .cart-btn{
         background: transparent;
