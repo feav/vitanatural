@@ -469,12 +469,15 @@
                            padding: 25px;
                            padding-bottom: 0px;
                            ">
+                           
+                           {% if temoignage.image %}
                            <div class="rounded o-hidden" style="border-radius: 0.3125rem 0.3125rem 0 0 !important;margin: -10px -10px 20px -10px;">
                               <div class="d-flex position-relative align-items-center justify-content-center rounded">
-                                  <img src="https://i.ya-webdesign.com/images/loading-gif-png-5.gif" data-srcset="{% if temoignage.image %}{{temoignage.image }}{% else %}{{ asset('assets/img/products/avatar.png') }}{% endif %} 1x"  class="rounded img-fluid lazy"  style="width: 100%;height: 220px;" data-src="{% if temoignage.image %}{{temoignage.image }}{% else %}{{ asset('assets/img/products/avatar.png') }}{% endif %}">
+                                  <img src="{{temoignage.image }}"  class="rounded img-fluid"  loading="lazy"  style="width: 100%;height: 220px;" >
                                  </a>
                               </div>
-                           </div>
+                           </div> 
+                           {% endif %}
                            <h4 style="
                               margin-bottom: 0;
                               font-size: 20px;
