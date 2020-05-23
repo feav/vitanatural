@@ -320,14 +320,14 @@ class ApiPanierController extends AbstractController
         if(isset($_GET['products']) && $_GET['products'] !== ''){
             $products = $_GET['products'];
         }
-        if(count($products)){
-
             $produis = array();
             $coupons = array();
             $formules = array();
             $livraison = 10;
             $total = 0;
             $reduction = 0;
+        if(count($products)){
+
 
             /**
             ** if commande do not exist create one
@@ -390,7 +390,9 @@ class ApiPanierController extends AbstractController
                 }
 
             }
-            return new Response( json_encode(
+            
+        }
+        return new Response( json_encode(
                 array(
                     'status' => 200, 
                     'message' => "reccuperer le panier de l'utilisateur connecte", 
@@ -406,8 +408,6 @@ class ApiPanierController extends AbstractController
                     )
                 )
             ) );
-        }
-        return new Response( json_encode(array('status' => 300, 'message' => "Utilisateur non connecte" )) );
     }
     public function addItemToCardNotConnected(): Response
     {
@@ -451,6 +451,19 @@ class ApiPanierController extends AbstractController
                                     $products[$key]['offert'] = $product->getNumberOfGift($quantity);
                                 }
                             }
+                        }
+
+                        if($quantity==0){
+                             $message = "Le produit a ete supprime";
+                             $tmp = array();
+                            foreach ($products as $key => $value) {
+                                if($type == $value['type'] && $product->getId() == $value['id'] ){
+                                    
+                                }else{
+                                    $tmp[]=$value;
+                                }
+                            }
+                            $products = $tmp;
                         }
                     }else{
                             $products[] = array(

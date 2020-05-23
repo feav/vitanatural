@@ -696,7 +696,7 @@
                </button>
                 <a href="{{path('marque')}}#commande" class="btn btn-primary ml-lg-4 mr-3 mr-md-4 mr-lg-0 d-none d-sm-block order-lg-3" style=" font-weight: 400; ">Je commande</a>
                <span class="separe-nav-xs"></span>
-               <a href="javascript:void()" class="btn btn-primary ml-lg-4 mr-lg-0 d-sm-block order-lg-3 toggle-cart cart-btn"><i class="fa fa-shopping-cart shopping-cart"></i></a>
+               <a class="btn btn-primary ml-lg-4 mr-lg-0 d-sm-block order-lg-3 toggle-cart cart-btn"><i class="fa fa-shopping-cart shopping-cart"></i></a>
             </div>
 
 
@@ -1223,7 +1223,7 @@
     });
     DATA_STRING += '<li class="recap-item">'+
                 '<span class="recap-label">Réduction</span>'+
-                '<span class="recap-value">(-'+parseInt( (reduction*100)/ total_amount)+'%) -'+reduction.toFixed(2)+'€</span>'+
+                '<span class="recap-value">(-'+(total_amount?parseInt( (reduction*100)/ total_amount):0)+'%) -'+reduction.toFixed(2)+'€</span>'+
               '</li>'+
               '<li class="recap-item">'+
                 '<span class="recap-label">Total</span>'+
@@ -1485,12 +1485,16 @@
                   itemRecap(data.panier.products, data.panier.total, total.toFixed(2), data.panier.reduction);
                    data.panier.products.forEach(function(item, index){
                      $(".card-list-product").append(itemProduct(item.id_product,item.img, item.name, item.quantity, item.price, item.oldprice));
-                       reductions += item.oldprice*item.quantity;
+                       reductions += parseFloat(item.oldprice*item.quantity);
+                       console.log(reductions);
                        if(typeof init_product_qty === "function" && item.price != 0){
                             init_product_qty(item.id_product,item.quantity);
                         }
                    }); 
-                  $(".cart-total-reduction").html( (reductions+ parseFloat(data.panier.reduction)).toFixed(2));
+
+                       console.log(reductions);
+                       console.log( parseFloat(data.panier.reduction).toFixed(2) ) ;
+                  $(".cart-total-reduction").html( parseFloat(reductions+ parseFloat(data.panier.reduction)).toFixed(2));
                   $(".card-list-coupon").html("");
                    data.panier.coupons.forEach(function(item, index){
                      $(".card-list-coupon").append( itemCoupon(item.id,item.code, item.value));
@@ -1878,6 +1882,7 @@
 </script>
 
 <!-- Facebook Pixel Code -->
+
 <script>
   !function(f,b,e,v,n,t,s)
   {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -1893,6 +1898,8 @@
 <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id={{  render(controller('App\\Controller\\ApiConfigController::getField',{name:'FACEBOOK_PIXEL_JS_'}) )  }}&ev=PageView&noscript=1"
 /></noscript>
+
+
 <!-- End Facebook Pixel Code -->
 
 <div id="config-js">
