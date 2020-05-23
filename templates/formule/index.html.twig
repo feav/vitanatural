@@ -45,13 +45,12 @@
                      <tbody>
                         {% for formule in formules %}
                         <tr>
-                           <td>{{ formule.name }}</td>
+                           <td><a href="{{ path('formule_edit', {'id': formule.id}) }}">{{ formule.name }}</a></td>
                            <td>{{ formule.price }}</td>
                            <td>{{ formule.month }}</td>
                            <td>{{ formule.priceShipping }}</td>
                            <td>{{ formule.tryDays }}</td>
                            <td>
-                              <a href="{{ path('formule_edit', {'id': formule.id}) }}">Editer</a>
                               {{ include('formule/_delete_form.html.twig') }}
                            </td>
                         </tr>

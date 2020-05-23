@@ -478,13 +478,23 @@
     .navbar.navbar-toggled-show.navbar-dark .navbar-toggler svg [stroke]:not([stroke="none"]){stroke: #fff!important;}
     .navbar .shopping-cart{
       color: #fff;
+      padding: 10px;
+    }
+    .navbar .shopping-cart:hover {
+      color: #d81b5f;
+    }
+    .btn-primary.btn:hover  {
+        color: #d81b60 !important;
     }
     @media(max-width: 992px){
+      .navbar-dark .navbar-toggler {
+          margin-right: 1rem;
+      }
       .separe-nav-xs{
         width: 2px;
         height: 30px;
         background: #fff;
-        margin: 0 .5rem 0 1rem;
+        margin: 0 1rem 0 1rem;
       }
       .cart-btn{
         background: transparent;
@@ -641,15 +651,18 @@
       float: right;
       font-weight: 600;
     }
+    .btn-primary.btn {
+        color: white !important;
+    }
     </style>
 
 {% endblock %}
 
 {% block body %}
   <dir class="toast__container"></dir>
-   <!--  <div class="loader">
+     <div class="loader">
       <div class="loading-animation"></div>
-    </div> -->
+    </div> 
     <div style="display:none !important" class="alert alert-dismissible d-none d-md-block bg-primary-3 text-white py-4 py-md-3 px-0 mb-0 rounded-0 border-0" id="show-massage" >
       <div class="container">
           <div class="row no-gutters align-items-md-center justify-content-center">
@@ -681,7 +694,7 @@
                  <img alt="Navbar Toggler Open Icon" class="navbar-toggler-open icon icon-sm" data-inject-svg src="{{ asset('assets/img/icons/interface/icon-menu.svg')}}">
                  <img alt="Navbar Toggler Close Icon" class="navbar-toggler-close icon icon-sm" data-inject-svg src="{{ asset('assets/img/icons/interface/icon-x.svg')}}">
                </button>
-                <a href="#" class="btn btn-primary ml-lg-4 mr-3 mr-md-4 mr-lg-0 d-none d-sm-block order-lg-3" style=" font-weight: 400; ">Je commande</a>
+                <a href="{{path('marque')}}#commande" class="btn btn-primary ml-lg-4 mr-3 mr-md-4 mr-lg-0 d-none d-sm-block order-lg-3" style=" font-weight: 400; ">Je commande</a>
                <span class="separe-nav-xs"></span>
                <a href="javascript:void()" class="btn btn-primary ml-lg-4 mr-lg-0 d-sm-block order-lg-3 toggle-cart cart-btn"><i class="fa fa-shopping-cart shopping-cart"></i></a>
             </div>
