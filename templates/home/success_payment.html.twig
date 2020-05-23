@@ -1,5 +1,5 @@
 {% extends 'layout.html.twig' %}
-{% block title %} {{parent()}} | paiement {% endblock %}
+{% block title %} {{parent()}} | paiement réussit {% endblock %}
 {% block meta %}
 <meta name="description" content="">
 {% endblock %}
@@ -24,60 +24,14 @@
   </style>
 {% endblock %}
 {% block body_web %}
-<section class="container container-page" style="margin-top: 90px;">
-   <div class="paid-success"> 
-      <div class="felicitation" style="color:#d81b60">Felicitation!!!</div>
-      <div class="message">Paiement effectué avec succèss </div>
-      <div style="margin-top: 19px;"><span class="btn btn-primary slide-to-formule">Nos formules</span></div>
-   </div>
-</section>
-<section class="bg-light">
-      <div class="container" id="formule-container">
-        <h3 style="text-align: center;color: #d81b60;">Nos formules</h3>
-        <div class="row align-items-center justify-content-center">
-          
-          {% for formule   in formules %}
-            <div class="col-sm-9 col-md-7 col-lg-4 mb-3 mb-md-4 mb-lg-0" data-aos="fade-up" data-aos-delay="200">
-              <div class="card card-body align-items-center shadow">
-                <div class="text-center mb-4">
-                  <h4>{{formule.name}}</h4>
-                  <div class="d-flex align-items-center justify-content-center mb-1">
-                    <span class="h5 mb-0 mr-2">€</span>
-                    <span class="display-3 mb-0 text-dark">{{formule.price}}</span>
-                  </div>
-                  <div>{{formule.month}} mois</div>
-                </div>
-                <ul class="list-unstyled p-0">
-                  <li class="my-3">
-                     <div class="d-flex align-items-center">
-                        <div class="rounded-circle bg-success-alt">
-                           <img src="assets/img/icons/interface/icon-check.svg" alt=" icon=" class="m-2 icon icon-xs bg-success" data-inject-svg>
-                        </div>
-                        <h6 class="mb-0 ml-3">Livraison  {{formule.getPriceShipping()}} €</h6>
-                     </div>
-                  </li>
-                </ul>
-                <span class="btn btn-lg btn-block btn-primary btn-commander" onclick="addFormuleToCard2({{formule.id}})" >Commander</span>
-              </div>
-            </div>
-          {% endfor %}
-        </div>
-      </div>
-    </section>
+  <section class="container container-page" style="margin-top: 90px;">
+     <div class="paid-success"> 
+        <div class="felicitation" style="color:#d81b60">Felicitation!!!</div>
+        <div class="message">Paiement effectué avec succèss </div>
+        <div style="margin-top: 19px;"><span class="btn btn-primary slide-to-formule">Nos formules</span></div>
+     </div>
+  </section>
 {% endblock body_web %}
 {% block javascripts %}
 {{parent()}}
-  <script type="text/javascript">
-    $('.slide-to-formule').click(function(){
-      $('html, body').animate({scrollTop:($("#formule-container").offset().top)-100}, 500);
-    });
-
-    function addFormuleToCard2(id,qty=1){
-      $('.btn-commander').text('Initialisation paiement...');
-      $('.btn-commander').css('pointer-events', 'none');
-      $paidOneClick = true;
-      addToCard(id,qty,"formule");
-    }
-
-  </script>
 {% endblock %}

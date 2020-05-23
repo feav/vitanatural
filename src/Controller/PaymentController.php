@@ -515,9 +515,19 @@ class PaymentController extends AbstractController
     /**
       * @Route("/success-payment", name="success_payment", methods={"GET"})
      */
-    public function payementSucces(){
+    public function payementSuccess(){
         $formule = $this->formuleRepository->findAll();
         return $this->render('home/success_payment.html.twig', [
+            'formules' => $formule
+        ]);
+    }
+
+    /**
+      * @Route("/nos-formules", name="nos_formule", methods={"GET"})
+     */
+    public function payementSucces(){
+        $formule = $this->formuleRepository->findAll();
+        return $this->render('home/formule.html.twig', [
             'formules' => $formule
         ]);
     }

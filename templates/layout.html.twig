@@ -1331,9 +1331,7 @@
                       proceedPayment2();
                     }
                   }
-                  if($paidOneClick){
-                    console.log($paidOneClick);
-                    $paidOneClick = false;
+                  if($formulePaid){
                     $('.btn-commander').css('pointer-events', 'none');
                     var $url = "{{path('direct_paid')}}";
                     proceed($url, $('.btn-commander'));
@@ -1499,7 +1497,7 @@
 </script>
 <script type="text/javascript">
         $paidLaunch = false;
-        $paidOneClick = false;
+        $formulePaid = false;
         var stripe = Stripe("{{STRIPE_PUBLIC_KEY}}");
 
         var elements = stripe.elements();
@@ -1681,7 +1679,7 @@
                     card.clear();
                     submitting('reset');
                     window.localStorage.removeItem('panier');
-                    window.location.href = "{{path('success_payment')}}";
+                    window.location.href = "{{path('nos_formule')}}";
                 }else {
                     notification("Paiement commande",oReq.response,"error");
                     submitting('reset');
@@ -1711,7 +1709,11 @@
                 $that.text($realText);
                 notification("Paiement commande","Opération effectuée avec succèss","success");
                 window.localStorage.removeItem('panier');
-                window.location.href = "{{path('success_payment')}}";
+                if($formulePaid)
+                  window.location.href = "{{path('success_payment')}}";
+                else
+                  window.location.href = "{{path('nos_formule')}}";
+
               },
               error: function(xhr, responseText, errorThrown) {
                 $that.css('pointer-events', 'auto');

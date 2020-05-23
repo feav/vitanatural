@@ -69,25 +69,23 @@ class StripeService{
         try {
             $chargeId = $this->paidByStripeCustom($user->getStripeCustomId(), $amount);
 
-        }catch(\Stripe\Error\Card $e) {
+        } catch(\Stripe\Exception\CardException $e) {
             // Since it's a decline, \Stripe\Error\Card will be caught
-            $body = $e->getJsonBody();
-            $err  = $body['error'];
-            $result =  $err['message'];
-        } catch (\Stripe\Error\RateLimit $e) {
+            $result =  $e->getError()->message;
+        } catch (\Stripe\Exception\RateLimitException $e) {
             $result = "Trop de requêtes adressées à l'API trop rapidement";
-        } catch (\Stripe\Error\InvalidRequest $e) {
+        } catch (\Stripe\Exception\InvalidRequestException $e) {
             $result = "Des paramètres non valides ont été fournis à l'API de Stripe";
-        } catch (\Stripe\Error\Authentication $e) {
+        } catch (\Stripe\Exception\AuthenticationException $e) {
             $result = "L'authentification avec l'API de Stripe a échoué. Peut-être avez-vous changé de clés API récemment";
-        } catch (\Stripe\Error\ApiConnection $e) {
+        } catch (\Stripe\Exception\ApiConnectionException $e) {
             $result = "La communication réseau avec Stripe a échoué";
-        } catch (\Stripe\Error\Base $e) {
-            $result = "Une erreur s'est produite suite à votre paiement";
-        } catch (Exception $e) {
+        } catch (\Stripe\Exception\ApiErrorException $e) {
+            $result = "Display a very generic error to the user, and maybe send yourself an email";
+        } catch (\Stripe\Exception $e) {
             $result = "Une erreur s'est produite.";
         }
-        
+
         return ['message'=>$result, 'charge'=> $chargeId];
     }
 
