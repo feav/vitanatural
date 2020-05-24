@@ -537,7 +537,7 @@
                     
                      <div class="d-flex flex-wrap products-pack" style=" margin-bottom: 20px; ">
                       {% for number in 1..4  %}
-                        <div class="custom-control custom-radio mr-4" style=""  for="product-{{product.id}}-{{number}}">
+                        <div class="custom-control custom-radio mr-4 {% if number == 2 %} active {% endif %}" for="product-{{product.id}}-{{number}}">
                            <div style="width: 50%;">
                                 <label for="product-{{product.id}}-{{number}}">
 
@@ -572,7 +572,7 @@
                            </div>
                            <div style="width: 10%;display: flex;">
                               <div class="radio-item">
-                                  <input type="radio" id="product-{{product.id}}-{{number}}" name="product-{{product.id}}" value="{{number}}">
+                                  <input type="radio" id="product-{{product.id}}-{{number}}" name="product-{{product.id}}" value="{{number}}" {% if number == 2 %} onload="$('#product-{{product.id}}-{{number}}').prop('checked',true)" {% endif %}>
                                   <label for="product-{{product.id}}-{{number}}"></label>
                               </div>
                            </div>
