@@ -61,6 +61,11 @@ class Config
                 "description" => "Script Pixel Facebook " 
             ),
             array(
+                "key"=>"FACEBOOK_PIXEL_KEY",
+                "description" => "Cle Pixel Facebook " 
+
+            ),
+            array(
                 "key" => "GALERY_INSTAGRAM_PROFILE",
                 "description" => "Nom du profil instagram pour la gallerie" 
             )

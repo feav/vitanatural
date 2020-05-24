@@ -17,28 +17,33 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\ConfigService;
 /**
  * @Route("/api/panier")
  */
 class ApiPanierController extends AbstractController
 {
     private $productService;
+    private $configService;
     private $panierRepository;
     private $commandeRepository;
     private $couponRepository;
     private $userRepository;
     private $entityManager;
     private $money_unit;
-    public function __construct(UserRepository $userRepository,AbonnementRepository $abonnementRepository,FormuleRepository $formuleRepository,PanierRepository $panierRepository,CouponRepository $couponRepository,CommandeRepository $commandeRepository, ProductService $productService)
+    private $price_shipping = 0;
+    public function __construct(UserRepository $userRepository,AbonnementRepository $abonnementRepository,FormuleRepository $formuleRepository,PanierRepository $panierRepository,CouponRepository $couponRepository,CommandeRepository $commandeRepository, ProductService $productService, ConfigService $configService)
     {
         $this->money_unit = "$";
         $this->productService = $productService;
+        $this->configService = $configService;
         $this->panierRepository = $panierRepository;
         $this->commandeRepository = $commandeRepository;
         $this->abonnementRepository = $abonnementRepository;
         $this->couponRepository = $couponRepository;
         $this->formuleRepository = $formuleRepository;
-        $this->UserRepository = $userRepository;
+        $this->userRepository = $userRepository;
+        $this->price_shipping = floatval($this->configService->getField('LIVRAISON_AMOUNT'));
         
     }
     public function userIsConnected():Response
@@ -62,7 +67,7 @@ class ApiPanierController extends AbstractController
             $produis = array();
             $coupons = array();
             $formules = array();
-            $livraison = 0;
+            $livraison = $this->price_shipping;
             $total = 0;
             $reduction = 0;
 
@@ -298,7 +303,10 @@ class ApiPanierController extends AbstractController
                 }
 
             }
+            $panier->setPriceShipping( $this->price_shipping );
+
             $panier->refresh_price();
+
             $this->entityManager->persist($panier);
             $this->entityManager->flush();
 
@@ -320,14 +328,14 @@ class ApiPanierController extends AbstractController
         if(isset($_GET['products']) && $_GET['products'] !== ''){
             $products = $_GET['products'];
         }
-        if(count($products)){
-
             $produis = array();
             $coupons = array();
             $formules = array();
-            $livraison = 10;
+            $livraison = $this->price_shipping;
             $total = 0;
             $reduction = 0;
+        if(count($products)){
+
 
             /**
             ** if commande do not exist create one
@@ -390,7 +398,9 @@ class ApiPanierController extends AbstractController
                 }
 
             }
-            return new Response( json_encode(
+            
+        }
+        return new Response( json_encode(
                 array(
                     'status' => 200, 
                     'message' => "reccuperer le panier de l'utilisateur connecte", 
@@ -399,15 +409,13 @@ class ApiPanierController extends AbstractController
                         'coupons' => $coupons,
                         'formules' => $formules,
                         'livraison' => $livraison,
-                        'total' => $total,
+                        'total' => $total?$total+$livraison:0,
                         'total' => $total,
                         'livraison' => $livraison,
                         'reduction' => $reduction
                     )
                 )
             ) );
-        }
-        return new Response( json_encode(array('status' => 300, 'message' => "Utilisateur non connecte" )) );
     }
     public function addItemToCardNotConnected(): Response
     {
@@ -451,6 +459,19 @@ class ApiPanierController extends AbstractController
                                     $products[$key]['offert'] = $product->getNumberOfGift($quantity);
                                 }
                             }
+                        }
+
+                        if($quantity==0){
+                             $message = "Le produit a ete supprime";
+                             $tmp = array();
+                            foreach ($products as $key => $value) {
+                                if($type == $value['type'] && $product->getId() == $value['id'] ){
+                                    
+                                }else{
+                                    $tmp[]=$value;
+                                }
+                            }
+                            $products = $tmp;
                         }
                     }else{
                             $products[] = array(

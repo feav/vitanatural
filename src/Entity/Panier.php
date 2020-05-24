@@ -115,6 +115,7 @@ class Panier
             }
         }
         $this->total_price =  $sommes;
+        if($sommes) $this->total_price += $this->price_shipping; 
         $this->total_reduction = $reduction;
     }
 

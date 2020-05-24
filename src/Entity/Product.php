@@ -219,7 +219,7 @@ class Product
 
     public function getNumberOfGift(int $qty): ?int
     {
-        return $qty - 1;
+        return $qty? $qty - 1 : 0;
     }
     public function getPriceTotal(int $qty): ?int
     {

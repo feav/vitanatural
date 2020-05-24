@@ -75,7 +75,9 @@
    @media(max-width: 768px){
       .thumb-middle{display: block;}
    }
-
+   div.thumb-middle {
+       max-width: 100%;
+   }
 </style>
 {% endblock %}
 {% block body_web %}
@@ -140,7 +142,7 @@
                      font-weight: 500;
                      line-height: 20px;
                      ">Une gélule composée de trois actifs brûleurs de graisse naturels particulièrement efficaces pour vaincre les kilos en trop *</p>
-                  <a href="#" class="btn btn-primary-3 btn-lg" style="
+                  <a href="{{path('marque')}}#commande" class="btn btn-primary-3 btn-lg" style="
                      border-radius: 6px;
                      font-weight: 500;
                      font-size: 18px;
@@ -863,13 +865,15 @@
                         <div class="card-body" style="
                            padding: 25px;
                            padding-bottom: 0px;
-                           ">
+                           "> 
+                           {% if temoignage.image %}
                            <div class="rounded o-hidden" style="border-radius: 0.3125rem 0.3125rem 0 0 !important;margin: -10px -10px 20px -10px;">
                               <div class="d-flex position-relative align-items-center justify-content-center rounded">
-                                  <img src="{% if temoignage.image %}{{temoignage.image }}{% else %}{{ asset('assets/img/products/avatar.png') }}{% endif %}"  class="rounded img-fluid"  loading="lazy"  style="width: 100%;height: 220px;" >
+                                  <img src="{{temoignage.image }}"  class="rounded img-fluid"  loading="lazy"  style="width: 100%;height: 220px;" >
                                  </a>
                               </div>
-                           </div>
+                           </div> 
+                           {% endif %}
                            <h4 style="
                               margin-bottom: 0;
                               font-size: 20px;
@@ -898,7 +902,7 @@
                               padding: 15px 0px;
                               border-radius: 0rem 0rem 0.3125rem 0.3125rem;
                               margin: 0px -25px;
-                              ">{{temoignage.location}}</div>
+                              ">{{temoignage.progress}}</div>
                         </div>
                      </div>
                   </div>
@@ -1089,7 +1093,7 @@
             </div>
          </div>
       </section>-->
-      <div class="row section-title justify-content-center text-center" style=" margin-bottom: 0; padding: 4.6875rem 0;">
+      <div class="row section-title justify-content-center text-center" style=" margin-bottom: 0; padding: 3.6875rem 0;">
         
       </div>
       <div class="rowly" style=" margin: 0; ">
