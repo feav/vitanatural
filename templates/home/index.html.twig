@@ -25,7 +25,7 @@
    }
    .thumb-middle{
       display: flex;
-       align-items: stretch;
+       align-items: flex-start;
        justify-content: space-between;
    }
    .thumb-middle > * {
@@ -52,8 +52,7 @@
    }
    .thumb-middle .image-grid{
      display: grid;
-     grid-template-columns: repeat(2, 1fr);
-     /*grid-auto-rows: minmax(100px, auto);*/
+     grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
      /*grid-gap: 1rem;*/
    }
    .thumb-middle .image-grid a {
@@ -1116,14 +1115,14 @@
         console.log(posts);
         for(var i=0;i<posts.length;i++){
           url = posts[i].node.display_url;
-          if(i == 4)
+          if(i == 0)
             $(".thumb-middle .image-center").html('<a href="'+url+'" target="_blank"><img loading="lazy"  src="'+url+'"></a>');
           else{
             if(i < 10){
 
-              if(i < 4)
+              if(i%2 == 0)
                 posts_grid_left += '<a href="'+url+'" target="_blank"><img loading="lazy"  src="'+url+'"></a>';
-              else if(i >= 5)
+              else
                 posts_grid_right += '<a href="'+url+'" target="_blank"><img  loading="lazy"  src="'+url+'"></a>';
             }
             else{
@@ -1138,7 +1137,12 @@
         $(".thumb-middle .image-center").css('height', $(".image-grid.grid-left").height());
       }
     });
-
+    {%  if coupon %}
+           $(document).ready(function() {
+               addToCard('{{coupon}}',1,'coupon');
+           });
+    {% endif %}
   </script>
+    }
 
 {% endblock %}

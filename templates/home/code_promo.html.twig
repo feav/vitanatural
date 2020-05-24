@@ -212,7 +212,7 @@
   <script type="text/javascript">
     var sizeItem = 2; /* nombre d'etape */
     var currentstape = 0;
-    gotoNext = function(){
+    var gotoNext = function(){
       var next_stape = currentstape+1;
       for (var i = 0; i < next_stape; i++) {
         $('.wizard-nav .stape-item .stape-num').eq(i).addClass('complete');
@@ -227,13 +227,14 @@
     $('.wizard-nav-submit .btn-next').click(function(){
         validateStape(0);
     });
-    init_product_qty = function(id_product,quantity){
+    function init_product_qty(id_product,quantity){
     }
-    validateStape = function(stape){
+    function validateStape(stape){
       if(stape == 0){
               submitting('loading');
               addToCard('{{code}}',1,'coupon');
               init_product_qty = function(id_product,quantity){
+                alert("init_product_qty");
                 gotoNext();
                 submitting('reset');
               }
@@ -241,16 +242,18 @@
       return false;
     }
 
-    submitting = function(state){
-      if(state == "loading"){
-          $('.lds-ripple').css('display','inline-block');
-          $('.btn-next').addClass('no-click');
-      }
-      else if(state == "reset"){
-          $('.lds-ripple').css('display','none');
-          $('.btn-next').removeClass('no-click');
-          $('.btn-next').text('Suivant');
-      }
+    function submitting(state){
+
+        if(state == "loading"){
+            $('.lds-ripple').css('display','inline-block');
+            $('.btn-next').addClass('no-click');
+        }
+        else if(state == "reset"){
+            $('.lds-ripple').css('display','none');
+            $('.btn-next').removeClass('no-click');
+            $('.btn-next').text('Suivant');
+        }
     }
+
 </script>
 {% endblock %}
