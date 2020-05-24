@@ -150,12 +150,14 @@
   position: relative;
   top: 5px;
   margin: 0 5px 0 0;
-  width: 28px;
-   height: 28px;
+  width: 35px;
+   height: 35px;
   border-radius: 100%;
   border:4px solid #258152;
   background-color: transparent;
   left: -5px;
+
+   background: #fff;
 }
 .radio-item input[type=radio] + label:after {
    background: #fff;
@@ -163,11 +165,11 @@
 
 .radio-item input[type=radio]:checked + label:after {
    border-radius: 100%;
-   width: 28px;
-   height: 28px;
+   width: 35px;
+   height: 35px;
    position: absolute;
    top: 5px;
-   left: 0px;
+   left: -5px;
    content: " ";
    display: block;
    background: #258152;
@@ -179,6 +181,11 @@
           width: 100%;
       }
    }
+.radio-item label{
+   position: absolute;
+   top: -35px;
+   right: -20px;
+}
 </style>
 {% endblock %}
 {% block body_web %}
@@ -199,7 +206,7 @@
    </div> -->
 <div data-overlay class="bg-primary-3 jarallax text-white" data-jarallax data-speed="0.2">
    <section class="pb-0">
-      <img src="{{asset('https://imgur.com/0f02T0c.png')}}"  alt="Background" class="jarallax-img" loading="lazy">
+      <img src="https://imgur.com/0f02T0c.png"  alt="Background" class="jarallax-img" loading="lazy">
       <div class="container pb-5">
          <div class="row section-title justify-content-center text-center">
             <div class="col-md-9 col-lg-8 col-xl-9">
