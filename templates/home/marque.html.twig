@@ -1136,8 +1136,11 @@
    });
    $(".products-pack > div").click(function(){
       $(".products-pack > div").removeClass("active");
-      if(!$(this).hasClass("active"))
+      if(!$(this).hasClass("active")){
          $(this).addClass("active");
+         $("input[type=radio]",this).prop("checked",true)
+      }
+
    });
 </script>
 {% endblock %}
