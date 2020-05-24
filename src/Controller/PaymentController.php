@@ -406,8 +406,9 @@ class PaymentController extends AbstractController
 
     public function preparePaid($panier, $mailer){
         $user = $this->getUser();
-        $amount = $panier->getTotalPrice() - $panier->getTotalReduction();
-        $amount = ( $amount <0 ) ? 0 : $amount;
+        $amount = $panier->getTotalPrice();
+        /*$amount = $panier->getTotalPrice() - $panier->getTotalReduction();
+        $amount = ( $amount <0 ) ? 0 : $amount;*/
         $message = "Paiement Effectué avec Succèss";
         if(count($panier->getAbonnements())){
             $message = "Votre abonnement sera facturé apres la periode d'essaie";   
@@ -424,7 +425,7 @@ class PaymentController extends AbstractController
             $message = "Paiement Effectué avec Succèss. Votre abonnement sera facturé apres la periode d'essaie";
             $abonnement = $panier->getAbonnements()[0];
             $abonnementAmount = $abonnement->getFormule()->getPrice();
-            $amount -= $abonnementAmount;
+            //$amount -= $abonnementAmount;
         }
         if(count($panier->getAbonnements())){
             $abonnement = $panier->getAbonnements()[0];
