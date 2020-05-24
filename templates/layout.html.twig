@@ -1398,9 +1398,9 @@
                      }
                    }); 
                   $(".card-list-coupon").html("");
-                   data.panier.coupons.forEach(function(item, index){
-                     $(".card-list-coupon").append( itemCoupon(item.id,item.code, item.value));
-                   });
+                   // data.panier.coupons.forEach(function(item, index){
+                   //   $(".card-list-coupon").append( itemCoupon(item.id,item.code, item.value));
+                   // });
                   $(".card-list-formule").html("");
                    data.panier.formules.forEach(function(item, index){
                      $(".card-list-formule").append( itemFormule(item.id,item.name,item.month,item.price));
@@ -1502,9 +1502,9 @@
                        console.log( parseFloat(data.panier.reduction).toFixed(2) ) ;
                   $(".cart-total-reduction").html( parseFloat(reductions+ parseFloat(data.panier.reduction)).toFixed(2));
                   $(".card-list-coupon").html("");
-                   data.panier.coupons.forEach(function(item, index){
-                     $(".card-list-coupon").append( itemCoupon(item.id,item.code, item.value));
-                   });
+                   // data.panier.coupons.forEach(function(item, index){
+                   //   $(".card-list-coupon").append( itemCoupon(item.id,item.code, item.value));
+                   // });
                   $(".card-list-formule").html("");
                    data.panier.formules.forEach(function(item, index){
                      $(".card-list-formule").append( itemFormule(item.id,item.name,item.month,item.price));
