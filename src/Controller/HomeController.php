@@ -55,7 +55,10 @@ class HomeController extends AbstractController
      */
     public function index(FormuleRepository $formuleRepository,TemoignageRepository $temoignageRepository)
     {
-
+        $coupon = 0;
+        if(isset($_GET['code_promo']) && $_GET['code_promo'] != ''){
+            $coupon = $_GET['code_promo'];
+        }
         $products = $this->prodService->findAll();
         $formule = $formuleRepository->findAll();
         $temoignage = $temoignageRepository->findAll();
@@ -64,7 +67,36 @@ class HomeController extends AbstractController
             'controller_name' => 'Brulafine',
             'products' => $products,
             'formules' => $formule,
-            'temoignages' => $temoignage
+            'temoignages' => $temoignage,
+            'coupon' => $coupon
+        ]);
+    }
+
+    /**
+     * @Route("/codepromo/{code}", name="code_promo")
+     */
+    public function codepromo(string $code,TemoignageRepository $temoignageRepository)
+    {
+
+        $coupon = $this->couponRepository->findOneByCode($code);
+        $value = 0;
+        $exist = 'none';
+        $message = "Ce coupon n'a pas ete reconnu par la boutique";
+        if($coupon){
+            $type = $coupon->getTypeReduction();
+            $price = $coupon->getPriceReduction();
+
+            $value = $price." ".($type?"%":" EUR");
+            $exist = 'exist';
+        }else{
+
+        }
+        return $this->render('home/code_promo.html.twig', [
+            'controller_name' => 'Brulafine',
+            'code' => $code,
+            'valeur' => $value,
+            'exist' => $exist,
+            'message' => $message
         ]);
     }
     /**

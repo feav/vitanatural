@@ -658,15 +658,18 @@
     .btn-primary.btn {
         color: white !important;
     }
+    .toast__container .toast__cell .toast{
+      opacity: 1;
+    }
     </style>
 
 {% endblock %}
 
 {% block body %}
   <dir class="toast__container"></dir>
-     <div class="loader">
+    <!--  <div class="loader">
       <div class="loading-animation"></div>
-    </div> 
+    </div>  -->
     <div style="display:none !important" class="alert alert-dismissible d-none d-md-block bg-primary-3 text-white py-4 py-md-3 px-0 mb-0 rounded-0 border-0" id="show-massage" >
       <div class="container">
           <div class="row no-gutters align-items-md-center justify-content-center">
@@ -1230,12 +1233,12 @@
                 '<span class="recap-value">(-'+(total_amount?parseInt( (reduction*100)/ total_amount):0)+'%) -'+reduction.toFixed(2)+'€</span>'+
               '</li>'+
               '<li class="recap-item">'+
-                '<span class="recap-label">Total</span>'+
-                '<span class="recap-value">'+total_reduction+'€</span>'+
+                '<span class="recap-label">Livraison</span>'+
+                '<span class="recap-value">{{livraison_montant}}€</span>'+
               '</li>'+
               '<li class="recap-item">'+
-                '<span class="recap-label">Livraison</span>'+
-                '<span class="recap-value">{{livraison_montant}}€</span><strike style="display:none">{{livraison_montant}}</strike>'
+                '<span class="recap-label">Total</span>'+
+                '<span class="recap-value">'+total_reduction+'€</span>'+
               '</li>';
     $ELT.html(DATA_STRING);
   }
@@ -1389,7 +1392,7 @@
                   $(".card-list-product").html("");
                   itemRecap(data.panier.products, data.panier.total, total.toFixed(2), data.panier.reduction);
                    data.panier.products.forEach(function(item, index){
-                     $(".card-list-product").append(itemProduct(item.id_product,item.img, item.name, item.quantity, item.price, item.oldprice));
+                     $(".card-list-product").prepend(itemProduct(item.id_product,item.img, item.name, item.quantity, item.price, item.oldprice));
                      if(typeof init_product_qty === "function"){
                         init_product_qty(item.id_product,item.quantity);
                      }
@@ -1488,9 +1491,8 @@
                   var reductions = 0;
                   itemRecap(data.panier.products, data.panier.total, total.toFixed(2), data.panier.reduction);
                    data.panier.products.forEach(function(item, index){
-                     $(".card-list-product").append(itemProduct(item.id_product,item.img, item.name, item.quantity, item.price, item.oldprice));
+                     $(".card-list-product").prepend(itemProduct(item.id_product,item.img, item.name, item.quantity, item.price, item.oldprice));
                        reductions += parseFloat(item.oldprice*item.quantity);
-                       console.log(reductions);
                        if(typeof init_product_qty === "function" && item.price != 0){
                             init_product_qty(item.id_product,item.quantity);
                         }

@@ -1,0 +1,256 @@
+{% extends 'layout.html.twig' %}
+{% block title %} {{parent()}} | Code Promo {% endblock %}
+{% block meta %}
+<meta name="description" content="">
+{% endblock %}
+{% block dataStructured %}{% endblock %}
+{% block stylesheets %}
+{{parent()}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.0/animate.css" integrity="sha256-6Wozb/CzRANFOaGqN+u/uRT7kcffVIQt9OhOuuA6I9o=" crossorigin="anonymous" />
+<style type="text/css">
+   .navbar-light .navbar-nav .nav-link{
+   color: white;
+   }
+   .position-fixed.navbar-light .navbar-nav .nav-link{
+   color: rgba(0, 0, 0, 0.5);
+   }
+   .logo-head{
+   width: 100px;
+   margin: 0;
+   padding: 0;
+   height: 40px;
+   }
+   .navbar-light .logo-head.black{
+   display: none;
+   }
+   .position-fixed.navbar-light .logo-head{
+   display: none;
+   }
+   .position-fixed.navbar-light .logo-head.black{
+   display: block;
+   }
+   .toast {
+   backdrop-filter: none !important;
+   }
+   .container.pb-5 {
+   min-height: 300px;
+   }
+   .toast{
+   opacity: 1;
+   }
+   .paiement-container{
+      width: 100%;
+   }
+   .paiement-container .wizard-nav .liste-stape {
+       max-width: 700px;
+       margin: auto;
+       display: flex;
+       justify-content: space-around;
+   }
+   .paiement-container .wizard-nav{
+      box-shadow: 0 2px 3px rgba(20,35,51,.06);
+      margin-bottom: 20px;
+      padding: 25px 8px 28px;
+   }
+   .paiement-container .wizard-nav .liste-stape .stape-item{
+      text-align: center;
+   }
+   .wizard-nav .liste-stape .stape-item .stape-text {
+       text-transform: uppercase;
+       font-size: 13px;
+       margin-top: 13px;
+   }
+   
+   .wizard-nav .liste-stape .stape-item .stape-num .num.check{display: none;}
+   .wizard-nav .liste-stape .stape-item .stape-num .num{
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      margin: auto;
+      border:2px solid #d81b60;
+   }
+   .wizard-nav .liste-stape .stape-item .stape-num.active .num{
+      background: #d81b60;
+      color: #fff;
+      border:none;
+   }
+   .wizard-nav .liste-stape .stape-item .stape-num.complete .num.number{display: none;}
+   .wizard-nav .liste-stape .stape-item .stape-num.complete .num.check{
+      display: flex;
+      background: #2eb399;
+      border:none;
+      color: #fff;
+   }
+   .wizard-container-content{position: relative;}
+   .wizard-container-content .stape-item{
+      max-width: 500px;
+      margin: 40px auto 20px;
+      display: none;
+   }
+   .wizard-container-content .stape-item.active{
+    display: block
+   }
+   .paiement-container .wizard-nav-submit{
+      text-align: center;
+      padding: 19px 6px 17px;
+   }
+</style>
+{% endblock %}
+{% block body_web %}
+<section class="p-0 border-top border-bottom row no-gutters" style="margin-top: 90px;">
+   <div class="paiement-container">
+      <div class="wizard-nav">
+         <div class="liste-stape">
+            <div class="stape-item">
+               <div class="stape-num active">
+                  <span class="num number">1</span>
+                  <i class="fa fa-check check num"></i>
+               </div>
+               <div class="stape-text">Code Promo</div>
+            </div>
+         </div>
+      </div>
+      <div class="wizard-container-content">
+        <div class="lds-ripple"><div></div><div></div></div>
+        <div class="success-checkmark">
+          <div class="check-icon">
+            <span class="icon-line line-tip"></span>
+            <span class="icon-line line-long"></span>
+            <div class="icon-circle"></div>
+            <div class="icon-fix"></div>
+          </div>
+        </div>
+        <div class="content-stape-list">
+          {% if exist == 'exist'  %}
+           <div class="stape-item animated fadeIn active">
+              <h5 class="col-sm" style="color:#585858">Informations sur le code promo</h5>
+              
+              <form id="infoPersonnelle" name="infoPersonnelle">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;width: 100%;">
+                <span class="text"></span>
+                <button type="button" class="close close-alert-msg">
+                  x
+                </button>
+              </div>
+                <div class="">
+                  <div class="col-sm">
+                    <div class="form-group">
+                      <label>Code</label>
+                      <input type="text" name="name"  disabled="disabled"  class="form-control" id="contact-name" placeholder="le code promo" value="{{code}}">
+                    </div>
+                  </div>
+                  <div class="col-sm">
+                    <div class="form-group">
+                      <label>Valeur</label>
+                      <input type="email" disabled="disabled" name="email" class="form-control" id="contact-email" placeholder="valeur du code" value="{{valeur}}">
+                    </div>
+                  </div>
+               </div>
+              </form>
+           </div>        
+
+          {% else  %}
+ <div class="stape-item animated fadeIn active">
+              <h5 class="col-sm" style="color:#585858; text-align:center">Votre Code Promo ne peut etre traite</h5>
+              
+              <form id="infoPersonnelle" name="infoPersonnelle">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;width: 100%;">
+                <span class="text"></span>
+                <button type="button" class="close close-alert-msg">
+                  x
+                </button>
+              </div>
+                <div class="text-center">
+                  <label>{{message}}</label>
+               </div>
+              </form>
+           </div> 
+
+
+          {% endif  %}
+
+           <div class="stape-item animated fadeIn">
+               {% if exist == 'exist'  %}<h5 class="col-sm" style="color:#585858; text-align:center;">Votre Code Promo a ete traite</h5>
+               {% endif  %}
+              <form id="infoPersonnelle" name="infoPersonnelle">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;width: 100%;">
+                <span class="text"></span>
+                <button type="button" class="close close-alert-msg">
+                  x
+                </button>
+              </div>
+                <div class="">
+                  <div class="col-sm">
+                    <div class="form-group">
+                      <label>Vous pouvez continuez vous achats sur notre plateforme.</label>
+                    </div>
+                  </div>
+               </div>
+              </form>
+           </div>  
+        </div>
+
+      </div>
+      <div class="wizard-nav-submit">
+        {% if exist == 'exist'  %}
+         <span class="btn btn-primary btn-next">Ajouter le coupon au Panier</span>
+         <a href="{{path('marque')}}#commande"  style="display:none" class="btn btn-primary link-boutique">Retour a la Boutique</a>
+
+        {% else  %}
+        
+         <a href="{{path('marque')}}#commande" class="btn btn-primary link-boutique">Retour a la Boutique</a>
+        {% endif  %}
+      </div>
+   </div>
+</section>
+{% endblock body_web %}
+{% block javascripts %}
+{{parent()}}
+  <script type="text/javascript">
+    var sizeItem = 2; /* nombre d'etape */
+    var currentstape = 0;
+    gotoNext = function(){
+      var next_stape = currentstape+1;
+      for (var i = 0; i < next_stape; i++) {
+        $('.wizard-nav .stape-item .stape-num').eq(i).addClass('complete');
+      }
+      $('.wizard-container-content .stape-item').removeClass('active');
+      $('.wizard-nav .stape-item .stape-num').removeClass('active');
+      $('.wizard-nav-submit .btn-next').hide();
+      $('.wizard-nav-submit .link-boutique').show();
+      $("div.stape-item:nth-child(2)").show();
+    }
+
+    $('.wizard-nav-submit .btn-next').click(function(){
+        validateStape(0);
+    });
+    init_product_qty = function(id_product,quantity){
+    }
+    validateStape = function(stape){
+      if(stape == 0){
+              submitting('loading');
+              addToCard('{{code}}',1,'coupon');
+              init_product_qty = function(id_product,quantity){
+                gotoNext();
+                submitting('reset');
+              }
+      }
+      return false;
+    }
+
+    submitting = function(state){
+      if(state == "loading"){
+          $('.lds-ripple').css('display','inline-block');
+          $('.btn-next').addClass('no-click');
+      }
+      else if(state == "reset"){
+          $('.lds-ripple').css('display','none');
+          $('.btn-next').removeClass('no-click');
+          $('.btn-next').text('Suivant');
+      }
+    }
+</script>
+{% endblock %}
