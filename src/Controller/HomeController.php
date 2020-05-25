@@ -73,6 +73,24 @@ class HomeController extends AbstractController
     }
 
     /**
+     * @Route("/page/{name}", name="page")
+     */
+    public function page(string $name='',FormuleRepository $formuleRepository,TemoignageRepository $temoignageRepository)
+    {
+
+        $products = $this->prodService->findAll();
+        $formule = $formuleRepository->findAll();
+        $temoignage = $temoignageRepository->findAll();
+        
+        return $this->render('home/template/'.$name.'.html.twig',  [
+            'controller_name' => 'Brulafine',
+            'products' => $products,
+            'formules' => $formule,
+            'temoignages' => $temoignage
+        ]);
+    }
+
+    /**
      * @Route("/codepromo/{code}", name="code_promo")
      */
     public function codepromo(string $code,TemoignageRepository $temoignageRepository)
