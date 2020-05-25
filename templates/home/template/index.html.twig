@@ -709,14 +709,14 @@
         console.log(posts);
         for(var i=0;i<posts.length;i++){
           url = posts[i].node.display_url;
-          if(i == 0)
+          if(i == 4)
             $(".thumb-middle .image-center").html('<a href="'+url+'" target="_blank"><img loading="lazy"  src="'+url+'"></a>');
           else{
             if(i < 10){
 
-              if(i%2 == 0)
+              if(i < 4)
                 posts_grid_left += '<a href="'+url+'" target="_blank"><img loading="lazy"  src="'+url+'"></a>';
-              else
+              else if(i > 4)
                 posts_grid_right += '<a href="'+url+'" target="_blank"><img  loading="lazy"  src="'+url+'"></a>';
             }
             else{
