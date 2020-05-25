@@ -544,7 +544,7 @@
                                    <span>
                                      {% for i in 1..number  %}
                                       
-                                       <img src="https://imgur.com/4a17ASN.png"  alt="Background" class="buy-product " loading="lazy"  {% if i == number %} style="margin-right: 0;" {% endif %}>
+                                       <img src="https://imgur.com/4a17ASN.png"  alt="The" class="buy-product " loading="lazy"  {% if i == number %} style="margin-right: 0;" {% endif %}>
                                      {% endfor  %}
                                   </span>
 
@@ -553,7 +553,8 @@
                                   <span>
                                     {% for i in 1..product.getNumberOfGift(number)  %}
 
-                                   <img  src="https://imgur.com/4a17ASN.png"  alt="Background" class="gift-product buy-product" loading="lazy" >
+                                   <img  src="https://imgur.com/4a17ASN.png"  alt="
+                                   The" class="gift-product buy-product" loading="lazy" >
                                     {% endfor  %}
                                     </span>
                                   {% endif %}
@@ -572,11 +573,12 @@
                            </div>
                            <div style="width: 10%;display: flex;">
                               <div class="radio-item">
-                                  <input type="radio" id="product-{{product.id}}-{{number}}" name="product-{{product.id}}" value="{{number}}" {% if number == 2 %} onload="$('#product-{{product.id}}-{{number}}').prop('checked',true)" {% endif %}>
+                                  <input type="radio" id="product-{{product.id}}-{{number}}" name="product-{{product.id}}" value="{{number}}" {% if number == 2 %}  checked=""  {% endif %}>
                                   <label for="product-{{product.id}}-{{number}}"></label>
                               </div>
                            </div>
 
+                          
 
 
 
