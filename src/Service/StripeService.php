@@ -42,7 +42,7 @@ class StripeService{
             'source' => $source,
             'email' => $metadata['email'],
             'name' => $metadata['name'],
-            'description' => 'Client de la boutique VitaNatural',
+            'description' => 'Client de la boutique VitaNatural'
         ]);
         $user = $this->userRepository->findOneBy(['email'=>$metadata['email']]);
         $user->setStripeCustomId($custom['id']);
