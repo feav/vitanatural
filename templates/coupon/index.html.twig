@@ -35,13 +35,15 @@
                      <thead>
                         <tr>
                            <th>Nom</th>
+
                            <th>Type</th>
                            <th>Cout</th>
-                           <th>Debut</th>
-                           <th>Expiration</th>
+                           <!-- <th>Debut</th>
+                           <th>Expiration</th> -->
                            <th>Max utilisation</th>
                            <th>Utilisations</th>
                            <th>Code</th>
+                           <th>Url</th>
                            <th>actions</th>
                         </tr>
                      </thead>
@@ -58,11 +60,12 @@
                                 {% endif %}
                            </td>
                            <td>{{ coupon.priceReduction }}</td>
-                           <td>{{ coupon.start ? coupon.start|date('Y-m-d') : '' }}</td>
-                           <td>{{ coupon.end ? coupon.end|date('Y-m-d') : '' }}</td>
+                           <!-- <td>{{ coupon.start ? coupon.start|date('Y-m-d') : '' }}</td>
+                           <td>{{ coupon.end ? coupon.end|date('Y-m-d') : '' }}</td> -->
                            <td>{{ coupon.maxUsage }}</td>
                            <td>{{ coupon.currentUsage }}</td>
                            <td><div class="badge badge-primary">{{ coupon.code }}</div></td>
+                           <td><div class="badge badge-primary">{{ path('code_promo',{'code':coupon.code}) }}</div></td>
                            <td>
                               <a href="{{ path('coupon_edit', {'id': coupon.id}) }}">edit</a>
                               {{ include('coupon/_delete_form.html.twig') }}

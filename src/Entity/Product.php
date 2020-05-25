@@ -221,7 +221,7 @@ class Product
     {
         return $qty? $qty - 1 : 0;
     }
-    public function getPriceTotal(int $qty): ?int
+    public function getPriceTotal(int $qty): ?float
     {
         if($qty<=1)
             return $this->getPrice();
