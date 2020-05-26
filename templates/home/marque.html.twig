@@ -653,6 +653,10 @@
 {% block javascripts %}
 {{parent()}}
 
+<script type="text/javascript" src="{{ asset('assets/js/jarallax.min.js')}}"></script> 
+<script type="text/javascript" src="{{ asset('assets/js/jarallax-video.min.js')}}"></script>
+<script  async defer type="text/javascript" src="{{ asset('assets/js/jarallax-element.min.js')}}"></script>
+
 
   <!-- Clipboard (copies content from browser into OS clipboard) -->
    <script type="text/javascript" src="{{ asset('assets/js/clipboard.min.js')}}"></script>
