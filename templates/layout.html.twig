@@ -65,9 +65,9 @@
 
 {% block body %}
   <dir class="toast__container"></dir>
-    <!--  <div class="loader">
+    <div class="loader">
       <div class="loading-animation"></div>
-    </div>  -->
+    </div>
     <div style="display:none !important" class="alert alert-dismissible d-none d-md-block bg-primary-3 text-white py-4 py-md-3 px-0 mb-0 rounded-0 border-0" id="show-massage" >
       <div class="container">
           <div class="row no-gutters align-items-md-center justify-content-center">
@@ -1295,8 +1295,9 @@
   function customLazyLoad(){
             var scrollTop = window.pageYOffset;
             $(".custom-lazy-load").each(function(index,item){
-              if($(item).offset().top - 1 < (window.innerHeight + scrollTop)){
+              if($(item).offset().top - 600 < (window.innerHeight + scrollTop)){
                 var id = $(item).attr("lazy-target");
+                console.log(id);
                 var url = "{{path('page')}}/"+id;
                 $(item).removeClass("custom-lazy-load");
                 $.ajax({
@@ -1310,7 +1311,7 @@
         })
     }
   document.addEventListener("DOMContentLoaded", function() {
-    //customLazyLoad();
+    customLazyLoad();
     document.addEventListener("scroll", customLazyLoad);
     window.addEventListener("resize", customLazyLoad);
     window.addEventListener("orientationChange", customLazyLoad);
