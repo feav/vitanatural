@@ -1,0 +1,51 @@
+
+<div class="rowly" style=" margin: 0; ">
+   <!-- <div class=""> -->
+   <div class="img-thumb">
+   </div>
+   <div class="thumb-middle">
+      <div class="image-grid grid-left">
+      </div>
+      <div class="image-center">
+      </div>
+      <div class="image-grid grid-right">
+      </div>
+   </div>
+   <div class="image-grid grid-bottom">
+   </div>
+   <!-- </div> -->
+   <!-- <img alt="miniature" style="width: 100%;height: auto;" src="https://imgur.com/e7lw8Og.png">  -->
+</div>
+  <script>
+    $.ajax({
+      url:"https://www.instagram.com/{{  render(controller('App\\Controller\\ApiConfigController::getField',{name:'GALERY_INSTAGRAM_PROFILE'}) )  }}?__a=1",
+      type:'get',
+      success:function(response){
+        posts = response.graphql.user.edge_owner_to_timeline_media.edges;
+        posts_grid_bottom = posts_grid_left = posts_grid_right = '';
+        console.log(posts);
+        for(var i=0;i<posts.length;i++){
+          url = posts[i].node.display_url;
+          if(i == 4)
+            $(".thumb-middle .image-center").html('<a href="'+url+'" target="_blank"><img loading="lazy"  src="'+url+'"></a>');
+          else{
+            if(i < 10){
+
+              if(i < 4)
+                posts_grid_left += '<a href="'+url+'" target="_blank"><img loading="lazy"  src="'+url+'"></a>';
+              else if(i > 4)
+                posts_grid_right += '<a href="'+url+'" target="_blank"><img  loading="lazy"  src="'+url+'"></a>';
+            }
+            else{
+              posts_grid_bottom += '<a href="'+url+'" target="_blank"><img loading="lazy"  src="'+url+'"></a>';  
+            }
+          }
+        }
+        // <img src="https://i.ya-webdesign.com/images/loading-gif-png-5.gif" data-srcset="{{asset('assets/img/avatars/female-3.jpg')}} 1x"  class="avatar avatar-xl lazy" data-src="{{asset('assets/img/avatars/female-3.jpg')}}" 
+        $(".image-grid.grid-left").html(posts_grid_left);
+        $(".image-grid.grid-right").html(posts_grid_right);
+        //$(".image-grid.grid-bottom").html(posts_grid_bottom);
+        $(".thumb-middle .image-center").css('height', $(".image-grid.grid-left").height());
+      }
+    });
+  </script>

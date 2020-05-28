@@ -41,7 +41,7 @@
    .image-grid{
      display: grid;
       display:none;
-     grid-template-columns: repeat(2, minmax(2rem, 1fr));
+     grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
      /*grid-gap: 1rem;*/
    }
    .image-grid a {
@@ -52,7 +52,7 @@
    }
    .thumb-middle .image-grid{
      display: grid;
-     grid-template-columns: repeat(2, minmax(2rem, 1fr));
+     grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
      /*grid-gap: 1rem;*/
    }
    .thumb-middle .image-grid a {
@@ -112,9 +112,8 @@
          </div>
          <div class="col-md-8 col-lg-4 col-xl mt-4 mt-md-5 mt-lg-0" style="padding-top: 13px;border-radius: 6px;box-shadow: 0px -165px 120px 2px rgba(0, 0, 0, 0.09) !important;">
             <div class="rounded o-hidden">
-               
-               <div class="custom-lazy-load" lazy-target="iframe-header">
-                  <img style="width: 100%;height: 70%;" src="{{asset('assets/img/loading-gif-youtube-2.gif')}}">
+               <div class="rounded o-hidden">
+                  <div class="plyr" data-plyr-provider="youtube" data-plyr-embed-id="NM-eXztJFc4"></div>
                </div>
             </div>
             <p class="lead" style="
@@ -130,6 +129,52 @@
                font-size: 18px;
                padding: 15px 30px;
                ">Achetez maintenant</a>
+         </div>
+      </div>
+   </div>
+</section>
+<section style=" padding-top: 100px;  " class="rowlyo-section">
+   <div class="container">
+      <div class="row justify-content-center rowlyo">
+         <div >
+            <div>
+               <img  alt="miniature" loading="lazy" style="width: 60px;height: auto;" src="https://www.brulafine.com/assets/images/footer-icon-01.svg"  class="jarallax-img">
+            </div>
+            <div>
+               <p>100% NATUREL</p>
+               <p>Ingrédients végétaux,
+                  sains et efficaces.
+               </p>
+            </div>
+         </div>
+         <div >
+            <div>
+               <img  alt="miniature" style="width: 60px;height: auto;" src="https://www.brulafine.com/assets/images/footer-icon-04.svg" loading="lazy"   class="jarallax-img">
+            </div>
+            <div >
+               <p >FABRIQUÉ EN FRANCE</p>
+               <p >Engagement local,
+                  Production locale.
+               </p>
+            </div>
+         </div>
+         <div >
+            <div >
+               <img  alt="miniature" style="width: 60px;height: auto;" src="https://www.brulafine.com/assets/images/footer-icon-07.svg"  class="jarallax-img" loading="lazy" >
+            </div>
+            <div >
+               <p >PAR UN LABORATOIRE</p>
+               <p >Toutes nos cures ont été crée par un laboratoire Français.</p>
+            </div>
+         </div>
+         <div >
+            <div>
+               <img  alt="miniature" style="width: 60px;height: auto;" src="https://www.brulafine.com/assets/images/footer-icon-05.svg"  class="jarallax-img" loading="lazy" >
+            </div>
+            <div >
+               <p >LIVRAISON GRATUITE</p>
+               <p >Frais de port offerts en rejoignant le Club Nutridia.</p>
+            </div>
          </div>
       </div>
    </div>
@@ -159,7 +204,26 @@
      </div>
    </div>
 </div>
-
+<div class="custom-lazy-load" lazy-target="temoignage">
+   <div class="ph-item">
+     <div>
+       <div class="ph-row">
+         <div class="ph-col-12"></div>
+       </div>
+     </div>
+   </div>
+</div>
+<div class=" section-title justify-content-center text-center" style=" margin-bottom: 0; padding: 3.6875rem 0;">
+</div>
+<div class="custom-lazy-load" lazy-target="instagram">
+   <div class="ph-item">
+     <div>
+       <div class="ph-row">
+         <div class="ph-col-12"></div>
+       </div>
+     </div>
+   </div>
+</div>
 {% endblock body_web %}
 {% block javascripts %}
 {{parent()}}
