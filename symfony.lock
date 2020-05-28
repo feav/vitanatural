@@ -78,6 +78,9 @@
     "doctrine/reflection": {
         "version": "1.2.1"
     },
+    "doctrine/sql-formatter": {
+        "version": "1.0.1"
+    },
     "dompdf/dompdf": {
         "version": "v0.8.5"
     },
@@ -92,9 +95,6 @@
     },
     "guzzlehttp/psr7": {
         "version": "1.6.1"
-    },
-    "jdorn/sql-formatter": {
-        "version": "v1.2.17"
     },
     "monolog/monolog": {
         "version": "2.0.2"
