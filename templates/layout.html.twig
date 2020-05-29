@@ -42,23 +42,23 @@
         display: flex;
         justify-content: center;
     }
-@media(max-width: 600px){
+    @media(max-width: 600px){
 
-    .row.justify-content-center.rowlyo > div > div {
-          min-width: 14%;
+      .row.justify-content-center.rowlyo > div > div {
+            min-width: 14%;
+        }
+      .row.justify-content-center.rowlyo > div {
+          margin-top: 15px;
       }
-    .row.justify-content-center.rowlyo > div {
-        margin-top: 15px;
-    }
-    .row.justify-content-center.rowlyo > div {
-        width: 100%;
-    }
-    .row.justify-content-center.rowlyo {
-        flex-direction: column;
-    }
-    .rowlyo-section{
-      margin-top: 20px !important;
-    }
+      .row.justify-content-center.rowlyo > div {
+          width: 100%;
+      }
+      .row.justify-content-center.rowlyo {
+          flex-direction: column;
+      }
+      .rowlyo-section{
+        margin-top: 20px !important;
+      }
   }
   </style>
 {% endblock %}
@@ -452,7 +452,7 @@
             </div>
          </div>
       </footer>
-      <a href="javascript:void()" class="btn btn-primary goto-formule">Acheter maintenant</a>
+      <a href="{{path('nos_formule')}}" class="btn btn-primary goto-formule">Acheter maintenant</a>
       <a href="#top" class="btn btn-primary rounded-circle btn-back-to-top" data-smooth-scroll data-aos="fade-up" data-aos-offset="2000" data-aos-mirror="true" data-aos-once="false">
       <img src="assets/img/icons/interface/icon-arrow-up.svg"  loading="lazy"class="icon bg-white" data-inject-svg>
       </a>
