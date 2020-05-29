@@ -18,11 +18,30 @@
     a.btn{color: #fff}
     a.btn:hover, a.btn:active{color: #555A64}
     button, .btn{outline: none!important;}
-    .cart-btn{padding: 1px 13px}
+    .cart-btn{padding: 1px 13px; position: relative;}
+    .cart-btn > .nb-product-cart{
+      position: absolute;
+      top: -5px;
+      right: -3px;
+      background: white;
+      font-size: 11px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      color: #d81b60;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: default;
+    }
+    .goto-formule{display: none;}
     .item-elt-foot{
       display: flex;
       flex-direction: column;
       align-items: left;
+    }
+    .nav-pills .nav-link.active, .nav-pills .show>.nav-link{
+      background: #d81b60;
     }
     .item-elt-foot .nav{display: block!important }
     .item-elt-foot .nav .nav-link{display: inline-block;}
@@ -465,7 +484,8 @@
       line-height: 2em;
     }
 
-    .navbar.navbar-toggled-show.navbar-dark .navbar-toggler svg [stroke]:not([stroke="none"]){stroke: #fff!important;}
+    /*.navbar.navbar-toggled-show.navbar-dark .navbar-toggler svg [stroke]:not([stroke="none"]){stroke: #fff!important;}*/
+    
     .navbar .shopping-cart{
       color: #fff;
       padding: 10px;
@@ -486,24 +506,25 @@
         background: #fff;
         margin: 0 1rem 0 1rem;
       }
-      .cart-btn{
+      .btn-primary.btn.cart-btn{
         background: transparent;
         border: none;
         font-size: 20px;
         padding: 0;
       }
+
       .navbar.scrolled .shopping-cart{
         color: #2C3038;
       }
-      .navbar.navbar-toggled-show.scrolled .shopping-cart{
+      /*.navbar.navbar-toggled-show.scrolled .shopping-cart{
         color: #fff;
-      }
+      }*/
       .navbar.scrolled .separe-nav-xs{
         background: #2C3038;
       }
-      .navbar.navbar-toggled-show.scrolled .separe-nav-xs{
+      /*.navbar.navbar-toggled-show.scrolled .separe-nav-xs{
         background: #fff;
-      }
+      }*/
       .navbar.navbar-toggled-show{
         box-shadow: 0px -1px 25px -5px rgba(0, 0, 0, 0.1);
       }
@@ -627,7 +648,23 @@
       .thumb-middle .image-center{display: none;}
    }
    @media(max-width: 768px){
+      .cart-btn > .nb-product-cart{
+        background: #d81b60;
+        color: #fff;
+      }
       .thumb-middle{display: block;}
+      .goto-formule{
+        display: block;
+        position: fixed;
+        bottom: 0;
+        z-index: 1000;
+        border-radius: 0;
+        width: 100%;
+        font-size: 20px;
+      }
+      footer{
+        margin-bottom: 53px;
+      }
    }
    .cart-container .form-control {
       display: block;

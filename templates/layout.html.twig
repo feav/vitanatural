@@ -101,7 +101,7 @@
                </button>
                 <a href="{{path('marque')}}#commande" class="btn btn-primary ml-lg-4 mr-3 mr-md-4 mr-lg-0 d-none d-sm-block order-lg-3" style=" font-weight: 400; ">Je commande</a>
                <span class="separe-nav-xs"></span>
-               <a class="btn btn-primary ml-lg-4 mr-lg-0 d-sm-block order-lg-3 toggle-cart cart-btn"><i class="fa fa-shopping-cart shopping-cart"></i></a>
+               <a class="btn btn-primary ml-lg-4 mr-lg-0 d-sm-block order-lg-3 toggle-cart cart-btn"> <span class="nb-product-cart">0</span><i class="fa fa-shopping-cart shopping-cart"></i></a>
             </div>
 
 
@@ -452,6 +452,7 @@
             </div>
          </div>
       </footer>
+      <a href="javascript:void()" class="btn btn-primary goto-formule">Acheter maintenant</a>
       <a href="#top" class="btn btn-primary rounded-circle btn-back-to-top" data-smooth-scroll data-aos="fade-up" data-aos-offset="2000" data-aos-mirror="true" data-aos-once="false">
       <img src="assets/img/icons/interface/icon-arrow-up.svg"  loading="lazy"class="icon bg-white" data-inject-svg>
       </a>
@@ -783,7 +784,6 @@
               }
             })
             .done(function( data ) {
-              console.log(data);
                 if(data.panier.coupons.length == 0 && data.panier.formules.length == 0 && data.panier.products.length==0){
                   $('.cart-container').css('display', 'none');
                   $('.empty-cart').css('display', 'block');
@@ -793,6 +793,7 @@
                   $('.empty-cart').css('display', 'none');
                 }
                if(data.status==200){
+                  $('.cart-btn > .nb-product-cart').text(data.panier.products.length);
                   var total = (data.panier.total-data.panier.reduction)<0?0:data.panier.total-data.panier.reduction;
                   $(".cart-total-pay").html(total.toFixed(2));
                   $(".cart-total-reduction").html(data.panier.total.toFixed(2));
@@ -891,6 +892,7 @@
                   $('.empty-cart').css('display', 'none');
                 }
                if(data.status==200){
+                $('.cart-btn > .nb-product-cart').text(data.panier.products.length);
                   var total = (data.panier.total-data.panier.reduction)<0?0:data.panier.total-data.panier.reduction;
                   $(".cart-total-pay").html(total.toFixed(2));
                   $(".cart-total-reduction").html(data.panier.total.toFixed(2));
