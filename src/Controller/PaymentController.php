@@ -524,12 +524,13 @@ class PaymentController extends AbstractController
     }
 
     /**
-      * @Route("/nos-formules", name="nos_formule", methods={"GET"})
+      * @Route("/nos-formules/{confirmationWaiting}", name="nos_formule", methods={"GET"})
      */
-    public function payementSucces(){
+    public function nosFormules($confirmationWaiting = null){
         $formule = $this->formuleRepository->findAll();
         return $this->render('home/formule.html.twig', [
-            'formules' => $formule
+            'formules' => $formule,
+            'confirmationWaiting'=> $confirmationWaiting
         ]);
     }
 }   
