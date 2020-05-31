@@ -59,6 +59,11 @@ class User implements UserInterface
     private $stripe_custom_id;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $mollie_customer_id;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     private $enabled;
@@ -308,6 +313,17 @@ class User implements UserInterface
     public function setStripeCustomId(string $stripe_custom_id): self
     {
         $this->stripe_custom_id = $stripe_custom_id;
+
+        return $this;
+    }    
+    public function getMollieCustomerId(): ?string
+    {
+        return $this->mollie_customer_id;
+    }
+
+    public function setMollieCustomerId(string $mollie_customer_id): self
+    {
+        $this->mollie_customer_id = $mollie_customer_id;
 
         return $this;
     }

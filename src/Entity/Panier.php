@@ -81,6 +81,11 @@ class Panier
     private $stripe_charge_id;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $mollie_transaction_id;
+
+    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $remboursement;
@@ -337,6 +342,17 @@ class Panier
     public function setStripeChargeId(?string $stripe_charge_id): self
     {
         $this->stripe_charge_id = $stripe_charge_id;
+
+        return $this;
+    }
+    public function getMollieTransactionId(): ?string
+    {
+        return $this->mollie_transaction_id;
+    }
+
+    public function setMollieTransactionId(?string $mollie_transaction_id): self
+    {
+        $this->mollie_transaction_id = $mollie_transaction_id;
 
         return $this;
     }

@@ -2,6 +2,9 @@
     "cboden/ratchet": {
         "version": "dev-master"
     },
+    "composer/ca-bundle": {
+        "version": "1.2.7"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -93,8 +96,17 @@
     "fpdf/fpdf": {
         "version": "1.82.1"
     },
+    "guzzlehttp/guzzle": {
+        "version": "6.5.4"
+    },
+    "guzzlehttp/promises": {
+        "version": "v1.3.1"
+    },
     "guzzlehttp/psr7": {
         "version": "1.6.1"
+    },
+    "mollie/mollie-api-php": {
+        "version": "v2.18.0"
     },
     "monolog/monolog": {
         "version": "2.0.2"

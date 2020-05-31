@@ -49,6 +49,14 @@ class Config
                 "description" => "Cle secrete Stripe" 
             ),
             array(
+                "key" => "MOLLIE_TEST_KEY",
+                "description" => "Cle test mollie" 
+            ),
+            array(
+                "key" => "MOLLIE_PROFILE_ID",
+                "description" => "ID profile mollie" 
+            ),
+            array(
                 "key" => "GOOGLE_ADWORD_JS_",
                 "description" => "Script Google Adword" 
             ),

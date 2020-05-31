@@ -37,4 +37,3 @@ security:
         - { path: '^/dashboard', roles: [IS_AUTHENTICATED_FULLY] }
 
         - { path: '^/account', roles: [IS_AUTHENTICATED_FULLY]}
-        - { path: '^/nos-formules', roles: [IS_AUTHENTICATED_FULLY]}

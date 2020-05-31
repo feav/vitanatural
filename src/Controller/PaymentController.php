@@ -15,15 +15,16 @@ use App\Repository\CommandeRepository;
 use App\Repository\PanierRepository;
 use App\Repository\FormuleRepository;
 use App\Service\StripeService;
+use App\Service\MollieService;
 use App\Service\UserService;
 use App\Service\GlobalService;
 use App\Entity\User;
 use App\Entity\Abonnement;
 use App\Entity\Panier;
 use App\Entity\Commande;
-
+/*
 use Stripe\Stripe;
-use \Stripe\Charge;
+use \Stripe\Charge;*/
 
 use Dompdf\Options;
 use Dompdf\Dompdf;
@@ -31,7 +32,7 @@ use Dompdf\Dompdf;
 class PaymentController extends AbstractController
 {   
     private $params_dir;
-    private $stripe_s;
+    private $mollie_s;
     private $user_s;
     private $userRepository;
     private $panierRepository;
@@ -41,9 +42,9 @@ class PaymentController extends AbstractController
     private $global_s;
     private $formuleRepository;
 
-    public function __construct(ParameterBagInterface $params_dir, UserRepository $userRepository, UserService $user_s, StripeService $stripe_s, AbonnementRepository $abonnementRepository, PanierRepository $panierRepository, CommandeRepository $commandeRepository, GlobalService $global_s, FormuleRepository $formuleRepository){
+    public function __construct(ParameterBagInterface $params_dir, UserRepository $userRepository, UserService $user_s, MollieService $mollie_s, AbonnementRepository $abonnementRepository, PanierRepository $panierRepository, CommandeRepository $commandeRepository, GlobalService $global_s, FormuleRepository $formuleRepository){
         $this->params_dir = $params_dir;
-        $this->stripe_s = $stripe_s;
+        $this->mollie_s = $mollie_s;
         $this->user_s = $user_s;
         $this->global_s = $global_s;
         $this->userRepository = $userRepository;
@@ -70,6 +71,7 @@ class PaymentController extends AbstractController
         $user = $this->getUser();
         $message = $result = "";
 
+        $token = $request->request->get('token');
         $panier = $this->panierRepository->findOneBy(['user'=>$user->getId(), 'status'=>0]);
         if(!is_null($panier)){
             $amount = $panier->getTotalPrice();
@@ -88,15 +90,15 @@ class PaymentController extends AbstractController
             $user = $this->user_s->register($mailer, $email, $request->request->get('name'));
             $message = "Un compte vous a été crée, des informations de connexion vous ont été envoyées à l'adresse ".$user->getEmail();
             $metadata = ['name'=>$user->getName(), 'email'=>$user->getEmail()];
-            
-            if($request->request->get('stripeSource') !== null && $amount !== null) {
-                $this->stripe_s->createStripeCustom($request->request->get('stripeSource'), $metadata);
+
+            if($token !== null && $amount !== null) {
+                $this->mollie_s->createMollieCustom($token, $metadata);
                 $preparePaid = $this->preparePaid($panier, $mailer);
                 $message = $preparePaid['message'];
                 if($preparePaid['paid']){
                     $amount = $preparePaid['amount'];
-                    $response = $this->stripe_s->proceedPayment($user, $amount);
-                    $this->stripe_s->saveChargeToRefund($panier, $response['charge']);
+                    $response = $this->mollie_s->customerFirstPaid($user, $token, $amount);
+                    $this->mollie_s->saveChargeToRefund($panier, $response['charge']);
                     $result = $response['message'];
                 }
             }
@@ -106,26 +108,26 @@ class PaymentController extends AbstractController
         else{
             $metadata = ['name'=>$user->getName(), 'email'=>$user->getEmail()];
             
-            if($request->request->get('stripeSource') !== null && $amount !== null) {
-                $this->stripe_s->createStripeCustom($request->request->get('stripeSource'), $metadata);
+            /* si l'utilisateur a renseigné une carte on lui creer un nouveau custom */
+            if($token !== null && $amount !== null) {
+                $this->mollie_s->createMollieCustom($token, $metadata);
                 $preparePaid = $this->preparePaid($panier, $mailer);
                 $message = $preparePaid['message'];
                 if($preparePaid['paid']){
                     $amount = $preparePaid['amount'];
-                    $response = $this->stripe_s->proceedPayment($user, $amount);
+                    $response = $this->mollie_s->customerFirstPaid($user, $token, $amount);
                     $result = $response['message'];
-                    $this->stripe_s->saveChargeToRefund($panier, $response['charge']);
+                    $this->mollie_s->saveChargeToRefund($panier, $response['charge']);
                 }
             }
-            elseif($user->getStripeCustomId() !=""){
+            elseif($user->getMollieCustomerId() !=""){
                 $preparePaid = $this->preparePaid($panier, $mailer);
                 $message = $preparePaid['message'];
                 if($preparePaid['paid']){
                     $amount = $preparePaid['amount'];
-                    $response = $this->stripe_s->proceedPayment($user, $amount);
-                    $this->stripe_s->saveChargeToRefund($panier, $response['charge']);
+                    $response = $this->mollie_s->proceedPayment($user, $amount);
+                    $this->mollie_s->saveChargeToRefund($panier, $response['charge']);
                     $result = $response['message'];
-                    
                 }
             }
             else
@@ -260,15 +262,15 @@ class PaymentController extends AbstractController
             return new Response("Vous n'avez aucun panier en attente de paiement", 500);
         
         /*$amount = $panier->getTotalPrice();
-        $response = $this->stripe_s->proceedPayment($user, $amount);
-        $this->stripe_s->saveChargeToRefund($panier, $response['charge']);
+        $response = $this->mollie_s->proceedPayment($user, $amount);
+        $this->mollie_s->saveChargeToRefund($panier, $response['charge']);
         $result = $response['message'];*/
         $preparePaid = $this->preparePaid($panier, $mailer);
         $message = $preparePaid['message'];
         if($preparePaid['paid']){
             $amount = $preparePaid['amount'];
-            $response = $this->stripe_s->proceedPayment($user, $amount);
-            $this->stripe_s->saveChargeToRefund($panier, $response['charge']);
+            $response = $this->mollie_s->proceedPayment($user, $amount);
+            $this->mollie_s->saveChargeToRefund($panier, $response['charge']);
             $result = $response['message'];
         }
 
@@ -309,12 +311,12 @@ class PaymentController extends AbstractController
         foreach ($abonnements as $key => $value) {
             $result = "";
             $user = $value->getUser();
-            if($value->getActive() && $user->getStripeCustomId()){
+            if($value->getActive() && $user->getMollieCustomerId()){
                 $date = $value->getStart();
                 $date->add(new \DateInterval('P'.$value->getFormule()->getTryDays().'D'));
                 
                 if(!$value->getState() && (new \Datetime() >= $date )){
-                    $result = $this->stripe_s->proceedPayment($user, $value->getFormule()->getPrice());
+                    $result = $this->mollie_s->proceedPayment($user, $value->getFormule()->getPrice());
                     if($result == ""){
                         $value->setState(1);
                         $content = "<p>Vous etes arrivé à la fin de votre periode d'essaie pour l'abonnement ".$value->getFormule()->getMonth()." mois. vous avez été débité de ".$value->getFormule()->getPrice()."€ sur votre carte</p>";
@@ -338,7 +340,7 @@ class PaymentController extends AbstractController
                     }
                 }
                 if( (new \Datetime() >= $value->getEnd()) && !$value->getIsPaid() ){
-                    $result = $this->stripe_s->proceedPayment($user, $value->getFormule()->getPrice());
+                    $result = $this->mollie_s->proceedPayment($user, $value->getFormule()->getPrice());
                     if($result == ""){
                         $value->setIsPaid(1);
                         $value->setActive(0);
@@ -524,13 +526,12 @@ class PaymentController extends AbstractController
     }
 
     /**
-      * @Route("/nos-formules/{confirmationWaiting}", name="nos_formule", methods={"GET"})
+      * @Route("/nos-formules/", name="nos_formule", methods={"GET"})
      */
-    public function nosFormules($confirmationWaiting = null){
+    public function nosFormules(){
         $formule = $this->formuleRepository->findAll();
         return $this->render('home/formule.html.twig', [
             'formules' => $formule,
-            'confirmationWaiting'=> $confirmationWaiting
         ]);
     }
 }   

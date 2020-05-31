@@ -155,7 +155,7 @@
             <ul class="list-recap">
             </ul>
             <div>
-              <a href="{{path('paiement_cart')}}" class="btn btn-primary ml-lg-4 mr-3 mr-md-4 mr-lg-0 d-sm-block order-lg-3">Paiement de <b class="cart-total-pay">o</b>€ <strike><i class="cart-total-reduction">0</i>€ </strike></a>
+              <a href="{{path('paiement_cart')}}" class="btn btn-primary ml-lg-4 mr-3 mr-md-4 mr-lg-0 d-sm-block order-lg-3 goto-checkout">Paiement de <b class="cart-total-pay">o</b>€ <strike><i class="cart-total-reduction">0</i>€ </strike></a>
             </div>
             {% if is_granted('IS_AUTHENTICATED_FULLY') and (app.user.getStripeCustomId is not null) %}
               <div style="text-align: center;margin-top: 19px;font-size: 16px">
@@ -452,7 +452,7 @@
             </div>
          </div>
       </footer>
-      <a href="{{path('nos_formule')}}" class="btn btn-primary goto-formule">Acheter maintenant</a>
+      <a href="{{path('marque')}}" class="btn btn-primary goto-formule">Acheter maintenant</a>
       <a href="#top" class="btn btn-primary rounded-circle btn-back-to-top" data-smooth-scroll data-aos="fade-up" data-aos-offset="2000" data-aos-mirror="true" data-aos-once="false">
       <img src="assets/img/icons/interface/icon-arrow-up.svg"  loading="lazy"class="icon bg-white" data-inject-svg>
       </a>
@@ -504,15 +504,10 @@
    <!--<script type="text/javascript" src="{{ asset('assets/js/typed.min.js')}}"></script>-->
   
   
-  
-  
-  
   <script type="text/javascript" src="{{ asset('assets/Notification/js/ussal-notification.js')}}"></script>
   
   <!-- Removes page load animation when window is finished loading -->
-  <script src="https://js.stripe.com/v3/"></script>
-
-
+  
   <script type="text/javascript">
     window.addEventListener("load",function(){
       document.querySelector('body').classList.add('loaded');
@@ -784,13 +779,15 @@
               }
             })
             .done(function( data ) {
-                if(data.panier.coupons.length == 0 && data.panier.formules.length == 0 && data.panier.products.length==0){
+                if(data.panier && data.panier.coupons.length == 0 && data.panier.formules.length == 0 && data.panier.products.length==0){
                   $('.cart-container').css('display', 'none');
                   $('.empty-cart').css('display', 'block');
+                  $('.goto-checkout').css('pointer-events', 'none');
                 }
                 else{
                   $('.cart-container').css('display', 'block');
                   $('.empty-cart').css('display', 'none');
+                  $('.goto-checkout').css('pointer-events', 'auto');
                 }
                if(data.status==200){
                   $('.cart-btn > .nb-product-cart').text(data.panier.products.length);
@@ -883,13 +880,16 @@
               }
             })
             .done(function( data ) {
-              if(data.coupons && data.coupons.length == 0 && data.formules.length == 0 && data.produits.length==0){
+              if(data.panier && data.panier.coupons.length == 0 && data.panier.formules.length == 0 && data.panier.products.length==0){
                   $('.cart-container').css('display', 'none');
                   $('.empty-cart').css('display', 'block');
-                }
+                  $('.goto-checkout').css('pointer-events', 'none');
+                  console.log('gogo');
+              }
                 else{
                   $('.cart-container').css('display', 'block');
                   $('.empty-cart').css('display', 'none');
+                  $('.goto-checkout').css('pointer-events', 'auto');
                 }
                if(data.status==200){
                 $('.cart-btn > .nb-product-cart').text(data.panier.products.length);
@@ -928,128 +928,70 @@
   
 </script>
 <script type="text/javascript">
-        $paidLaunch = false;
-        $formulePaid = false;
-        var stripe = Stripe("{{STRIPE_PUBLIC_KEY}}");
+  $paidLaunch = false;
+  $formulePaid = false;
 
-        var elements = stripe.elements();
-        var style = {
-          base: {
-            color: '#32325d',
-            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-            fontSmoothing: 'antialiased',
-            fontSize: '16px',
-            '::placeholder': {
-              color: '#aab7c4'
+    function checklogin(){
+      $.ajax({
+         contentType: "application/json",
+         dataType: "json",
+         url: "{{ path('api_use_connected_or_exist') }}",
+         data: {
+          name: $('#payment-form input[name=name]').val(),
+          email: $('#payment-form input[name=email]').val()
+         },
+         beforeSend: function( xhr ) {
+          $('#modal-payment button.submit').text('Verification connexion...');
+         }
+       })
+      .done(function( data ) {
+          /* l'user est loggé ou compte nouvellement crée */
+          if(data.status == 200){
+            var x = window.localStorage.getItem('panier');
+            if(x){
+              $('#modal-payment button.submit').text('Enregistrement de la commande...');
+              $paidLaunch = true;
+              synch_card();
             }
-          },
-          invalid: {
-            color: '#fa755a',
-            iconColor: '#fa755a'
+            else
+              proceedPayment();
           }
-        };
+          else{
+            $('#modal-payment button.submit').css('pointer-events','auto');
+            $('.lds-ripple').css('display','none');
+            $('#modal-payment button.submit').text('Valider');
 
-        // Create an instance of the card Element.
-        var card = elements.create('card', {
-            style: style,
-            hidePostalCode : true
-        });
-
-        // Add an instance of the card Element into the `card-element` <div>.
-        card.mount('#card-element');
-
-        // Handle real-time validation errors from the card Element.
-        card.addEventListener('change', function(event) {
-          var displayError = document.getElementById('card-errors');
-          if (event.error) {
-            displayError.textContent = event.error.message;
-          } else {
-            displayError.textContent = '';
+            $("#modal-payment .alert-dismissible").show().delay(60000).fadeOut();
+            $('#modal-payment .alert-dismissible').removeClass('alert-success');
+            $('#modal-payment .alert-dismissible').addClass('alert-danger');
+            $('#modal-payment .alert-dismissible .text').html(data.message);
           }
-        });
+      });
+    }
 
-        // Handle form submission.
+    function proceedPayment(){
+      $('#modal-payment button.submit').text('Initialisation paiement...');
         var form = document.getElementById('payment-form');
-        form.addEventListener('submit', function(event) {
-          $('#modal-payment button.submit').css('pointer-events','none');
-            event.preventDefault();
-            function validate(){
-                try{
-                    var validator = $('#payment-form').validate({
-                        rules:{
-                            name:{
-                                required:true
-                            },
-                            email:{
-                                required:true,
-                                email:true
-                            },
-                        }
-                    });
-                    
-                    var $validated = $('#payment-form').valid();
-                    return $validated;
-                }catch(error){
-                    console.log(error)
-                }
-            }
-            var ownerInfo = {
-                owner: {},
-            };
-            stripe.createSource(card, ownerInfo).then(function(result) {
-                if (!validate() || result.error) {
-                  var errorElement = document.getElementById('card-errors');
-                  errorElement.textContent = result.error.message;
-                  $('#modal-payment button.submit').css('pointer-events','auto');
-                } else {
-                  stripeSourceHandler(result.source);
-                }
-            });
-        });
+        oData = new FormData(form);
+        var oReq = new XMLHttpRequest();
+        oReq.open("POST", $('#payment-form').attr('action'), true);
+        oReq.onload = function(oEvent) {
+            if (oReq.status == 200) {
+                $(".success-checkmark").show().delay(3000).fadeOut();
+                $(".check-icon").show().show().delay(3000).fadeOut();
+                notification("Paiement commande",oReq.response,"success");
+                card.clear();
+                $('#modal-payment button.submit').css('pointer-events','auto');
+                $('.lds-ripple').css('display','none');
 
-        function stripeSourceHandler(source) {
-          $('#modal-payment button.submit').css('pointer-events','none');
-            $('.lds-ripple').css('display','inline-block');
-            // Insert the source ID into the form so it gets submitted to the server
-            var form = document.getElementById('payment-form');
-            var hiddenInput = document.createElement('input');
-            hiddenInput.setAttribute('type', 'hidden');
-            hiddenInput.setAttribute('name', 'stripeSource');
-            hiddenInput.setAttribute('value', source.id);
-            form.appendChild(hiddenInput);
-
-            // Submit the form
-            //form.submit();
-
-            checklogin();
-        }
-
-        function checklogin(){
-          $.ajax({
-             contentType: "application/json",
-             dataType: "json",
-             url: "{{ path('api_use_connected_or_exist') }}",
-             data: {
-              name: $('#payment-form input[name=name]').val(),
-              email: $('#payment-form input[name=email]').val()
-             },
-             beforeSend: function( xhr ) {
-              $('#modal-payment button.submit').text('Verification connexion...');
-             }
-           })
-          .done(function( data ) {
-              /* l'user est loggé ou compte nouvellement crée */
-              if(data.status == 200){
-                var x = window.localStorage.getItem('panier');
-                if(x){
-                  $('#modal-payment button.submit').text('Enregistrement de la commande...');
-                  $paidLaunch = true;
-                  synch_card();
-                }
-                else
-                  proceedPayment();
-              }
-              else{
+                $("#modal-payment .alert-dismissible").show().delay(40000).fadeOut();
+                $('#modal-payment .alert-dismissible').removeClass('alert-danger');
+                $('#modal-payment .alert-dismissible').addClass('alert-success');
+                $('#modal-payment .alert-dismissible .text').text(oReq.response);
+                $('#modal-payment button.submit').text('Valider');
+                window.localStorage.removeItem('panier');
+            }else {
+                notification("Paiement commande",oReq.response,"error");
                 $('#modal-payment button.submit').css('pointer-events','auto');
                 $('.lds-ripple').css('display','none');
                 $('#modal-payment button.submit').text('Valider');
@@ -1057,103 +999,68 @@
                 $("#modal-payment .alert-dismissible").show().delay(60000).fadeOut();
                 $('#modal-payment .alert-dismissible').removeClass('alert-success');
                 $('#modal-payment .alert-dismissible').addClass('alert-danger');
-                $('#modal-payment .alert-dismissible .text').html(data.message);
-              }
-          });
-        }
-
-        function proceedPayment(){
-          $('#modal-payment button.submit').text('Initialisation paiement...');
-            var form = document.getElementById('payment-form');
-            oData = new FormData(form);
-            var oReq = new XMLHttpRequest();
-            oReq.open("POST", $('#payment-form').attr('action'), true);
-            oReq.onload = function(oEvent) {
-                if (oReq.status == 200) {
-                    $(".success-checkmark").show().delay(3000).fadeOut();
-                    $(".check-icon").show().show().delay(3000).fadeOut();
-                    notification("Paiement commande",oReq.response,"success");
-                    card.clear();
-                    $('#modal-payment button.submit').css('pointer-events','auto');
-                    $('.lds-ripple').css('display','none');
-
-                    $("#modal-payment .alert-dismissible").show().delay(40000).fadeOut();
-                    $('#modal-payment .alert-dismissible').removeClass('alert-danger');
-                    $('#modal-payment .alert-dismissible').addClass('alert-success');
-                    $('#modal-payment .alert-dismissible .text').text(oReq.response);
-                    $('#modal-payment button.submit').text('Valider');
-                    window.localStorage.removeItem('panier');
-                }else {
-                    notification("Paiement commande",oReq.response,"error");
-                    $('#modal-payment button.submit').css('pointer-events','auto');
-                    $('.lds-ripple').css('display','none');
-                    $('#modal-payment button.submit').text('Valider');
-
-                    $("#modal-payment .alert-dismissible").show().delay(60000).fadeOut();
-                    $('#modal-payment .alert-dismissible').removeClass('alert-success');
-                    $('#modal-payment .alert-dismissible').addClass('alert-danger');
-                    $('#modal-payment .alert-dismissible .text').html(oReq.response);
-                }
-            };
-            oReq.send(oData);  
-        }
-        function proceedPayment2(){
-          $('.btn-next').text('Initialisation paiement...');
-            var form = document.getElementById('form-stripe');
-            oData = new FormData(form);
-            var oReq = new XMLHttpRequest();
-            oReq.open("POST", $('#form-stripe').attr('action'), true);
-            oReq.onload = function(oEvent) {
-                if (oReq.status == 200) {
-                    $(".success-checkmark").show().delay(3000).fadeOut();
-                    $(".check-icon").show().show().delay(3000).fadeOut();
-                    notification("Paiement commande",oReq.response,"success");
-                    card.clear();
-                    submitting('reset');
-                    window.localStorage.removeItem('panier');
-                    window.location.href = "{{path('nos_formule', {'confirmationWaiting':'true'})}}";
-                }else {
-                    notification("Paiement commande",oReq.response,"error");
-                    submitting('reset');
-                }
-            };
-            oReq.send(oData);  
-        }
-
-
-        $('.oneClickPaid').click(function(e){
-          $(this).css('pointer-events', 'none');
-          var $url = $(this).attr("href");
-          proceed($url, $(this));
-          e.preventDefault();
-        });
-        function proceed($url, $that){
-          $realText = $that.text();
-          $that.text('Initialisation paiement...');
-          $.ajax({
-              url: $url,
-              type: "GET",
-              dataType: "json",
-              async: true,
-              data: {},
-              success: function(data, status) {
-                $that.css('pointer-events', 'auto');
-                $that.text($realText);
-                notification("Paiement commande","Opération effectuée avec succèss","success");
+                $('#modal-payment .alert-dismissible .text').html(oReq.response);
+            }
+        };
+        oReq.send(oData);  
+    }
+    function proceedPayment2(){
+      $('.btn-next').text('Initialisation paiement...');
+        var form = document.getElementById('form-stripe');
+        oData = new FormData(form);
+        var oReq = new XMLHttpRequest();
+        oReq.open("POST", $('#form-stripe').attr('action'), true);
+        oReq.onload = function(oEvent) {
+            if (oReq.status == 200) {
+                $(".success-checkmark").show().delay(3000).fadeOut();
+                $(".check-icon").show().show().delay(3000).fadeOut();
+                notification("Paiement commande",oReq.response,"success");
+                card.clear();
+                submitting('reset');
                 window.localStorage.removeItem('panier');
-                if($formulePaid)
-                  window.location.href = "{{path('success_payment')}}";
-                else
-                  window.location.href = "{{path('nos_formule')}}";
+                window.location.href = "{{path('nos_formule')}}";
+            }else {
+                notification("Paiement commande",oReq.response,"error");
+                submitting('reset');
+            }
+        };
+        oReq.send(oData);  
+    }
 
-              },
-              error: function(xhr, responseText, errorThrown) {
-                $that.css('pointer-events', 'auto');
-                $that.text($realText);
-                notification("Paiement commande",xhr.responseText,"error");
-              }
-          });
-        }
+
+    $('.oneClickPaid').click(function(e){
+      $(this).css('pointer-events', 'none');
+      var $url = $(this).attr("href");
+      proceed($url, $(this));
+      e.preventDefault();
+    });
+    function proceed($url, $that){
+      $realText = $that.text();
+      $that.text('Initialisation paiement...');
+      $.ajax({
+          url: $url,
+          type: "GET",
+          dataType: "json",
+          async: true,
+          data: {},
+          success: function(data, status) {
+            $that.css('pointer-events', 'auto');
+            $that.text($realText);
+            notification("Paiement commande","Opération effectuée avec succèss","success");
+            window.localStorage.removeItem('panier');
+            if($formulePaid)
+              window.location.href = "{{path('success_payment')}}";
+            else
+              window.location.href = "{{path('nos_formule')}}";
+
+          },
+          error: function(xhr, responseText, errorThrown) {
+            $that.css('pointer-events', 'auto');
+            $that.text($realText);
+            notification("Paiement commande",xhr.responseText,"error");
+          }
+      });
+    }
 </script>
 
 <script type="text/javascript">
