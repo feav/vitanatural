@@ -9,152 +9,7 @@
         {% block dataStructured %}{% endblock %}
         {% block stylesheets %}{% endblock %}
         {#<link rel="stylesheet" href="{{ asset('assets/plugins/toastr/toastr.min.css') }}"/>#}
-        <style type="text/css">
-          label.error{
-            color: #bf0c0c;
-            font-size: 13px;
-            font-style: italic;
-          }
-
-        </style>
-    <style type="text/css">
-     
-      .navbar ul.navbar-nav li.nav-item a{
-        color: white;
-      }
-      .btn-primary.btn {
-          background-color: #d81b60;
-          border-color: #d81b60;
-      }
-      .btn-outline-primary {
-          color: #d81b5f;
-          border-color: #d81b5f;
-      }
-      .btn-outline-primary {
-          border-color: rgb(216, 27, 95);
-      }
-      .btn-outline-primary:hover,.btn-primary:hover  {
-            background-color:#fff;
-            border-color: rgba(216, 27, 95, 0.46);
-            color: #d81b5f;
-      }
-      h1.display-3 mark span {
-          font-size: 50px;
-      }
-      .o-hidden section.pb-0 {
-          padding: 3rem 0 !important;
-      }
-      .btn-lg, .btn-group-lg > .btn {
-          padding: 0.6rem 2.25rem;
-          font-size: 1.25rem;
-          line-height: 1.5;
-          border-radius: 100px;
-      }
-      .plyr__controls {
-          display: none;
-      }
-      mark{
-        background-image: linear-gradient(120deg, rgba(255, 121, 5, 0.61) 0%, rgba(224, 116, 69, 0.59) 100%);
-      }
-      .o-hidden section.pb-0.no-border-bottom {
-          padding: 0rem 0 !important;
-          padding-top: 3rem  !important;
-      }
-      .card-body {
-          flex: 1 1 auto;
-          padding: 1rem;
-      }
-      .card.card-body img{
-        border-radius: 100%;
-        background: white !important;
-        padding: 5px;
-      }
-      section.bg{
-        background-image: url(https://www.brulafine.com/assets/images/product/konjac.png);
-        background-repeat: no-repeat;
-        background-position-x: 115%;
-        background-position-y: 25%;
-      }
-      section.bg .card.bg-white {
-          border-color: rgb(25, 45, 52);
-          background-color: rgba(35, 56, 64, 0.91) !important;
-      }
-      a.nav-link.nav-item {
-          font-size: medium;
-      }
-      .bg-primary {
-          background-color: #192d34 !important;
-      }
-      section {
-          padding: 3rem 0;
-      }
-      .card.card-body img{
-        width: 50px;
-      }
-      img.card-img-top {
-          height: 260px;
-      }
-      .col.font-reduce a {
-        font-size: 12px;
-      }
-      .col.font-reduce div {
-          font-size: 11px;
-      }
-      a.img-quality img {
-          width: 95%;
-      }
-      .position-fixed.navbar-light .navbar-nav .nav-link , .position-lock.navbar-light .navbar-nav .nav-link {
-          color: rgb(255, 255, 255);
-      }
-      .navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-nav .nav-link:focus {
-          color: rgb(255, 255, 255);
-      }
-      .navbar-light .navbar-nav .nav-link::after {
-        background: #fefefe;
-      }
-      .bg-gradient {
-          /*background: linear-gradient(to right, #d81b60 0%, #e28c39 100%) !important;*/
-      }
-      
-        .signup-form .form-control {
-          padding: 1.7rem 1.5rem;
-          color: #000;
-          background: #e2eeff;
-          border-color: #000;
-        }
-
-        .signup-form .form-control:focus {
-          color: #000;
-          border-color: #000;
-        }
-         .signup-form ::-webkit-input-placeholder {
-         color: #000 !important;
-         font-size: 18px;
-        }
-        .signup-form ::-moz-placeholder {
-         color: #000 !important;
-         font-size: 18px;
-        }
-        .signup-form :-ms-input-placeholder {
-         color: #000 !important;
-         font-size: 18px;
-        }
-        .signup-form :-moz-placeholder {
-         color: #000 !important;
-         font-size: 18px;
-        }
-         @-webkit-keyframes autofill {
-         to {
-         color: #000;
-         background: #e2eeff;
-        }
-        .form-group {
-            margin-bottom: 15px !important;
-        }
-        a {
-            color: #d81b5f !important;
-        }
-    </style>
+        <link rel="stylesheet" type="text/css" href="{{asset('assets/css/base.css')}}">
     </head>
     <body data-base-url="{{url('home')}}" class="{% block class %}{% endblock %}">
     
@@ -164,26 +19,26 @@
       <div class="toast__cell">
       </div>
     </div>
-        {% block css_hide_nav %}
+      {% block css_hide_nav %}
 
-          <style type="text/css">
-            nav.position-lock.navbar ul.navbar-nav li.nav-item a {
-                 color: rgba(0, 0, 0, 0.6);
-            }
-            nav.position-lock.navbar  img.logo.default-logo{
-                display: none;
-            }
-             nav.position-lock.navbar  img.logo.scrolled-logo{
-                display: block;
-            }
-        </style>
-        {% endblock %}
-        {% block javascripts %}{% endblock %}
+        <style type="text/css">
+          nav.position-lock.navbar ul.navbar-nav li.nav-item a {
+               color: rgba(0, 0, 0, 0.6);
+          }
+          nav.position-lock.navbar  img.logo.default-logo{
+              display: none;
+          }
+           nav.position-lock.navbar  img.logo.scrolled-logo{
+              display: block;
+          }
+      </style>
+      {% endblock %}
+      {% block javascripts %}{% endblock %}
 
-        <script src="{{ asset('assets/plugins/toastr/toastr.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/jqueryvalidation/jquery.validate.min.js') }}"></script>
+      {#<script src="{{ asset('assets/plugins/toastr/toastr.min.js') }}"></script>
+      <script src="{{ asset('assets/plugins/jqueryvalidation/jquery.validate.min.js') }}"></script>
       <script src="{{ asset('assets/plugins/jqueryvalidation/localization/messages_fr.min.js') }}"></script>
-      <script src="{{ asset('assets/plugins/jqueryvalidation/additional-methods.min.js') }}"></script>
+      <script src="{{ asset('assets/plugins/jqueryvalidation/additional-methods.min.js') }}"></script>#}
       <script>
         jQuery(document).ready(function() { 
             {% for message in app.flashes('success') %}
@@ -205,5 +60,5 @@
             return true;
         };
     </script>
-    </body>
+  </body>
 </html>

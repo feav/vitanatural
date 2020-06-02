@@ -893,6 +893,7 @@
                 }
                if(data.status==200){
                 $('.cart-btn > .nb-product-cart').text(data.panier.products.length);
+                $('.cart-btn > .nb-product-cart').text(data.panier.products.length);
                   var total = (data.panier.total-data.panier.reduction)<0?0:data.panier.total-data.panier.reduction;
                   $(".cart-total-pay").html(total.toFixed(2));
                   $(".cart-total-reduction").html(data.panier.total.toFixed(2));
@@ -1026,7 +1027,6 @@
         };
         oReq.send(oData);  
     }
-
 
     $('.oneClickPaid').click(function(e){
       $(this).css('pointer-events', 'none');

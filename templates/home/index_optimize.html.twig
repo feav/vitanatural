@@ -1,0 +1,168 @@
+{% extends 'layout_optimize.html.twig' %}
+{% block title %} {{parent()}} | Accueil {% endblock %}
+{% block meta %}
+<meta name="description" content="">
+{% endblock %}
+{% block dataStructured %}{% endblock %}
+{% block stylesheets %}
+{{parent()}}
+  <link rel="stylesheet" type="text/css" href="{{asset('assets/css/index.css')}}">
+{% endblock %}
+{% block body_web %}
+<div data-overlay class="bg-primary-3 jarallax text-white" data-jarallax data-speed="0.2">
+   <section class="pb-0">
+      <img src="{{asset('assets/img/home-min.jpeg')}}" class=" jarallax-img" loading="lazy">
+      <div class="container pb-5">
+         <div class="row section-title justify-content-center text-center">
+            <div class="col-md-9 col-lg-8 col-xl-9">
+               <h2 class="display-4" style="
+                  margin-bottom: 5px;
+                  font-weight: 100;
+                  ">Vita, l'arme redoutable pour enlevé vos points noir</h2>
+               <div class="lead" style="
+                  font-size: 29px;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  ">Objectif peau parfaite en 4 passages</div>
+            </div>
+         </div>
+      </div>
+      <div class="divider divider-bottom bg-primary-1 mt-5"></div>
+   </section>
+</div>
+
+<section class="pt-0 pb-0">
+   <div class="container">
+      <div class="row align-items-center justify-content-center justify-content-lg-between text-center text-lg-left" style="
+         margin-top: -150px;
+         ">
+         <div class="col-md-10 col-lg-7 col-xl-6 pl-lg-5 pl-xl-0">
+            <img src="{{asset('assets/img/prod-min.png')}}" loading="lazy" class="img-fluid" style="width: 210px;float: right;margin-right: 25%;">
+         </div>
+         <div class="col-md-8 col-lg-4 col-xl mt-4 mt-md-5 mt-lg-0" style="padding-top: 13px;border-radius: 6px;box-shadow: 0px -165px 120px 2px rgba(0, 0, 0, 0.09) !important;">
+            <div class="rounded o-hidden">
+               <div class="rounded o-hidden">
+                  <div class="plyr" data-plyr-provider="youtube" data-plyr-embed-id="NM-eXztJFc4"></div>
+               </div>
+            </div>
+            <p class="lead" style="
+               margin-top: 15px;
+               font-size: 15px;
+               margin-bottom: 15px;
+               font-weight: 500;
+               line-height: 20px;
+               ">Une gélule composée de trois actifs brûleurs de graisse naturels particulièrement efficaces pour vaincre les kilos en trop *</p>
+            <a href="{{path('marque')}}#commande" class="btn btn-primary-3 btn-lg" style="
+               border-radius: 6px;
+               font-weight: 500;
+               font-size: 18px;
+               padding: 15px 30px;
+               ">Achetez maintenant</a>
+         </div>
+      </div>
+   </div>
+</section>
+<section style=" padding-top: 100px;  " class="rowlyo-section">
+   <div class="container">
+      <div class="row justify-content-center rowlyo">
+         <div >
+            <div>
+               <img  alt="miniature" loading="lazy" style="width: 60px;height: auto;" src="https://www.brulafine.com/assets/images/footer-icon-01.svg"  class="jarallax-img">
+            </div>
+            <div>
+               <p>100% NATUREL</p>
+               <p>Ingrédients végétaux,
+                  sains et efficaces.
+               </p>
+            </div>
+         </div>
+         <div >
+            <div>
+               <img  alt="miniature" style="width: 60px;height: auto;" src="https://www.brulafine.com/assets/images/footer-icon-04.svg" loading="lazy"   class="jarallax-img">
+            </div>
+            <div >
+               <p >FABRIQUÉ EN FRANCE</p>
+               <p >Engagement local,
+                  Production locale.
+               </p>
+            </div>
+         </div>
+         <div >
+            <div >
+               <img  alt="miniature" style="width: 60px;height: auto;" src="https://www.brulafine.com/assets/images/footer-icon-07.svg"  class="jarallax-img" loading="lazy" >
+            </div>
+            <div >
+               <p >PAR UN LABORATOIRE</p>
+               <p >Toutes nos cures ont été crée par un laboratoire Français.</p>
+            </div>
+         </div>
+         <div >
+            <div>
+               <img  alt="miniature" style="width: 60px;height: auto;" src="https://www.brulafine.com/assets/images/footer-icon-05.svg"  class="jarallax-img" loading="lazy" >
+            </div>
+            <div >
+               <p >LIVRAISON GRATUITE</p>
+               <p >Frais de port offerts en rejoignant le Club Nutridia.</p>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+
+<div class="custom-lazy-load" lazy-target="index">
+   <div class="ph-item">
+     <div class="ph-col-12">
+       <div class="ph-picture"></div>
+       <div class="ph-row">
+         <div class="ph-col-4"></div>
+         <div class="ph-col-8 empty"></div>
+         <div class="ph-col-12"></div>
+       </div>
+     </div>
+     <!-- <div class="ph-col-2">
+       <div class="ph-avatar"></div>
+     </div> -->
+     <div>
+       <div class="ph-row">
+         <div class="ph-col-12"></div>
+         <div class="ph-col-2"></div>
+         <div class="ph-col-10 empty"></div>
+         <div class="ph-col-8 big"></div>
+         <div class="ph-col-4 big empty"></div>
+       </div>
+     </div>
+   </div>
+</div>
+<div class="custom-lazy-load" lazy-target="temoignage">
+   <div class="ph-item">
+     <div>
+       <div class="ph-row">
+         <div class="ph-col-12"></div>
+       </div>
+     </div>
+   </div>
+</div>
+<div class=" section-title justify-content-center text-center" style=" margin-bottom: 0; padding: 3.6875rem 0;">
+</div>
+<div class="custom-lazy-load" lazy-target="instagram">
+   <div class="ph-item">
+     <div>
+       <div class="ph-row">
+         <div class="ph-col-12"></div>
+       </div>
+     </div>
+   </div>
+</div>
+{% endblock body_web %}
+{% block javascripts %}
+{{parent()}}
+   
+    {%  if coupon %}
+    <script type="text/javascript">
+
+           $(document).ready(function() {
+               addToCard('{{coupon}}',1,'coupon');
+           });
+    </script>
+    {% endif %}
+{% endblock %}

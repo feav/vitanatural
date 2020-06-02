@@ -70,6 +70,28 @@ class HomeController extends AbstractController
             'temoignages' => $temoignage,
             'coupon' => $coupon
         ]);
+    }    
+
+    /**
+     * @Route("/home", name="home_optimize")
+     */
+    public function index2(FormuleRepository $formuleRepository,TemoignageRepository $temoignageRepository)
+    {
+        $coupon = 0;
+        if(isset($_GET['code_promo']) && $_GET['code_promo'] != ''){
+            $coupon = $_GET['code_promo'];
+        }
+        $products = $this->prodService->findAll();
+        $formule = $formuleRepository->findAll();
+        $temoignage = $temoignageRepository->findAll();
+        
+        return $this->render('home/index_optimize.html.twig', [
+            'controller_name' => 'Brulafine',
+            'products' => $products,
+            'formules' => $formule,
+            'temoignages' => $temoignage,
+            'coupon' => $coupon
+        ]);
     }
 
     /**

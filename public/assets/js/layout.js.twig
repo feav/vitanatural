@@ -1,0 +1,706 @@
+
+    window.addEventListener("load",function(){
+      document.querySelector('body').classList.add('loaded');
+    });
+    $('.toggle-cart').click(function(){
+      $('.cart-wrapper').toggleClass('open');
+    })
+    $(".open-modal-payment").click(function(){
+      $("#modal-payment").modal({backdrop: "static"});
+    });
+    $("#modal-payment").on('click', '.open-sign-in-modal', (function(event){
+      $("#sign-in-modal").modal({backdrop: "static"});
+    }));
+    $('.close-alert-msg').click(function(){
+      $('#modal-payment .alert-dismissible').css('display','none');
+    });
+
+    /*********/
+
+    function toogleNotif(set) {
+      var notif = localStorage.getItem('notif_');
+      if(set){
+            localStorage.setItem('notif_', !notif);
+            notif = localStorage.getItem('notif_');
+      }
+      if(notif){
+        $("#show-massage").hide();
+      }else{
+        $("#show-massage").show();
+
+      }
+    }
+    function toggleMute() {
+            var video=document.getElementById("videoHeader");
+            if(video.muted){
+              video.muted = false;
+            } else {
+              debugger;
+              video.muted = true;
+            }
+            var sound = localStorage.getItem('sound');
+            localStorage.setItem('sound', !sound);
+    }
+
+     var LENGTH_CARD = 0;
+     var prods = [];
+
+     function addToCardForm(id,price,name,img){
+        var modal = $("#add-product-modal");
+        $("#add-product-modal .product-image").attr('src','{{asset("assets/img/products")}}/'+img);
+        $("#add-product-modal .product-name").html(name);
+        $("#add-product-modal .product-id-input").val(id);
+        $("#add-product-modal .product-price").html(price+"€");
+        $("#add-product-modal .product-price-input").html(id);
+        $("#add-product-modal .product-quantity-input").val(1);
+     }
+     function updateQty(id, action){
+      $qtyInput = $('.control-qte .input-qte-'+id);
+        var qty = parseInt($qtyInput.val());
+        if(action == 0 && qty >0){
+          qty -= 1;
+          $qtyInput.val(qty);
+        }
+        else if(action == 1){
+          qty += 1;
+          $qtyInput.val(qty);
+        }
+        else{
+          notification("Modification du quantité","la quantité n'est pas bonne","error");
+          return false;
+        }
+        addToCard(id, qty);
+     }
+
+     function itemProduct(id,img, name, quantity, price, oldprice){
+        var qty = '<span class="qte-change qty-plus" onclick="updateQty('+id+',1)">+</span>'+
+                '<input class="input-qte input-qte-'+id+'" type="text" value="'+quantity+'">'+
+                '<span class="qte-change qty-min" onclick="updateQty('+id+',0)">-</span>';
+        if(parseInt(price.toFixed(1))==0){
+          qty = '<label>'+quantity+'</label>';
+        }
+        return '<div class="product-item product-'+id+'">'+
+              '<img src="{{asset("assets/img/products")}}/'+img+'" class="product-img">'+
+              '<div class="control-qte">'+
+                qty +
+              '</div>'+
+              '<ul class="detail-list">'+
+                '<li class="detail-item product-name">'+
+                  (parseInt(price.toFixed(1))? name : 'Offert : '+ name )+
+                '</li>'+
+                '<li class="detail-item product-qte">'+' x '+price+'€ <strike>'+(parseFloat(oldprice).toFixed(1)*quantity)+'€</strike>'+
+                '</li>'+
+              '</ul>'+
+            '</div>';
+     }
+     function itemFormule(id, name, quantity, price){
+        return '<div class="product-item formule-'+id+'">'+
+              '<img src="{{asset("assets/img/products/avatar.png")}}" class="product-img">'+
+              '<ul class="detail-list">'+
+                '<li class="detail-item product-name">Abonnement '+
+                  name+
+                '</li>'+
+                '<li class="detail-item product-qte">'+
+                 +price+'€ valables <span>'+quantity+' mois</span>'+
+                '</li>'+
+                '<li class="detail-item product-etat">'+
+                  '<a href="javascript:void" onclick=" addFormuleToCard('+id+',0)">supprimé</a>'+
+                '</li>'+
+              '</ul>'+
+            '</div>';
+     }
+
+    function itemRecap(products, total_amount, total_reduction, reduction){
+      $ELT = $('.cart-container .list-recap');
+      var DATA_STRING = ""; 
+      products.forEach(function(item, index){
+        if(item.price > 0){
+          DATA_STRING += '<li class="recap-item">'+
+                  '<span class="recap-label">'+item.name+' x '+item.quantity+'</span>'+
+                  '<span class="recap-value">'+item.price+'€</span>'+
+                '</li>';
+        }
+      });
+      DATA_STRING += '<li class="recap-item">'+
+                  '<span class="recap-label">Réduction</span>'+
+                  '<span class="recap-value">(-'+(total_amount?parseInt( (reduction*100)/ total_amount):0)+'%) -'+reduction.toFixed(2)+'€</span>'+
+                '</li>'+
+                '<li class="recap-item">'+
+                  '<span class="recap-label">Livraison</span>'+
+                  '<span class="recap-value">{{livraison_montant}}€</span>'+
+                '</li>'+
+                '<li class="recap-item">'+
+                  '<span class="recap-label">Total</span>'+
+                  '<span class="recap-value">'+total_reduction+'€</span>'+
+                '</li>';
+      $ELT.html(DATA_STRING);
+    }
+
+     function itemCoupon(id,name, value){
+        return '<li class="item coupon-'+id+'">'+
+                  '<span>Réduction:</span>'+
+                  '<span>'+name+' (-'+value+')</span>'+
+                '</li>';
+     }
+     function addCouponToCard(target,qty=1){
+        var code = $(target).val();
+        addToCard(code,qty,"coupon");
+     }
+     function addFormuleToCard(id,qty=1){
+        addToCard(id,qty,"formule");
+      }
+    function synch_card(){
+      $.ajax({
+           contentType: "application/json",
+           dataType: "json",
+           url: "{{ path('api_use_connected') }}",
+           beforeSend: function( xhr ) {
+            $('.btn-add-to-card').css('pointer-events','none');
+            $('.btn-add-to-card').text('Ajout...');
+           }
+         })
+      .done(function( data ) {
+         if(data.status==200){
+            var x = window.localStorage.getItem('panier');
+            if(x){
+               prods = JSON.parse(x);
+
+               prods.forEach(function(item, index){
+                  console.log("add "+item.type+" : "+item.id);
+                  addToCard(item.id,item.qty,item.type);
+               })
+
+               window.localStorage.removeItem('panier');
+            }
+            
+         }
+      });
+      
+    } 
+    function addToCard(id=-1,qty=-1,type="product"){
+      $.ajax({
+           contentType: "application/json",
+           dataType: "json",
+           url: "{{ path('api_use_connected') }}",
+           beforeSend: function( xhr ) {
+            $('.btn-add-to-card').css('pointer-events','none');
+            $('.btn-add-to-card').text('Ajout...');
+           }
+         })
+      .done(function( data ) {
+         if(data.status==200){
+            addToCard_connected(id,qty,type);
+            
+         }else{
+            addToCard_not_connected(id,qty,type);
+         }
+      });
+    }
+    function refreshCard(show){
+      $.ajax({
+                   contentType: "application/json",
+                   dataType: "json",
+                   url: "{{ path('api_use_connected') }}",
+                   beforeSend: function( xhr ) {
+                   }
+                 })
+              .done(function( data ) {
+                 if(data.status==200){
+                    refreshCard_connected(show);
+                    
+                 }else{
+                    refreshCard_not_connected(show);
+                 }
+              });
+    }
+          function addToCard_connected(id=-1,qty=-1,type="product"){
+              if(id == -1){
+                 id = $("#add-product-modal .product-id-input").val();
+              }
+              if(qty == -1){
+                 qty = $("#add-product-modal .product-quantity-input").val();
+              }
+              $.ajax({
+                   contentType: "application/json",
+                   dataType: "json",
+                   data:{
+                       product:id,
+                       quantity:qty,
+                       type:type
+                   },
+                   url: "{{ path('commande_add_to_card') }}",
+                   beforeSend: function( xhr ) {}
+                 })
+              .done(function( data ) {
+                 if(data.status==200){
+                    refreshCard(true);
+                    notification("Modification du Panier",data.message,"success");
+                    
+                    LENGTH_CARD++;
+                    if(prods.length == LENGTH_CARD ){
+                      if($paidLaunch){
+                        $('#modal-payment button.submit').text('Initialisation paiement...');
+                        $paidLaunch = false;
+                        proceedPayment2();
+                      }
+                    }
+                    if($formulePaid){
+                      $('.btn-commander').css('pointer-events', 'none');
+                      var $url = "{{path('direct_paid')}}";
+                      proceed($url, $('.btn-commander'));
+                      e.preventDefault();
+                    }
+                 }else{
+                    $('.btn-commander').text('Commander');
+                    notification("Modification du Panier",data.message,"error");
+                 }
+                 $('.btn-add-to-card').css('pointer-events','auto');
+                 $('.btn-add-to-card').text('Ajout au panier');
+                 $('#add-product-modal').modal('hide');
+              });
+          }
+          function refreshCard_connected(show){
+              $.ajax({
+                contentType: "application/json",
+                dataType: "json",
+                url: "{{ path('commande_get_card') }}",
+                beforeSend: function( xhr ) {
+                  
+                }
+              })
+              .done(function( data ) {
+                  if(data.panier && data.panier.coupons.length == 0 && data.panier.formules.length == 0 && data.panier.products.length==0){
+                    $('.cart-container').css('display', 'none');
+                    $('.empty-cart').css('display', 'block');
+                    $('.goto-checkout').css('pointer-events', 'none');
+                  }
+                  else{
+                    $('.cart-container').css('display', 'block');
+                    $('.empty-cart').css('display', 'none');
+                    $('.goto-checkout').css('pointer-events', 'auto');
+                  }
+                 if(data.status==200){
+                    $('.cart-btn > .nb-product-cart').text(data.panier.products.length);
+                    var total = (data.panier.total-data.panier.reduction)<0?0:data.panier.total-data.panier.reduction;
+                    $(".cart-total-pay").html(total.toFixed(2));
+                    $(".cart-total-reduction").html(data.panier.total.toFixed(2));
+                    $(".card-list-product").html("");
+                    itemRecap(data.panier.products, data.panier.total, total.toFixed(2), data.panier.reduction);
+                     data.panier.products.forEach(function(item, index){
+                       $(".card-list-product").prepend(itemProduct(item.id_product,item.img, item.name, item.quantity, item.price, item.oldprice));
+                       if(typeof init_product_qty === "function"){
+                          init_product_qty(item.id_product,item.quantity);
+                       }
+                     }); 
+                    $(".card-list-coupon").html("");
+                    $(".card-list-formule").html("");
+                     data.panier.formules.forEach(function(item, index){
+                       $(".card-list-formule").append( itemFormule(item.id,item.name,item.month,item.price));
+                     });
+                 }else{
+                    console.log(data.message);
+                 }
+                 if(show && !$(".cart-wrapper").hasClass("open"))
+                       $(".cart-wrapper").addClass("open");
+                });
+          }
+          synch_card();
+          
+        /**
+        ** USER NOT CONNECTED
+        **/
+          function addToCard_not_connected(id=-1,qty=-1,type="product"){
+              if(id == -1){
+                 id = $("#add-product-modal .product-id-input").val();
+              }
+              if(qty == -1){
+                 qty = $("#add-product-modal .product-quantity-input").val();
+              }
+
+              var x = window.localStorage.getItem('panier');
+              var prods = [];
+              if(x){
+                 prods = JSON.parse(x);
+              }
+              
+
+              $.ajax({
+                   contentType: "application/json",
+                   dataType: "json",
+                   data:{
+                       product:id,
+                       quantity:qty,
+                       type:type,
+                       products:prods
+                   },
+                   url: "{{ path('commande_add_to_card_not_connected') }}",
+                   beforeSend: function( xhr ) {}
+                 })
+              .done(function( data ) {
+                 if(data.status==200){
+                    window.localStorage.setItem('panier', JSON.stringify(data.panier) );
+                    refreshCard(true);
+
+                    notification("Modification du Panier",data.message,"success");
+                 }else{
+                    notification("Modification du Panier",data.message,"error");
+                    $('#modal-payment button.submit').text('Valider');
+                 }
+                 $('.btn-add-to-card').css('pointer-events','auto');
+                 $('.btn-add-to-card').text('Ajout au panier');
+                 $('#add-product-modal').modal('hide');
+              });
+          }
+          function refreshCard_not_connected(show){
+              var x = window.localStorage.getItem('panier');
+              var prods = [];
+              if(x){
+                 prods = JSON.parse(x);
+              }
+              $.ajax({
+                contentType: "application/json",
+                 dataType: "json",
+                 data:{ products:prods },
+                url: "{{ path('commande_get_card_not_connected') }}",
+                beforeSend: function( xhr ) {
+                  
+                }
+              })
+              .done(function( data ) {
+                if(data.panier && data.panier.coupons.length == 0 && data.panier.formules.length == 0 && data.panier.products.length==0){
+                    $('.cart-container').css('display', 'none');
+                    $('.empty-cart').css('display', 'block');
+                    $('.goto-checkout').css('pointer-events', 'none');
+                    console.log('gogo');
+                }
+                  else{
+                    $('.cart-container').css('display', 'block');
+                    $('.empty-cart').css('display', 'none');
+                    $('.goto-checkout').css('pointer-events', 'auto');
+                  }
+                 if(data.status==200){
+                  $('.cart-btn > .nb-product-cart').text(data.panier.products.length);
+                  $('.cart-btn > .nb-product-cart').text(data.panier.products.length);
+                    var total = (data.panier.total-data.panier.reduction)<0?0:data.panier.total-data.panier.reduction;
+                    $(".cart-total-pay").html(total.toFixed(2));
+                    $(".cart-total-reduction").html(data.panier.total.toFixed(2));
+                    $(".card-list-product").html(""); 
+                    var reductions = 0;
+                    itemRecap(data.panier.products, data.panier.total, total.toFixed(2), data.panier.reduction);
+                     data.panier.products.forEach(function(item, index){
+                       $(".card-list-product").prepend(itemProduct(item.id_product,item.img, item.name, item.quantity, item.price, item.oldprice));
+                         reductions += parseFloat(item.oldprice*item.quantity);
+                         if(typeof init_product_qty === "function" && item.price != 0){
+                              init_product_qty(item.id_product,item.quantity);
+                          }
+                     }); 
+
+                         console.log(reductions);
+                         console.log( parseFloat(data.panier.reduction).toFixed(2) ) ;
+                    $(".cart-total-reduction").html( parseFloat(reductions+ parseFloat(data.panier.reduction)).toFixed(2));
+                    $(".card-list-coupon").html("");
+                    $(".card-list-formule").html("");
+                     data.panier.formules.forEach(function(item, index){
+                       $(".card-list-formule").append( itemFormule(item.id,item.name,item.month,item.price));
+                     });
+                 }else{
+                    console.log(data.message);
+                 }
+                 if(show && !$(".cart-wrapper").hasClass("open"))
+                       $(".cart-wrapper").addClass("open");
+                });
+          }
+    
+    /********************/
+
+    $paidLaunch = false;
+    $formulePaid = false;
+
+      function checklogin(){
+        $.ajax({
+           contentType: "application/json",
+           dataType: "json",
+           url: "{{ path('api_use_connected_or_exist') }}",
+           data: {
+            name: $('#payment-form input[name=name]').val(),
+            email: $('#payment-form input[name=email]').val()
+           },
+           beforeSend: function( xhr ) {
+            $('#modal-payment button.submit').text('Verification connexion...');
+           }
+         })
+        .done(function( data ) {
+            /* l'user est loggé ou compte nouvellement crée */
+            if(data.status == 200){
+              var x = window.localStorage.getItem('panier');
+              if(x){
+                $('#modal-payment button.submit').text('Enregistrement de la commande...');
+                $paidLaunch = true;
+                synch_card();
+              }
+              else
+                proceedPayment();
+            }
+            else{
+              $('#modal-payment button.submit').css('pointer-events','auto');
+              $('.lds-ripple').css('display','none');
+              $('#modal-payment button.submit').text('Valider');
+
+              $("#modal-payment .alert-dismissible").show().delay(60000).fadeOut();
+              $('#modal-payment .alert-dismissible').removeClass('alert-success');
+              $('#modal-payment .alert-dismissible').addClass('alert-danger');
+              $('#modal-payment .alert-dismissible .text').html(data.message);
+            }
+        });
+      }
+
+      function proceedPayment(){
+        $('#modal-payment button.submit').text('Initialisation paiement...');
+          var form = document.getElementById('payment-form');
+          oData = new FormData(form);
+          var oReq = new XMLHttpRequest();
+          oReq.open("POST", $('#payment-form').attr('action'), true);
+          oReq.onload = function(oEvent) {
+              if (oReq.status == 200) {
+                  $(".success-checkmark").show().delay(3000).fadeOut();
+                  $(".check-icon").show().show().delay(3000).fadeOut();
+                  notification("Paiement commande",oReq.response,"success");
+                  card.clear();
+                  $('#modal-payment button.submit').css('pointer-events','auto');
+                  $('.lds-ripple').css('display','none');
+
+                  $("#modal-payment .alert-dismissible").show().delay(40000).fadeOut();
+                  $('#modal-payment .alert-dismissible').removeClass('alert-danger');
+                  $('#modal-payment .alert-dismissible').addClass('alert-success');
+                  $('#modal-payment .alert-dismissible .text').text(oReq.response);
+                  $('#modal-payment button.submit').text('Valider');
+                  window.localStorage.removeItem('panier');
+              }else {
+                  notification("Paiement commande",oReq.response,"error");
+                  $('#modal-payment button.submit').css('pointer-events','auto');
+                  $('.lds-ripple').css('display','none');
+                  $('#modal-payment button.submit').text('Valider');
+
+                  $("#modal-payment .alert-dismissible").show().delay(60000).fadeOut();
+                  $('#modal-payment .alert-dismissible').removeClass('alert-success');
+                  $('#modal-payment .alert-dismissible').addClass('alert-danger');
+                  $('#modal-payment .alert-dismissible .text').html(oReq.response);
+              }
+          };
+          oReq.send(oData);  
+      }
+      function proceedPayment2(){
+        $('.btn-next').text('Initialisation paiement...');
+          var form = document.getElementById('form-stripe');
+          oData = new FormData(form);
+          var oReq = new XMLHttpRequest();
+          oReq.open("POST", $('#form-stripe').attr('action'), true);
+          oReq.onload = function(oEvent) {
+              if (oReq.status == 200) {
+                  $(".success-checkmark").show().delay(3000).fadeOut();
+                  $(".check-icon").show().show().delay(3000).fadeOut();
+                  notification("Paiement commande",oReq.response,"success");
+                  card.clear();
+                  submitting('reset');
+                  window.localStorage.removeItem('panier');
+                  window.location.href = "{{path('nos_formule')}}";
+              }else {
+                  notification("Paiement commande",oReq.response,"error");
+                  submitting('reset');
+              }
+          };
+          oReq.send(oData);  
+      }
+
+      $('.oneClickPaid').click(function(e){
+        $(this).css('pointer-events', 'none');
+        var $url = $(this).attr("href");
+        proceed($url, $(this));
+        e.preventDefault();
+      });
+      function proceed($url, $that){
+        $realText = $that.text();
+        $that.text('Initialisation paiement...');
+        $.ajax({
+            url: $url,
+            type: "GET",
+            dataType: "json",
+            async: true,
+            data: {},
+            success: function(data, status) {
+              $that.css('pointer-events', 'auto');
+              $that.text($realText);
+              notification("Paiement commande","Opération effectuée avec succèss","success");
+              window.localStorage.removeItem('panier');
+              if($formulePaid)
+                window.location.href = "{{path('success_payment')}}";
+              else
+                window.location.href = "{{path('nos_formule')}}";
+
+            },
+            error: function(xhr, responseText, errorThrown) {
+              $that.css('pointer-events', 'auto');
+              $that.text($realText);
+              notification("Paiement commande",xhr.responseText,"error");
+            }
+        });
+      }
+
+      /*****************/
+
+
+    function validateContactForm(){
+      try{
+        var validator = $('#AjaxLogin').validate({
+            rules:{
+                email:{
+                    required:true,
+                    email:true
+                }, 
+                password:{
+                    required:true
+                }            
+            }
+        });
+        
+        var $validated = $('#AjaxLogin').valid();
+        return $validated;
+        }catch(error){
+            console.log(error)
+        }
+      }
+
+      var form = document.forms.namedItem("AjaxLogin");
+      form.addEventListener('submit', function(ev) {
+        if( !validateContactForm()){
+          toastr.error("Veuillez renseigner toutes les informations.");
+            $('#AjaxLogin button[type=submit]').text("Je m'inscris !");
+              ev.preventDefault();
+              return false;
+          }
+
+          $('.lds-ripple').css('display','inline-block');
+          $('#AjaxLogin button[type=submit]').css('pointer-events','none');
+         $.ajax({
+              url:"{{path('login_ajax')}}",
+              type:"POST",
+              data: new FormData(this),
+                dataType: 'json',
+                contentType: false,
+                cache: false,
+                processData:false,
+              /*data:$('#formTournoi').serialize(),*/
+              success:function(response) {
+                notification("Connexion","Vous etes connecté maintenant","success");
+                $('.lds-ripple').css('display','none');
+                $('#AjaxLogin button[type=submit]').css('pointer-events','auto');
+                $(".success-checkmark").show().delay(3000).fadeOut();
+                $(".check-icon").show().show().delay(3000).fadeOut();
+                setTimeout(function(){
+                  $( "#sign-in-modal button.close" ).trigger( "click" );
+                },1000);
+              },
+              error:function(response){
+                notification("Connexion","Identifiant incorrect","error");
+                $('#AjaxLogin button[type=submit]').button('reset');
+                $('.lds-ripple').css('display','none');
+                $('#AjaxLogin button[type=submit]').css('pointer-events','auto');
+            }
+          });
+          
+        ev.preventDefault();
+      }, false);
+
+      /***************/
+
+    function init_product_qty(id,qty){
+      console.log("Show quantity of product");
+      $('#product-qty-'+id).html(qty);
+      $('#product-'+id + " .add-product-card ").hide();
+      $('#product-'+id + " .get_quantity ").show();
+
+    }
+    $(document).ready(function() {
+        refreshCard();
+        toogleNotif(false);
+        var lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
+
+        if ("IntersectionObserver" in window) {
+          let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(function(entry) {
+              if (entry.isIntersecting) {
+                let lazyImage = entry.target;
+                lazyImage.src = lazyImage.dataset.src;
+                lazyImage.srcset = lazyImage.dataset.srcset;
+                lazyImage.classList.remove("lazy");
+                lazyImageObserver.unobserve(lazyImage);
+              }
+            });
+          });
+
+          lazyImages.forEach(function(lazyImage) {
+            lazyImageObserver.observe(lazyImage);
+          });
+        } else {
+        }
+         $(".add-product-card").click(
+                       function(){
+                          var id = parseInt($(this).attr('product'));
+                          var qty = $('#' + $(this).attr('target') + ' .get_quantity');
+                          $(this).hide();
+                          qty.show();
+                          addToCard(id,1,"product");
+
+                       }
+                    );
+
+                     $(".add-product-card-add").click(
+                       function(){
+                          var id = parseInt($(this).attr('product'));
+
+                          var qty = parseInt($('#product-qty-'+id).html());
+                          qty += 1;
+                          $('#product-qty-'+id).html(qty);
+                          addToCard(id,qty,"product");
+                          
+                       }
+                    );
+
+
+                     $(".add-product-card-remove").click(
+                       function(){
+                          var id = parseInt($(this).attr('product'));
+
+                          var qty = parseInt($('#product-qty-'+id).html());
+                          qty -= 1;
+                          $('#product-qty-'+id).html(qty);
+                          addToCard(id,qty,"product");
+                          
+                       }
+                    );
+
+     });
+    function customLazyLoad(){
+          var scrollTop = window.pageYOffset;
+          $(".custom-lazy-load").each(function(index,item){
+            if($(item).offset().top - 600 < (window.innerHeight + scrollTop)){
+              var id = $(item).attr("lazy-target");
+              console.log(id);
+              var url = "{{path('page')}}/"+id;
+              $(item).removeClass("custom-lazy-load");
+              $.ajax({
+                 url:url,
+                 type:'GET',
+                 success: function(data){
+                    $(item).replaceWith(data);
+                 }
+              });
+            }
+          })
+      }
+    document.addEventListener("DOMContentLoaded", function() {
+      customLazyLoad();
+      document.addEventListener("scroll", customLazyLoad);
+      window.addEventListener("resize", customLazyLoad);
+      window.addEventListener("orientationChange", customLazyLoad);
+    });

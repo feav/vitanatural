@@ -1,0 +1,1158 @@
+{% set STRIPE_PUBLIC_KEY = render(controller('App\\Controller\\ApiConfigController::getValueByKey', {'key':'STRIPE_PUBLIC_KEY'})) %}
+{% set livraison_montant = render(controller('App\\Controller\\ApiConfigController::getValueByKey', {'key':'LIVRAISON_AMOUNT'})) %}
+
+{% extends 'base.html.twig' %}
+
+{% block meta %}
+{% endblock %}
+
+{% block stylesheets %}
+  <!-- Begin loading animation -->
+  <!--Floating WhatsApp css-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="{{ asset('assets/css/loaders/loader-pulse.css')}}" rel="stylesheet" type="text/css" media="all" />
+  <!-- End loading animation -->
+  <link href="{{ asset('assets/css/main.css')}}" rel="stylesheet" type="text/css" media="all" />
+  <link href="{{ asset('assets/css/theme.css')}}" rel="stylesheet" type="text/css" media="all" />
+  <link href="{{ asset('assets/css/custom.css')}}" rel="stylesheet" type="text/css" media="all" />
+  <link async href="{{ asset('assets/Notification/css/ussal-notification.css')}}" rel="stylesheet" type="text/css" media="all" />
+{% endblock %}
+
+{% block body %}
+  <div class="toast__container"></div>
+    <div class="loader">
+      <div class="loading-animation"></div>
+    </div>
+    <div style="display:none !important" class="alert alert-dismissible d-none d-md-block bg-primary-3 text-white py-4 py-md-3 px-0 mb-0 rounded-0 border-0" id="show-massage" >
+      <div class="container">
+          <div class="row no-gutters align-items-md-center justify-content-center">
+              <div class="col-lg-11 col-md d-flex flex-column flex-md-row align-items-md-center justify-content-lg-center">
+                  <div class="mb-3 mb-md-0">Livraison gratuite à partir de 45€ - Payez en 3X sans frais dès 60€.<br>Les commandes sont expédiées tous les jours et livrées malgré le virus.</div>
+              </div>
+              <div class="col-auto position-absolute right">
+                  <button type="button" class="close p-0 position-relative" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true" onclick="toogleNotif(true)">
+                          <img src="assets/img/icons/interface/icon-x.svg" loading="lazy" alt="Close" class="icon icon-sm bg-white" data-inject-svg>
+                      </span>
+                  </button>
+              </div>
+          </div>
+      </div>
+  </div>
+    
+    <div class="navbar-container">
+      <nav class="navbar navbar-expand-lg navbar-dark position-lock" data-overlay data-sticky="top">
+          <div class="container"> 
+        
+
+        <a class="navbar-brand navbar-brand-dynamic-color" href="{{path('home')}}">
+               <img src="https://i.imgur.com/n6vhM8P.png"  loading="lazy" class="logo scrolled-logo" alt="logo">
+               <img src="https://i.imgur.com/qgKGYM6.png"  loading="lazy" class="logo default-logo" alt="logo">
+        </a>
+            <div class="d-flex align-items-center order-lg-3 right-close">
+               <button aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target=".navbar-collapse" data-toggle="collapse" type="button">
+                 <img alt="Navbar Toggler Open Icon"  loading="lazy" class="navbar-toggler-open icon icon-sm" data-inject-svg src="{{ asset('assets/img/icons/interface/icon-menu.svg')}}">
+                 <img alt="Navbar Toggler Close Icon"  loading="lazy" class="navbar-toggler-close icon icon-sm" data-inject-svg src="{{ asset('assets/img/icons/interface/icon-x.svg')}}">
+               </button>
+                <a href="{{path('marque')}}#commande" class="btn btn-primary ml-lg-4 mr-3 mr-md-4 mr-lg-0 d-none d-sm-block order-lg-3" style=" font-weight: 400; ">Je commande</a>
+               <span class="separe-nav-xs"></span>
+               <a class="btn btn-primary ml-lg-4 mr-lg-0 d-sm-block order-lg-3 toggle-cart cart-btn"> <span class="nb-product-cart">0</span><i class="fa fa-shopping-cart shopping-cart"></i></a>
+            </div>
+
+
+        <div class="collapse navbar-collapse order-3 order-lg-2 justify-content-lg-center">
+          <ul class="navbar-nav my-3 my-lg-0">
+            <li class="nav-item"> <a href="{{path('home')}}" class="nav-link">Accueil</a></li>
+            <li class="nav-item"> <a href="{{path('home')}}#ingredients" class="nav-link">Ingrédients</a></li>
+            <li class="nav-item"> <a  href="{{path('marque')}}" class="nav-link">La marque</a></li>
+            <li class="nav-item"> <a href="{{path('temoignage')}}" class="nav-link">Témoignages</a></li>
+            <li class="nav-item"> <a href="#" class="nav-link">Questions</a></li>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+              <li class="nav-item">
+                <div>
+                  <a aria-expanded="false" aria-haspopup="true" class="nav-link nav-item" href="{{path('account')}}" role="button">Mon compte</a>
+                </div>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+    </div>
+
+    <div class="custom-lazy-load" lazy-target="scritp-parent"></div>
+    {% block body_web %}
+
+
+
+    {% endblock body_web %}
+ 
+
+
+
+    <div class="cart-wrapper">
+      <i class="fa fa-arrow-right toggle-cart"></i>
+      <div class="empty-cart" style="text-align:center">Votre panier est vide</div>
+      <div class="cart-container">
+        <div class="product-list">
+          <div class="card-list-product">
+          </div>
+          <div class="card-list-formule">
+          </div>
+          <div class="form-group form-coupon">
+              <input type="text" name="code-promo" id="code-promo-input" class="form-control" placeholder="Code promo..." style="border-radius:0">
+              <a href="javascript:void()" onclick ="addCouponToCard('#code-promo-input',1)" class="valide-coupon">je valide!</a>
+            </div>
+            <ul class="totaux card-list-coupon">
+            </ul>
+            <ul class="totaux card-list-details">
+            </ul>
+            <ul class="list-recap">
+            </ul>
+            <div>
+              <a href="{{path('paiement_cart')}}" class="btn btn-primary ml-lg-4 mr-3 mr-md-4 mr-lg-0 d-sm-block order-lg-3 goto-checkout">Paiement de <b class="cart-total-pay">o</b>€ <strike><i class="cart-total-reduction">0</i>€ </strike></a>
+            </div>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') and (app.user.getStripeCustomId is not null) %}
+              <div style="text-align: center;margin-top: 19px;font-size: 16px">
+                  <a href="{{path('direct_paid')}}" class="oneClickPaid" style="text-decoration: underline;" title="Vous serez automatiquement debité sur la precedente carte utilisée">Payer en 1 click</a><br>
+                  <small style="display: block;margin-top: 6px;">Pour le paiement en un click, Vous serez automatiquement debité sur votre precedente carte utilisée</small>
+              </div>
+            {% endif %}
+            <div style="text-align:center; margin-top:20px">
+                <img alt="miniature"  loading="lazy" style="height: 30px;border: 1px solid #e8e8e8;padding: 0px 10px;border-radius: 5px;background: #fdfdfd;" src="https://cdn3.iconfinder.com/data/icons/payment-method-1/64/_Visa-512.png">
+                <img alt="miniature"  loading="lazy" style="height: 30px;border: 1px solid #e8e8e8;padding: 0px 10px;margin: 0px 15px;border-radius: 5px;background: #fdfdfd;" src="https://cdn3.iconfinder.com/data/icons/payment-method-1/64/_Mastercard-512.png">
+                <img alt="miniature" style="height: 30px;border: 1px solid #e8e8e8;padding: 0px 10px;border-radius: 5px;background: #fdfdfd;"  loading="lazy" src="https://cdn3.iconfinder.com/data/icons/payment-method-1/64/_Maestro-512.png"> 
+                <p style="font-size: 12px;font-weight: 400;margin-top: 10px;margin-bottom: 15px;">Paiements sécurisés par Stripe.</p>
+            </div>
+        </div>
+      </div>
+   </div>
+   
+   <div class="modal fade" id="modal-payment" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="alert alert-danger alert-dismissible fade show box-error-payment" role="alert">
+            <span class="text"></span>
+            <button type="button" class="close close-alert-msg">
+              x
+            </button>
+          </div>
+          <div class="modal-header text-center border-0">
+            <ul class="list-inline list-cart">
+                <li class="list-inline-item"><i class="text-muted fa fa-cc-visa fa-2x"></i></li>
+                <li class="list-inline-item"><i class="fa fa-cc-mastercard fa-2x"></i></li>
+                <li class="list-inline-item"><i class="fa fa-cc-amex fa-2x"></i></li>
+                <li class="list-inline-item"><i class="fa fa-cc-discover fa-2x"></i></li>
+            </ul>
+            <div class="w-100 pt-4">
+              <h5 class="h4" style="margin: 1.5rem; color: #d81b60">Paiement securisé <i class="fa fa-key"></i></h5>
+            </div>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">
+                <img src="assets/img/icons/interface/icon-x.svg"  loading="lazy" alt="Icon">
+              </span>
+            </button>
+          </div>
+          <div class="modal-body px-md-4 px-lg-5 pb-4 pb-lg-5" style="padding-top: 0;">
+            <form id="payment-form" name="payment-form" action="{{path('checkout_product')}}" style="position: relative;">
+              <div class="form-group">
+                <input type="text" class="form-control" name="name" placeholder="nom" value="{{ app.user ? app.user.name : '' }}">
+              </div>
+              <div class="form-group">
+                <input type="email" class="form-control" name="email" placeholder="adresse email" value="{{ app.user ? app.user.email : '' }}">
+              </div>
+              <div class="form-group">
+                  <div id="card-element">
+                    <!-- A Stripe Element will be inserted here. -->
+                  </div>
+
+                  <!-- Used to display form errors. -->
+                  <div id="card-errors" role="alert"></div>
+                </div>
+              <button class="btn btn-primary btn-block submit" type="submit" style="margin-top: 20px;">Valider</button>
+              <div class="lds-ripple"><div></div><div></div></div>
+              <div class="success-checkmark">
+                <div class="check-icon">
+                  <span class="icon-line line-tip"></span>
+                  <span class="icon-line line-long"></span>
+                  <div class="icon-circle"></div>
+                  <div class="icon-fix"></div>
+                </div>
+              </div>
+            </form>
+            <div class="text-center text-small mt-3">
+              Vous avez déjà un compte? <a href="javascript:void()" class="open-sign-in-modal">Connectez-vous</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="sign-in-modal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center border-0">
+            <div class="w-100 pt-4">
+              <h5 class="h3">Connexion</h5>
+              <div>Entrer vos informations de connexion</div>
+            </div>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">
+                <img src="assets/img/icons/interface/icon-x.svg"  loading="lazy" alt="Icon">
+              </span>
+            </button>
+          </div>
+          <div class="modal-body px-md-4 px-lg-5 pb-4 pb-lg-5">
+            <div class="alert alert-danger alert-dismissible fade show box-error-payment" role="alert">
+              <span class="text"></span>
+              <button type="button" class="close close-alert-msg">
+                x
+              </button>
+          </div>
+            <form name="AjaxLogin" id="AjaxLogin" method="POST" style="position:relative">
+              <div class="form-group">
+                <input type="email" class="form-control" name="email" placeholder="Adresse email">
+              </div>
+              <div class="form-group">
+                <input type="password" class="form-control" name="password" placeholder="mot de passe">
+                <div class="text-right text-small mt-2">
+                  <a href="account-forgot-password.html" style="visibility:hidden">Forgot Password?</a>
+                </div>
+              </div>
+              <div class="form-group" style="visibility:hidden">
+                <div class="custom-control custom-checkbox text-small">
+                  <input type="checkbox" class="custom-control-input" id="sign-in-remember">
+                  <label class="custom-control-label" for="sign-in-remember">Remember me next time</label>
+                </div>
+              </div>
+              <button class="btn btn-primary btn-block submit" type="submit">Connexion</button>
+              <div class="lds-ripple"><div></div><div></div></div>
+                <div class="success-checkmark">
+                  <div class="check-icon">
+                    <span class="icon-line line-tip"></span>
+                    <span class="icon-line line-long"></span>
+                    <div class="icon-circle"></div>
+                    <div class="icon-fix"></div>
+                  </div>
+                </div>
+            </form>
+            <div class="text-center text-small mt-3" style="visibility:hidden">
+              Don't have an account? <a href="account-sign-up-simple.html">Sign up here</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      <footer class="bg-primary-3 text-white links-white pb-5 footer-1">
+         <div class="container">
+            <div class="row">
+               <div class="col-xl-auto mr-xl-5 col-md-3 mb-4 mb-md-0">
+                  <h5>Navigation</h5>
+                  <ul class="nav flex-row flex-md-column">
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="landing-1.html" class="nav-link fade-page px-0 py-2">Accueil</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="landing-2.html" class="nav-link fade-page px-0 py-2">Nos produits</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="landing-3.html" class="nav-link fade-page px-0 py-2">Les ingrédiants</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="landing-4.html" class="nav-link fade-page px-0 py-2">Témoignages</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="landing-5.html" class="nav-link fade-page px-0 py-2">Coaching</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="landing-6.html" class="nav-link fade-page px-0 py-2">Nous contacter</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="landing-6.html" class="nav-link fade-page px-0 py-2">Plan du site</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <a href="{{ path('app_logout') }}" data-id="je_minscris-form" class="nav-link px-0 py-2">Deconnexion</a>
+                    {% else %}   
+                        <a href="{{ path('app_login') }}" data-id="je_minscris-form" class="nav-link px-0 py-2">Connexion</a>
+
+                    {% endif %}
+                  </li>
+                  </ul>
+               </div>
+               <div class="col-xl-auto mr-xl-5 col-md-3 mb-4 mb-md-0">
+                  <h5>Nos produits</h5>
+                  <ul class="nav flex-row flex-md-column">
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="company-about-1.html" class="nav-link fade-page px-0 py-2">Minceur</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="blog-listing-1.html" class="nav-link fade-page px-0 py-2">Sommeil</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="help-center-home.html" class="nav-link fade-page px-0 py-2">EveilActif</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="careers-1.html" class="nav-link fade-page px-0 py-2">Circulation</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="case-studies.html" class="nav-link fade-page px-0 py-2">ActifPousse</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="pricing-plans.html" class="nav-link fade-page px-0 py-2">PeauParfaite</a>
+                     </li>
+                  </ul>
+               </div>
+               <div class="col-xl-auto mr-xl-5 col-md-3 mb-4 mb-md-0">
+                  <h5>Informations</h5>
+                  <ul class="nav flex-row flex-md-column">
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="company-about-1.html" class="nav-link fade-page px-0 py-2">Partenariat et Affiliation</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="blog-listing-1.html" class="nav-link fade-page px-0 py-2">Paiement sécurisé</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="help-center-home.html" class="nav-link fade-page px-0 py-2">Charte de confidentialité</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="careers-1.html" class="nav-link fade-page px-0 py-2">C.G.U.</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="case-studies.html" class="nav-link fade-page px-0 py-2">C.G.V.</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="pricing-plans.html" class="nav-link fade-page px-0 py-2">Cookies</a>
+                     </li>
+                     <li class="nav-item mr-3 mr-md-0">
+                        <a href="pricing-plans.html" class="nav-link fade-page px-0 py-2">Mentions légales</a>
+                     </li>
+                  </ul>
+               </div>
+               <div class="col-lg mt-md-5 mt-lg-0 order-lg-3 order-xl-4">
+                  <h5>Pour les bavards...</h5>
+                  <div class="card card-body bg-white">
+                     <p style=" margin-bottom: 0; ">Tél : 01 75 85 83 83</p>
+                     <p style=" margin-bottom: 0; margin-top: 0.5rem; ">hello(at)respir.co</p>
+                  </div>
+                  <ul class="list-unstyled d-flex mb-0 mt-4">
+                     <li class="mx-3" style=" margin-left: 0px !important; ">
+                        <a href="#" class="hover-fade-out">
+                        <img src="assets/img/icons/social/twitter.svg"  loading="lazy" alt="Twitter" class="icon icon-xs bg-white" data-inject-svg>
+                        </a>
+                     </li>
+                     <li class="mx-3">
+                        <a href="#" class="hover-fade-out">
+                        <img src="assets/img/icons/social/instagram.svg"  loading="lazy" alt="Github" class="icon icon-xs bg-white" data-inject-svg>
+                        </a>
+                     </li>
+                     <li class="mx-3">
+                        <a href="#" class="hover-fade-out">
+                        <img src="assets/img/icons/social/facebook.svg"  loading="lazy" alt="Facebook" class="icon icon-xs bg-white" data-inject-svg>
+                        </a>
+                     </li>
+                  </ul>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col">
+                  <hr>
+               </div>
+            </div>
+            <div class="row flex-column flex-lg-row align-items-center justify-content-center justify-content-lg-between text-center text-lg-left">
+               <div class="col-auto">
+                  <div class="d-flex flex-column flex-sm-row align-items-center text-small">
+                     <div class="text-muted">
+                        Transactions 100% sécurisées grâce au cryptage SSL.
+                     </div>
+                  </div>
+               </div>
+               <div class="col-auto mt-3 mt-lg-0">
+                  <ul class="list-unstyled d-flex mb-0 payment-list">
+                     <li class="mx-2"> 
+                        <img src="https://www.brulafine.com/assets/images/card-cb.svg"  loading="lazy"> 
+                     </li>
+                     <li class="mx-2"> 
+                        <img src="https://www.brulafine.com/assets/images/card-mc.svg"  loading="lazy"> 
+                     </li>
+                     <li class="mx-2"> 
+                        <img src="https://www.brulafine.com/assets/images/card-mc-secured.svg"  loading="lazy" style=" height: 20px; "> 
+                     </li>
+                     <li class="mx-2"> 
+                        <img src="https://www.brulafine.com/assets/images/card-visa.svg"  loading="lazy"> 
+                     </li>
+                     <li class="mx-2"> 
+                        <img src="https://www.brulafine.com/assets/images/card-visa-secured.svg"  loading="lazy"> 
+                     </li>
+                  </ul>
+               </div>
+            </div>
+            <div class="row flex-column flex-lg-row align-items-center justify-content-center justify-content-lg-between text-center text-lg-left">
+               <div class="col-auto">
+                  <div class="d-flex flex-column flex-sm-row align-items-center text-small">
+                     <div class="text-muted" style=" font-size: 11px;margin: 20px 0px; ">
+                        Pour votre santé, mangez au moins cinq fruits et légumes par jour - www.mangerbouger.fr
+                        Les produits Castalis sont des compléments alimentaires. À ce titre, ils ne se substituent en aucun cas à une alimentation saine, variée et équilibrée. Les informations et données diffusées sur le site proviennent de sources légitimes et valides et elles sont élaborées avec le plus grand soin et la plus grande précision. Cependant ces informations, données, affirmations et déclarations n’ont été approuvées par aucune agence gouvernementale ou toute autre autorité médicale. Les compléments alimentaires sains, naturels et de haute qualité, produits par Castalis, n’ont pas pour but de diagnostiquer, traiter, soigner, guérir, prévenir et/ou empêcher les maladies. L’origine naturelle, saine, végétale et végane des ingrédients que nous utilisons dans nos produits en fait des compléments alimentaires de tout premier choix. Ils ne nécessitent aucune prescription médicale. Cependant, nous vous invitons à consulter impérativement votre médecin avant de commencer à consommer des compléments alimentaires, à suivre un régime ou à participer à un programme de coaching, notamment sportif. En effet, chaque personne est unique, les résultats individuels peuvent varier et certaines contre-indications personnelles peuvent exister. Cette consultation avec votre médecin traitant vous permettra de vérifier que les ingrédients utilisés dans nos compléments alimentaires sont compatibles avec votre cas particulier et les traitements médicaux que vous suivez déjà ou pouvez être amenés à suivre. Votre bien-être est notre objectif numéro un.
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="row flex-column flex-lg-row align-items-center justify-content-center justify-content-lg-between text-center text-lg-left">
+               <div class="col-auto">
+                  <div class="d-flex flex-column flex-sm-row align-items-center text-small">
+                     <div class="text-muted">
+                        © EDA Solutions, 2020
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </footer>
+      <a href="{{path('marque')}}" class="btn btn-primary goto-formule">Acheter maintenant</a>
+      <a href="#top" class="btn btn-primary rounded-circle btn-back-to-top" data-smooth-scroll data-aos="fade-up" data-aos-offset="2000" data-aos-mirror="true" data-aos-once="false">
+      <img src="assets/img/icons/interface/icon-arrow-up.svg"  loading="lazy"class="icon bg-white" data-inject-svg>
+      </a>
+{% endblock %}
+{% block javascripts %}
+  <!-- Required vendor scripts (Do not remove) -->
+  <script type="text/javascript" src="{{ asset('assets/js/jquery.min.js')}}"></script>
+  <script type="text/javascript" src="{{ asset('assets/js/bootstrap.js')}}"></script>
+  <!-- jarallax (parallax effect and video backgrounds) -->
+   <script type="text/javascript" src="{{ asset('assets/js/jarallax.min.js')}}"></script> 
+  <script  async defer type="text/javascript" src="{{ asset('assets/js/jarallax-element.min.js')}}"></script>
+  <script async type="text/javascript" src="{{ asset('assets/Notification/js/ussal-notification.js')}}"></script>
+  <!-- Removes page load animation when window is finished loading -->
+  
+  <script type="text/javascript">
+    window.addEventListener("load",function(){
+      document.querySelector('body').classList.add('loaded');
+    });
+    $('.toggle-cart').click(function(){
+      $('.cart-wrapper').toggleClass('open');
+    })
+    $(".open-modal-payment").click(function(){
+      $("#modal-payment").modal({backdrop: "static"});
+    });
+    $("#modal-payment").on('click', '.open-sign-in-modal', (function(event){
+      $("#sign-in-modal").modal({backdrop: "static"});
+    }));
+    $('.close-alert-msg').click(function(){
+      $('#modal-payment .alert-dismissible').css('display','none');
+    });
+
+    /*********/
+
+    function toogleNotif(set) {
+      var notif = localStorage.getItem('notif_');
+      if(set){
+            localStorage.setItem('notif_', !notif);
+            notif = localStorage.getItem('notif_');
+      }
+      if(notif){
+        $("#show-massage").hide();
+      }else{
+        $("#show-massage").show();
+
+      }
+    }
+    function toggleMute() {
+            var video=document.getElementById("videoHeader");
+            if(video.muted){
+              video.muted = false;
+            } else {
+              debugger;
+              video.muted = true;
+            }
+            var sound = localStorage.getItem('sound');
+            localStorage.setItem('sound', !sound);
+    }
+
+     var LENGTH_CARD = 0;
+     var prods = [];
+
+     function addToCardForm(id,price,name,img){
+        var modal = $("#add-product-modal");
+        $("#add-product-modal .product-image").attr('src','{{asset("assets/img/products")}}/'+img);
+        $("#add-product-modal .product-name").html(name);
+        $("#add-product-modal .product-id-input").val(id);
+        $("#add-product-modal .product-price").html(price+"€");
+        $("#add-product-modal .product-price-input").html(id);
+        $("#add-product-modal .product-quantity-input").val(1);
+     }
+     function updateQty(id, action){
+      $qtyInput = $('.control-qte .input-qte-'+id);
+        var qty = parseInt($qtyInput.val());
+        if(action == 0 && qty >0){
+          qty -= 1;
+          $qtyInput.val(qty);
+        }
+        else if(action == 1){
+          qty += 1;
+          $qtyInput.val(qty);
+        }
+        else{
+          notification("Modification du quantité","la quantité n'est pas bonne","error");
+          return false;
+        }
+        addToCard(id, qty);
+     }
+
+     function itemProduct(id,img, name, quantity, price, oldprice){
+        var qty = '<span class="qte-change qty-plus" onclick="updateQty('+id+',1)">+</span>'+
+                '<input class="input-qte input-qte-'+id+'" type="text" value="'+quantity+'">'+
+                '<span class="qte-change qty-min" onclick="updateQty('+id+',0)">-</span>';
+        if(parseInt(price.toFixed(1))==0){
+          qty = '<label>'+quantity+'</label>';
+        }
+        return '<div class="product-item product-'+id+'">'+
+              '<img src="{{asset("assets/img/products")}}/'+img+'" class="product-img">'+
+              '<div class="control-qte">'+
+                qty +
+              '</div>'+
+              '<ul class="detail-list">'+
+                '<li class="detail-item product-name">'+
+                  (parseInt(price.toFixed(1))? name : 'Offert : '+ name )+
+                '</li>'+
+                '<li class="detail-item product-qte">'+' x '+price+'€ <strike>'+(parseFloat(oldprice).toFixed(1)*quantity)+'€</strike>'+
+                '</li>'+
+              '</ul>'+
+            '</div>';
+     }
+     function itemFormule(id, name, quantity, price){
+        return '<div class="product-item formule-'+id+'">'+
+              '<img src="{{asset("assets/img/products/avatar.png")}}" class="product-img">'+
+              '<ul class="detail-list">'+
+                '<li class="detail-item product-name">Abonnement '+
+                  name+
+                '</li>'+
+                '<li class="detail-item product-qte">'+
+                 +price+'€ valables <span>'+quantity+' mois</span>'+
+                '</li>'+
+                '<li class="detail-item product-etat">'+
+                  '<a href="javascript:void" onclick=" addFormuleToCard('+id+',0)">supprimé</a>'+
+                '</li>'+
+              '</ul>'+
+            '</div>';
+     }
+
+    function itemRecap(products, total_amount, total_reduction, reduction){
+      $ELT = $('.cart-container .list-recap');
+      var DATA_STRING = ""; 
+      products.forEach(function(item, index){
+        if(item.price > 0){
+          DATA_STRING += '<li class="recap-item">'+
+                  '<span class="recap-label">'+item.name+' x '+item.quantity+'</span>'+
+                  '<span class="recap-value">'+item.price+'€</span>'+
+                '</li>';
+        }
+      });
+      DATA_STRING += '<li class="recap-item">'+
+                  '<span class="recap-label">Réduction</span>'+
+                  '<span class="recap-value">(-'+(total_amount?parseInt( (reduction*100)/ total_amount):0)+'%) -'+reduction.toFixed(2)+'€</span>'+
+                '</li>'+
+                '<li class="recap-item">'+
+                  '<span class="recap-label">Livraison</span>'+
+                  '<span class="recap-value">{{livraison_montant}}€</span>'+
+                '</li>'+
+                '<li class="recap-item">'+
+                  '<span class="recap-label">Total</span>'+
+                  '<span class="recap-value">'+total_reduction+'€</span>'+
+                '</li>';
+      $ELT.html(DATA_STRING);
+    }
+
+     function itemCoupon(id,name, value){
+        return '<li class="item coupon-'+id+'">'+
+                  '<span>Réduction:</span>'+
+                  '<span>'+name+' (-'+value+')</span>'+
+                '</li>';
+     }
+     function addCouponToCard(target,qty=1){
+        var code = $(target).val();
+        addToCard(code,qty,"coupon");
+     }
+     function addFormuleToCard(id,qty=1){
+        addToCard(id,qty,"formule");
+      }
+    function synch_card(){
+      $.ajax({
+           contentType: "application/json",
+           dataType: "json",
+           url: "{{ path('api_use_connected') }}",
+           beforeSend: function( xhr ) {
+            $('.btn-add-to-card').css('pointer-events','none');
+            $('.btn-add-to-card').text('Ajout...');
+           }
+         })
+      .done(function( data ) {
+         if(data.status==200){
+            var x = window.localStorage.getItem('panier');
+            if(x){
+               prods = JSON.parse(x);
+
+               prods.forEach(function(item, index){
+                  console.log("add "+item.type+" : "+item.id);
+                  addToCard(item.id,item.qty,item.type);
+               })
+
+               window.localStorage.removeItem('panier');
+            }
+            
+         }
+      });
+      
+    } 
+    function addToCard(id=-1,qty=-1,type="product"){
+      $.ajax({
+           contentType: "application/json",
+           dataType: "json",
+           url: "{{ path('api_use_connected') }}",
+           beforeSend: function( xhr ) {
+            $('.btn-add-to-card').css('pointer-events','none');
+            $('.btn-add-to-card').text('Ajout...');
+           }
+         })
+      .done(function( data ) {
+         if(data.status==200){
+            addToCard_connected(id,qty,type);
+            
+         }else{
+            addToCard_not_connected(id,qty,type);
+         }
+      });
+    }
+    function refreshCard(show){
+      $.ajax({
+                   contentType: "application/json",
+                   dataType: "json",
+                   url: "{{ path('api_use_connected') }}",
+                   beforeSend: function( xhr ) {
+                   }
+                 })
+              .done(function( data ) {
+                 if(data.status==200){
+                    refreshCard_connected(show);
+                    
+                 }else{
+                    refreshCard_not_connected(show);
+                 }
+              });
+    }
+          function addToCard_connected(id=-1,qty=-1,type="product"){
+              if(id == -1){
+                 id = $("#add-product-modal .product-id-input").val();
+              }
+              if(qty == -1){
+                 qty = $("#add-product-modal .product-quantity-input").val();
+              }
+              $.ajax({
+                   contentType: "application/json",
+                   dataType: "json",
+                   data:{
+                       product:id,
+                       quantity:qty,
+                       type:type
+                   },
+                   url: "{{ path('commande_add_to_card') }}",
+                   beforeSend: function( xhr ) {}
+                 })
+              .done(function( data ) {
+                 if(data.status==200){
+                    refreshCard(true);
+                    notification("Modification du Panier",data.message,"success");
+                    
+                    LENGTH_CARD++;
+                    if(prods.length == LENGTH_CARD ){
+                      if($paidLaunch){
+                        $('#modal-payment button.submit').text('Initialisation paiement...');
+                        $paidLaunch = false;
+                        proceedPayment2();
+                      }
+                    }
+                    if($formulePaid){
+                      $('.btn-commander').css('pointer-events', 'none');
+                      var $url = "{{path('direct_paid')}}";
+                      proceed($url, $('.btn-commander'));
+                      e.preventDefault();
+                    }
+                 }else{
+                    $('.btn-commander').text('Commander');
+                    notification("Modification du Panier",data.message,"error");
+                 }
+                 $('.btn-add-to-card').css('pointer-events','auto');
+                 $('.btn-add-to-card').text('Ajout au panier');
+                 $('#add-product-modal').modal('hide');
+              });
+          }
+          function refreshCard_connected(show){
+              $.ajax({
+                contentType: "application/json",
+                dataType: "json",
+                url: "{{ path('commande_get_card') }}",
+                beforeSend: function( xhr ) {
+                  
+                }
+              })
+              .done(function( data ) {
+                  if(data.panier && data.panier.coupons.length == 0 && data.panier.formules.length == 0 && data.panier.products.length==0){
+                    $('.cart-container').css('display', 'none');
+                    $('.empty-cart').css('display', 'block');
+                    $('.goto-checkout').css('pointer-events', 'none');
+                  }
+                  else{
+                    $('.cart-container').css('display', 'block');
+                    $('.empty-cart').css('display', 'none');
+                    $('.goto-checkout').css('pointer-events', 'auto');
+                  }
+                 if(data.status==200){
+                    $('.cart-btn > .nb-product-cart').text(data.panier.products.length);
+                    var total = (data.panier.total-data.panier.reduction)<0?0:data.panier.total-data.panier.reduction;
+                    $(".cart-total-pay").html(total.toFixed(2));
+                    $(".cart-total-reduction").html(data.panier.total.toFixed(2));
+                    $(".card-list-product").html("");
+                    itemRecap(data.panier.products, data.panier.total, total.toFixed(2), data.panier.reduction);
+                     data.panier.products.forEach(function(item, index){
+                       $(".card-list-product").prepend(itemProduct(item.id_product,item.img, item.name, item.quantity, item.price, item.oldprice));
+                       if(typeof init_product_qty === "function"){
+                          init_product_qty(item.id_product,item.quantity);
+                       }
+                     }); 
+                    $(".card-list-coupon").html("");
+                    $(".card-list-formule").html("");
+                     data.panier.formules.forEach(function(item, index){
+                       $(".card-list-formule").append( itemFormule(item.id,item.name,item.month,item.price));
+                     });
+                 }else{
+                    console.log(data.message);
+                 }
+                 if(show && !$(".cart-wrapper").hasClass("open"))
+                       $(".cart-wrapper").addClass("open");
+                });
+          }
+          synch_card();
+          
+        /**
+        ** USER NOT CONNECTED
+        **/
+          function addToCard_not_connected(id=-1,qty=-1,type="product"){
+              if(id == -1){
+                 id = $("#add-product-modal .product-id-input").val();
+              }
+              if(qty == -1){
+                 qty = $("#add-product-modal .product-quantity-input").val();
+              }
+
+              var x = window.localStorage.getItem('panier');
+              var prods = [];
+              if(x){
+                 prods = JSON.parse(x);
+              }
+              
+
+              $.ajax({
+                   contentType: "application/json",
+                   dataType: "json",
+                   data:{
+                       product:id,
+                       quantity:qty,
+                       type:type,
+                       products:prods
+                   },
+                   url: "{{ path('commande_add_to_card_not_connected') }}",
+                   beforeSend: function( xhr ) {}
+                 })
+              .done(function( data ) {
+                 if(data.status==200){
+                    window.localStorage.setItem('panier', JSON.stringify(data.panier) );
+                    refreshCard(true);
+
+                    notification("Modification du Panier",data.message,"success");
+                 }else{
+                    notification("Modification du Panier",data.message,"error");
+                    $('#modal-payment button.submit').text('Valider');
+                 }
+                 $('.btn-add-to-card').css('pointer-events','auto');
+                 $('.btn-add-to-card').text('Ajout au panier');
+                 $('#add-product-modal').modal('hide');
+              });
+          }
+          function refreshCard_not_connected(show){
+              var x = window.localStorage.getItem('panier');
+              var prods = [];
+              if(x){
+                 prods = JSON.parse(x);
+              }
+              $.ajax({
+                contentType: "application/json",
+                 dataType: "json",
+                 data:{ products:prods },
+                url: "{{ path('commande_get_card_not_connected') }}",
+                beforeSend: function( xhr ) {
+                  
+                }
+              })
+              .done(function( data ) {
+                if(data.panier && data.panier.coupons.length == 0 && data.panier.formules.length == 0 && data.panier.products.length==0){
+                    $('.cart-container').css('display', 'none');
+                    $('.empty-cart').css('display', 'block');
+                    $('.goto-checkout').css('pointer-events', 'none');
+                    console.log('gogo');
+                }
+                  else{
+                    $('.cart-container').css('display', 'block');
+                    $('.empty-cart').css('display', 'none');
+                    $('.goto-checkout').css('pointer-events', 'auto');
+                  }
+                 if(data.status==200){
+                  $('.cart-btn > .nb-product-cart').text(data.panier.products.length);
+                  $('.cart-btn > .nb-product-cart').text(data.panier.products.length);
+                    var total = (data.panier.total-data.panier.reduction)<0?0:data.panier.total-data.panier.reduction;
+                    $(".cart-total-pay").html(total.toFixed(2));
+                    $(".cart-total-reduction").html(data.panier.total.toFixed(2));
+                    $(".card-list-product").html(""); 
+                    var reductions = 0;
+                    itemRecap(data.panier.products, data.panier.total, total.toFixed(2), data.panier.reduction);
+                     data.panier.products.forEach(function(item, index){
+                       $(".card-list-product").prepend(itemProduct(item.id_product,item.img, item.name, item.quantity, item.price, item.oldprice));
+                         reductions += parseFloat(item.oldprice*item.quantity);
+                         if(typeof init_product_qty === "function" && item.price != 0){
+                              init_product_qty(item.id_product,item.quantity);
+                          }
+                     }); 
+
+                         console.log(reductions);
+                         console.log( parseFloat(data.panier.reduction).toFixed(2) ) ;
+                    $(".cart-total-reduction").html( parseFloat(reductions+ parseFloat(data.panier.reduction)).toFixed(2));
+                    $(".card-list-coupon").html("");
+                    $(".card-list-formule").html("");
+                     data.panier.formules.forEach(function(item, index){
+                       $(".card-list-formule").append( itemFormule(item.id,item.name,item.month,item.price));
+                     });
+                 }else{
+                    console.log(data.message);
+                 }
+                 if(show && !$(".cart-wrapper").hasClass("open"))
+                       $(".cart-wrapper").addClass("open");
+                });
+          }
+    
+    /********************/
+
+    $paidLaunch = false;
+    $formulePaid = false;
+
+      function checklogin(){
+        $.ajax({
+           contentType: "application/json",
+           dataType: "json",
+           url: "{{ path('api_use_connected_or_exist') }}",
+           data: {
+            name: $('#payment-form input[name=name]').val(),
+            email: $('#payment-form input[name=email]').val()
+           },
+           beforeSend: function( xhr ) {
+            $('#modal-payment button.submit').text('Verification connexion...');
+           }
+         })
+        .done(function( data ) {
+            /* l'user est loggé ou compte nouvellement crée */
+            if(data.status == 200){
+              var x = window.localStorage.getItem('panier');
+              if(x){
+                $('#modal-payment button.submit').text('Enregistrement de la commande...');
+                $paidLaunch = true;
+                synch_card();
+              }
+              else
+                proceedPayment();
+            }
+            else{
+              $('#modal-payment button.submit').css('pointer-events','auto');
+              $('.lds-ripple').css('display','none');
+              $('#modal-payment button.submit').text('Valider');
+
+              $("#modal-payment .alert-dismissible").show().delay(60000).fadeOut();
+              $('#modal-payment .alert-dismissible').removeClass('alert-success');
+              $('#modal-payment .alert-dismissible').addClass('alert-danger');
+              $('#modal-payment .alert-dismissible .text').html(data.message);
+            }
+        });
+      }
+
+      function proceedPayment(){
+        $('#modal-payment button.submit').text('Initialisation paiement...');
+          var form = document.getElementById('payment-form');
+          oData = new FormData(form);
+          var oReq = new XMLHttpRequest();
+          oReq.open("POST", $('#payment-form').attr('action'), true);
+          oReq.onload = function(oEvent) {
+              if (oReq.status == 200) {
+                  $(".success-checkmark").show().delay(3000).fadeOut();
+                  $(".check-icon").show().show().delay(3000).fadeOut();
+                  notification("Paiement commande",oReq.response,"success");
+                  card.clear();
+                  $('#modal-payment button.submit').css('pointer-events','auto');
+                  $('.lds-ripple').css('display','none');
+
+                  $("#modal-payment .alert-dismissible").show().delay(40000).fadeOut();
+                  $('#modal-payment .alert-dismissible').removeClass('alert-danger');
+                  $('#modal-payment .alert-dismissible').addClass('alert-success');
+                  $('#modal-payment .alert-dismissible .text').text(oReq.response);
+                  $('#modal-payment button.submit').text('Valider');
+                  window.localStorage.removeItem('panier');
+              }else {
+                  notification("Paiement commande",oReq.response,"error");
+                  $('#modal-payment button.submit').css('pointer-events','auto');
+                  $('.lds-ripple').css('display','none');
+                  $('#modal-payment button.submit').text('Valider');
+
+                  $("#modal-payment .alert-dismissible").show().delay(60000).fadeOut();
+                  $('#modal-payment .alert-dismissible').removeClass('alert-success');
+                  $('#modal-payment .alert-dismissible').addClass('alert-danger');
+                  $('#modal-payment .alert-dismissible .text').html(oReq.response);
+              }
+          };
+          oReq.send(oData);  
+      }
+      function proceedPayment2(){
+        $('.btn-next').text('Initialisation paiement...');
+          var form = document.getElementById('form-stripe');
+          oData = new FormData(form);
+          var oReq = new XMLHttpRequest();
+          oReq.open("POST", $('#form-stripe').attr('action'), true);
+          oReq.onload = function(oEvent) {
+              if (oReq.status == 200) {
+                  $(".success-checkmark").show().delay(3000).fadeOut();
+                  $(".check-icon").show().show().delay(3000).fadeOut();
+                  notification("Paiement commande",oReq.response,"success");
+                  card.clear();
+                  submitting('reset');
+                  window.localStorage.removeItem('panier');
+                  window.location.href = "{{path('nos_formule')}}";
+              }else {
+                  notification("Paiement commande",oReq.response,"error");
+                  submitting('reset');
+              }
+          };
+          oReq.send(oData);  
+      }
+
+      $('.oneClickPaid').click(function(e){
+        $(this).css('pointer-events', 'none');
+        var $url = $(this).attr("href");
+        proceed($url, $(this));
+        e.preventDefault();
+      });
+      function proceed($url, $that){
+        $realText = $that.text();
+        $that.text('Initialisation paiement...');
+        $.ajax({
+            url: $url,
+            type: "GET",
+            dataType: "json",
+            async: true,
+            data: {},
+            success: function(data, status) {
+              $that.css('pointer-events', 'auto');
+              $that.text($realText);
+              notification("Paiement commande","Opération effectuée avec succèss","success");
+              window.localStorage.removeItem('panier');
+              if($formulePaid)
+                window.location.href = "{{path('success_payment')}}";
+              else
+                window.location.href = "{{path('nos_formule')}}";
+
+            },
+            error: function(xhr, responseText, errorThrown) {
+              $that.css('pointer-events', 'auto');
+              $that.text($realText);
+              notification("Paiement commande",xhr.responseText,"error");
+            }
+        });
+      }
+
+      /*****************/
+
+
+    function validateContactForm(){
+      try{
+        var validator = $('#AjaxLogin').validate({
+            rules:{
+                email:{
+                    required:true,
+                    email:true
+                }, 
+                password:{
+                    required:true
+                }            
+            }
+        });
+        
+        var $validated = $('#AjaxLogin').valid();
+        return $validated;
+        }catch(error){
+            console.log(error)
+        }
+      }
+
+      var form = document.forms.namedItem("AjaxLogin");
+      form.addEventListener('submit', function(ev) {
+        if( !validateContactForm()){
+          toastr.error("Veuillez renseigner toutes les informations.");
+            $('#AjaxLogin button[type=submit]').text("Je m'inscris !");
+              ev.preventDefault();
+              return false;
+          }
+
+          $('.lds-ripple').css('display','inline-block');
+          $('#AjaxLogin button[type=submit]').css('pointer-events','none');
+         $.ajax({
+              url:"{{path('login_ajax')}}",
+              type:"POST",
+              data: new FormData(this),
+                dataType: 'json',
+                contentType: false,
+                cache: false,
+                processData:false,
+              /*data:$('#formTournoi').serialize(),*/
+              success:function(response) {
+                notification("Connexion","Vous etes connecté maintenant","success");
+                $('.lds-ripple').css('display','none');
+                $('#AjaxLogin button[type=submit]').css('pointer-events','auto');
+                $(".success-checkmark").show().delay(3000).fadeOut();
+                $(".check-icon").show().show().delay(3000).fadeOut();
+                setTimeout(function(){
+                  $( "#sign-in-modal button.close" ).trigger( "click" );
+                },1000);
+              },
+              error:function(response){
+                notification("Connexion","Identifiant incorrect","error");
+                $('#AjaxLogin button[type=submit]').button('reset');
+                $('.lds-ripple').css('display','none');
+                $('#AjaxLogin button[type=submit]').css('pointer-events','auto');
+            }
+          });
+          
+        ev.preventDefault();
+      }, false);
+
+      /***************/
+
+    function init_product_qty(id,qty){
+      console.log("Show quantity of product");
+      $('#product-qty-'+id).html(qty);
+      $('#product-'+id + " .add-product-card ").hide();
+      $('#product-'+id + " .get_quantity ").show();
+
+    }
+    $(document).ready(function() {
+
+       {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+           synch_card();
+       {% endif %}
+        refreshCard();
+        toogleNotif(false);
+        var lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
+
+        if ("IntersectionObserver" in window) {
+          let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(function(entry) {
+              if (entry.isIntersecting) {
+                let lazyImage = entry.target;
+                lazyImage.src = lazyImage.dataset.src;
+                lazyImage.srcset = lazyImage.dataset.srcset;
+                lazyImage.classList.remove("lazy");
+                lazyImageObserver.unobserve(lazyImage);
+              }
+            });
+          });
+
+          lazyImages.forEach(function(lazyImage) {
+            lazyImageObserver.observe(lazyImage);
+          });
+        } else {
+        }
+         $(".add-product-card").click(
+                       function(){
+                          var id = parseInt($(this).attr('product'));
+                          var qty = $('#' + $(this).attr('target') + ' .get_quantity');
+                          $(this).hide();
+                          qty.show();
+                          addToCard(id,1,"product");
+
+                       }
+                    );
+
+                     $(".add-product-card-add").click(
+                       function(){
+                          var id = parseInt($(this).attr('product'));
+
+                          var qty = parseInt($('#product-qty-'+id).html());
+                          qty += 1;
+                          $('#product-qty-'+id).html(qty);
+                          addToCard(id,qty,"product");
+                          
+                       }
+                    );
+
+
+                     $(".add-product-card-remove").click(
+                       function(){
+                          var id = parseInt($(this).attr('product'));
+
+                          var qty = parseInt($('#product-qty-'+id).html());
+                          qty -= 1;
+                          $('#product-qty-'+id).html(qty);
+                          addToCard(id,qty,"product");
+                          
+                       }
+                    );
+
+     });
+    function customLazyLoad(){
+              var scrollTop = window.pageYOffset;
+              $(".custom-lazy-load").each(function(index,item){
+                if($(item).offset().top - 600 < (window.innerHeight + scrollTop)){
+                  var id = $(item).attr("lazy-target");
+                  console.log(id);
+                  var url = "{{path('page')}}/"+id;
+                  $(item).removeClass("custom-lazy-load");
+                  $.ajax({
+                     url:url,
+                     type:'GET',
+                     success: function(data){
+                        $(item).replaceWith(data);
+                     }
+                  });
+                }
+          })
+      }
+    document.addEventListener("DOMContentLoaded", function() {
+      customLazyLoad();
+      document.addEventListener("scroll", customLazyLoad);
+      window.addEventListener("resize", customLazyLoad);
+      window.addEventListener("orientationChange", customLazyLoad);
+    });
+  </script>
+  <!-- Facebook Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', "{{  render(controller('App\\Controller\\ApiConfigController::getField',{name:'FACEBOOK_PIXEL_KEY'}) )  }}");
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id={{  render(controller('App\\Controller\\ApiConfigController::getField',{name:'FACEBOOK_PIXEL_JS_'}) )  }}&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Facebook Pixel Code -->
+  <div id="config-js">
+    {{  render(controller('App\\Controller\\ApiConfigController::getScripts') )  }}
+  </div>
+{% endblock %}
+
+
