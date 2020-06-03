@@ -35,10 +35,10 @@
       {% endblock %}
       {% block javascripts %}{% endblock %}
 
-      {#<script src="{{ asset('assets/plugins/toastr/toastr.min.js') }}"></script>
+      <script src="{{ asset('assets/plugins/toastr/toastr.min.js') }}"></script>
       <script src="{{ asset('assets/plugins/jqueryvalidation/jquery.validate.min.js') }}"></script>
       <script src="{{ asset('assets/plugins/jqueryvalidation/localization/messages_fr.min.js') }}"></script>
-      <script src="{{ asset('assets/plugins/jqueryvalidation/additional-methods.min.js') }}"></script>#}
+      <script src="{{ asset('assets/plugins/jqueryvalidation/additional-methods.min.js') }}"></script>
       <script>
         jQuery(document).ready(function() { 
             {% for message in app.flashes('success') %}

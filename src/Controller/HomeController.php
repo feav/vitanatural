@@ -73,7 +73,7 @@ class HomeController extends AbstractController
     }    
 
     /**
-     * @Route("/home", name="home_optimize")
+     * @Route("/old", name="home_old")
      */
     public function index2(FormuleRepository $formuleRepository,TemoignageRepository $temoignageRepository)
     {
@@ -85,7 +85,7 @@ class HomeController extends AbstractController
         $formule = $formuleRepository->findAll();
         $temoignage = $temoignageRepository->findAll();
         
-        return $this->render('home/index_optimize.html.twig', [
+        return $this->render('home/index_old.html.twig', [
             'controller_name' => 'Brulafine',
             'products' => $products,
             'formules' => $formule,
