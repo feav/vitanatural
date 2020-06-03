@@ -1,3 +1,8 @@
+#AuthName "Ceci est du contenu securise"
+#AuthType Basic
+#AuthUserFile "/home/ausiteodjy/www/Ausiteodit/SiteInternet/public/.htpasswd"
+#Require  valid-user
+
 # Use the front controller as index file. It serves as a fallback solution when
 # every other rewrite/redirect fails (e.g. in an aliased environment without
 # mod_rewrite). Additionally, this reduces the matching process for the
@@ -11,18 +16,19 @@ DirectoryIndex index.php
 # when compiling LESS/Sass/CoffeScript assets.
 # Options FollowSymlinks
 
-# Disabling MultiViews prevents unwanted negotiation, e.g. "/index" should not resolve
-# to the front controller "/index.php" but be rewritten to "/index.php/index".
+# Disabling MultiViews prevents unwanted negotiation, e.g. "/app" should not resolve
+# to the front controller "/app.php" but be rewritten to "/app.php/app".
 <IfModule mod_negotiation.c>
     Options -MultiViews
 </IfModule>
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
+
     # Determine the RewriteBase automatically and set it as environment variable.
     # If you are using Apache aliases to do mass virtual hosting or installed the
     # project in a subdirectory, the base path will be prepended to allow proper
-    # resolution of the index.php file and to redirect to the correct URI. It will
+    # resolution of the app.php file and to redirect to the correct URI. It will
     # work in environments without path prefix as well, providing a safe, one-size
     # fits all solution. But as you do not need it in this case, you can comment
     # the following 2 lines to eliminate the overhead.
@@ -34,7 +40,7 @@ DirectoryIndex index.php
     RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
     # Redirect to URI without front controller to prevent duplicate content
-    # (with and without `/index.php`). Only do this redirect on the initial
+    # (with and without `/app.php`). Only do this redirect on the initial
     # rewrite by Apache and not on subsequent cycles. Otherwise we would get an
     # endless redirect loop (request -> rewrite to front controller ->
     # redirect -> request -> ...).
@@ -61,39 +67,48 @@ DirectoryIndex index.php
         # When mod_rewrite is not available, we instruct a temporary redirect of
         # the start page to the front controller explicitly so that the website
         # and the generated links can still be used.
-        RedirectMatch 307 ^/$ /index.php/
+        RedirectMatch 302 ^/$ /index.php/
         # RedirectTemp cannot be used instead
     </IfModule>
 </IfModule>
-
-
-
-
-#OPTIMMISATION CHARGEMENT
-
-<IfModule mod_deflate.c>
-    <IfModule mod_setenvif.c>
-        <IfModule mod_headers.c>
-            SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)s,?s(gzip|deflate)?|X{4,13}|~{4,13}|-{4,13})$ HAVE_Accept-Encoding
-            RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding
-        </IfModule>
-    </IfModule>
-    <IfModule !mod_filter.c>
-        # Legacy versions of Apache
-        AddOutputFilterByType DEFLATE text/html text/plain text/css application/json
-        AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript
-        AddOutputFilterByType DEFLATE text/xml application/xml text/x-component
-    </IfModule>
-    <FilesMatch ".(ttf|otf|eot|svg|woff)$" >
-        SetOutputFilter DEFLATE
-    </FilesMatch>
-    <FilesMatch ".(css|js)$">
-        Header set Cache-Control "max-age=172800, public, must-revalidate"
-    </FilesMatch>
-    <filesMatch ".(js|css|html|php)$">
-        SetOutputFilter DEFLATE
-    </filesMatch>
+<IfModule mod_rewrite.c>
+    Options -MultiViews
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ /index.php [QSA,L]
 </IfModule>
+
+<IfModule !mod_rewrite.c>
+    <IfModule mod_alias.c>
+        RedirectMatch 302 ^/$ /index.php/
+    </IfModule>
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  # Images
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+
+  # Video
+  ExpiresByType video/mp4 "access plus 1 year"
+  ExpiresByType video/mpeg "access plus 1 year"
+
+  # CSS, JavaScript
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType text/javascript "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+
+  # Others
+  ExpiresByType application/pdf "access plus 1 month"
+  ExpiresByType application/x-shockwave-flash "access plus 1 month"
+</IfModule>
+
 <IfModule mod_deflate.c>
   # Compress HTML, CSS, JavaScript, Text, XML and fonts
   AddOutputFilterByType DEFLATE application/javascript
@@ -124,58 +139,9 @@ DirectoryIndex index.php
   BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
   Header append Vary User-Agent
 </IfModule>
-<ifModule mod_gzip.c>
-    mod_gzip_on Yes
-    mod_gzip_dechunk Yes
-    mod_gzip_item_include file .(html?|txt|css|js|php|pl)$
-    mod_gzip_item_include handler ^cgi-script$
-    mod_gzip_item_include mime ^text/.*
-    mod_gzip_item_include mime ^application/x-javascript.*
-    mod_gzip_item_exclude mime ^image/.*
-    mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
-</ifModule>
-<IfModule mod_expires.c>
-    ExpiresActive On
-    ExpiresDefault "access plus 5 seconds"
-    ExpiresByType image/jpg "access plus 2 month"
-    ExpiresByType image/jpeg "access plus 2 month"
-    ExpiresByType image/png "access plus 2 month"
-    ExpiresByType image/gif "access plus 2 month"
-    ExpiresByType image/ico "access plus 2 month"
-    ExpiresByType image/icon "access plus 2 month"
-    ExpiresByType image/x-icon "access plus 2 month"
-    ExpiresByType text/css "access plus 2 month"
-    ExpiresByType text/javascript "access plus 2 month"
-    ExpiresByType text/html "access plus 5 seconds"
-    ExpiresByType application/xhtml+xml "access plus 5 seconds"
-    ExpiresByType application/javascript "access plus 2 month"
-    ExpiresByType application/x-javascript "access plus 2 month"
-    ExpiresByType application/x-shockwave-flash "access plus 2 month"
-    ExpiresByType application/x-font-woff "access plus 2 month"
-    ExpiresByType application/x-font-ttf "access plus 2 month"
-    ExpiresByType application/x-font-otf "access plus 2 month"
-</IfModule>
-<IfModule mod_headers.c>
-    <FilesMatch "\.(ico|jpe?g|png|gif|swf)$">
-        Header set Cache-Control "max-age=2592000, public"
-    </FilesMatch>
-    <FilesMatch "\.(css)$">
-        Header set Cache-Control "max-age=604800, public"
-    </FilesMatch>
-    <FilesMatch "\.(js)$">
-        Header set Cache-Control "max-age=216000, private"
-    </FilesMatch>
-    <filesmatch "\.(html|htm)$">
-        Header set Cache-Control "max-age=5, public"
-    </filesmatch>
-</IfModule>
 
-AddType image/x-icon .ico
-AddType video/ogg  .ogv
-AddType video/mp4  .mp4
-AddType video/webm .webm
-AddType application/vnd.ms-fontobject .eot
-AddType font/ttf .ttf
-AddType font/otf .otf
-AddType font/x-woff .woff
-AddType image/svg+xml .svg
+<IfModule mod_headers.c>
+  <FilesMatch ".(js|css|xml|gz|html)$">
+    Header append Vary: Accept-Encoding
+  </FilesMatch>
+</IfModule>
