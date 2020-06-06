@@ -39,16 +39,16 @@ class MollieService{
     public function createMollieCustom($token, $metadata){
         $mollie = new \Mollie\Api\MollieApiClient();
         $mollie->setApiKey($this->mollieApiKey);
+
         $customer = $mollie->customers->create([
             'email' => $metadata['email'],
             'name' => $metadata['name'],
-            'description' => 'Client de la boutique VitaNatural'
         ]);
         $user = $this->userRepository->findOneBy(['email'=>$metadata['email']]);
-        $user->setMollieCustomerId($customer['id']);
+        $user->setMollieCustomerId($customer->id);
         $this->em->flush();
 
-        return $customer['id'];
+        return $customer->id;
     }
 
     public function paidByMollieCustom($mollie_custom_id, $amount){
@@ -65,7 +65,7 @@ class MollieService{
             "sequenceType" => "first",
         ]);
 
-        return $payment['id'];
+        return $payment->id;
     }
 
     public function proceedPayment($user, $amount){
@@ -74,7 +74,7 @@ class MollieService{
         $mollie->setApiKey($this->mollieApiKey);
         $transaction = $this->paidByMollieCustom($user->getMollieCustomerId(), $amount);
         
-        return ['message'=>$result, 'charge'=> $transaction];
+        return ['message'=>$result, 'charge'=> $transaction->id];
     }
 
     public function saveChargeToRefund($panier, $transaction){
@@ -98,14 +98,13 @@ class MollieService{
                 "value" => $amount
             ],
             "cardToken" => $token,
-            "description" => "Transaction de la boutique VitaNatural",
             "sequenceType" => "first"
         ]);
 
-        return ['message'=>$result, 'charge'=> $payment['id']];
+        return ['message'=>$result, 'charge'=> $payment->id];
     }
 
-    public function proceedPaymentCart($user, $amount, $token){
+    public function proceedPaymentCart($amount, $token){
         $result = "";
         $mollie = new \Mollie\Api\MollieApiClient();
         $mollie->setApiKey($this->mollieApiKey);
@@ -119,7 +118,7 @@ class MollieService{
               "description" => "Transaction de la boutique VitaNatural",
               "cardToken" => $token,
         ]);
-        return ['message'=>$result, 'charge'=> $payment['id']];
+        return ['message'=>$result, 'charge'=> $payment->id];
     }
 
     public function refund($transaction, $amount = 0){
