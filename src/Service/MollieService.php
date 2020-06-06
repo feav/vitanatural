@@ -74,9 +74,9 @@ class MollieService{
         $result = "";
         $mollie = new \Mollie\Api\MollieApiClient();
         $mollie->setApiKey($this->mollieApiKey);
-        $transaction = $this->paidByMollieCustom($user->getMollieCustomerId(), $amount);
+        $transactionId = $this->paidByMollieCustom($user->getMollieCustomerId(), $amount);
         
-        return ['message'=>$result, 'charge'=> $transaction->id];
+        return ['message'=>$result, 'charge'=> $transactionId];
     }
 
     public function saveChargeToRefund($panier, $transaction){
