@@ -59,7 +59,7 @@ class MollieService{
         $payment = $mollie->customers->get($mollie_custom_id)->createPayment([
             "amount" => [
                "currency" => $this->mollieCurrency,
-               "value" => $amount,
+               "value" => (string)$amount
             ],
             "description" => "Transaction de la boutique VitaNatural",
             "sequenceType" => "first",
@@ -97,7 +97,7 @@ class MollieService{
             "method" => "creditcard",
             "amount" => [
                 "currency" => $this->mollieCurrency,
-                "value" => $amount
+                "value" => (string)$amount
             ],
             "description" => "Transaction de la boutique VitaNatural first payment",
             "redirectUrl" => "https://vitanatural.fr",
@@ -117,7 +117,7 @@ class MollieService{
               "method" => "creditcard",
               "amount" => [
                     "currency" => $token,
-                    "value" => $amount
+                    "value" => (string)$amount
               ],
               "description" => "Transaction de la boutique VitaNatural",
               "redirectUrl" => "https://vitanatural.fr",
@@ -136,7 +136,7 @@ class MollieService{
         $refund = $payment->refund([
         "amount" => [
            "currency" => $this->mollieCurrency,
-           "value" => $amount 
+           "value" => (string)$amount
         ]
         ]);
 
