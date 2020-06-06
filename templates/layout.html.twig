@@ -981,7 +981,6 @@
                 $(".success-checkmark").show().delay(3000).fadeOut();
                 $(".check-icon").show().show().delay(3000).fadeOut();
                 notification("Paiement commande",oReq.response,"success");
-                cardNumber.clear();
                 $('#modal-payment button.submit').css('pointer-events','auto');
                 $('.lds-ripple').css('display','none');
 
@@ -1016,7 +1015,6 @@
                 $(".success-checkmark").show().delay(3000).fadeOut();
                 $(".check-icon").show().show().delay(3000).fadeOut();
                 notification("Paiement commande",oReq.response,"success");
-                cardNumber.clear();
                 submitting('reset');
                 window.localStorage.removeItem('panier');
                 window.location.href = "{{path('nos_formule')}}";
