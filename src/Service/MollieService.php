@@ -98,7 +98,7 @@ class MollieService{
                 "value" => $amount
             ],
             "cardToken" => $token,
-            "sequenceType" => "first"
+            "description" => "Transaction de la boutique VitaNatural first payment",
         ]);
 
         return ['message'=>$result, 'charge'=> $payment->id];
