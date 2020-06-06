@@ -63,6 +63,8 @@ class MollieService{
             ],
             "description" => "Transaction de la boutique VitaNatural",
             "sequenceType" => "first",
+            "redirectUrl" => "https://vitanatural.fr",
+            "webhookUrl" => "https://vitanatural.fr",
         ]);
 
         return $payment->id;
