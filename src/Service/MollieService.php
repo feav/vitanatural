@@ -97,8 +97,10 @@ class MollieService{
                 "currency" => $this->mollieCurrency,
                 "value" => $amount
             ],
-            "cardToken" => $token,
             "description" => "Transaction de la boutique VitaNatural first payment",
+            "redirectUrl" => "https://vitanatural.fr",
+            "webhookUrl" => "https://vitanatural.fr",
+            "cardToken" => $token,
         ]);
 
         return ['message'=>$result, 'charge'=> $payment->id];
@@ -112,8 +114,8 @@ class MollieService{
         $payment = $mollie->payments->create([
               "method" => "creditcard",
               "amount" => [
-                    "currency" => "EUR",
-                    "value" => "10.00"
+                    "currency" => $token,
+                    "value" => $amount
               ],
               "description" => "Transaction de la boutique VitaNatural",
               "redirectUrl" => "https://vitanatural.fr",
