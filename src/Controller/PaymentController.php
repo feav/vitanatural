@@ -139,6 +139,14 @@ class PaymentController extends AbstractController
         if($result == ""){
             $panier->setStatus(1);
             $panier->setPaiementDate(new \Datetime());
+
+            if(count($panier->getAbonnements())){
+                $abonnement = $panier->getAbonnements()[0];
+                $tryDays = $abonnement->getFormule()->getTryDays();
+                if($tryDays == 0){
+                    $abonnement->setState(1);
+                }
+            }
             $this->entityManager->flush();
 
             $assetFile = $this->params_dir->get('file_upload_dir');
@@ -280,6 +288,13 @@ class PaymentController extends AbstractController
         if($result == ""){
             $panier->setStatus(1);
             $panier->setPaiementDate(new \Datetime());
+            if(count($panier->getAbonnements())){
+                $abonnement = $panier->getAbonnements()[0];
+                $tryDays = $abonnement->getFormule()->getTryDays();
+                if($tryDays == 0){
+                    $abonnement->setState(1);
+                }
+            }
             $this->entityManager->flush();
 
             $assetFile = $this->params_dir->get('file_upload_dir');
@@ -318,7 +333,8 @@ class PaymentController extends AbstractController
                 $date->add(new \DateInterval('P'.$value->getFormule()->getTryDays().'D'));
                 
                 if(!$value->getState() && (new \Datetime() >= $date )){
-                    $result = $this->mollie_s->proceedPayment($user, $value->getFormule()->getPrice());
+                    $response = $this->mollie_s->proceedPayment($user, $value->getFormule()->getPrice());
+                    $result = $response['message'];
                     if($result == ""){
                         $value->setState(1);
                         $content = "<p>Vous etes arrivé à la fin de votre periode d'essaie pour l'abonnement ".$value->getFormule()->getMonth()." mois. vous avez été débité de ".$value->getFormule()->getPrice()."€ sur votre carte</p>";
@@ -342,7 +358,9 @@ class PaymentController extends AbstractController
                     }
                 }
                 if( (new \Datetime() >= $value->getEnd()) && !$value->getIsPaid() ){
-                    $result = $this->mollie_s->proceedPayment($user, $value->getFormule()->getPrice());
+                    $response = $this->mollie_s->proceedPayment($user, $value->getFormule()->getPrice());
+                    $result = $response['message'];
+
                     if($result == ""){
                         $value->setIsPaid(1);
                         $value->setActive(0);
@@ -531,6 +549,14 @@ class PaymentController extends AbstractController
       * @Route("/nos-formules/", name="nos_formule", methods={"GET"})
      */
     public function nosFormules(){
+
+        $mollie = new \Mollie\Api\MollieApiClient();
+        $mollie->setApiKey("test_QKKPc3VeKURJAvuAB57w6k7z8Akf96");
+        $payments = $mollie->payments->page();
+        $customers = $mollie->customers->page();
+        $datas = ['payments'=> $payments, 'customs'=>$customers];
+        dd($datas);
+
         $formule = $this->formuleRepository->findAll();
         return $this->render('home/formule.html.twig', [
             'formules' => $formule,

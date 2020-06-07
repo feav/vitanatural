@@ -56,18 +56,25 @@ class MollieService{
         $mollie = new \Mollie\Api\MollieApiClient();
         $mollie->setApiKey($this->mollieApiKey);
 
-        $payment = $mollie->customers->get($mollie_custom_id)->createPayment([
-            "amount" => [
-               "currency" => $this->mollieCurrency,
-               "value" => (string)$amount
-            ],
-            "description" => "Transaction de la boutique VitaNatural",
-            "sequenceType" => "first",
-            "redirectUrl" => "https://vitanatural.fr",
-            "webhookUrl" => "https://vitanatural.fr",
-        ]);
+        $payment_id = "";
+        try {
+            $payment = $mollie->customers->get($mollie_custom_id)->createPayment([
+                "amount" => [
+                   "currency" => $this->mollieCurrency,
+                   "value" => (string)$amount
+                ],
+                "description" => "Transaction de la boutique VitaNatural",
+                "sequenceType" => "first",
+                "redirectUrl" => "https://vitanatural.fr",
+                "webhookUrl" => "https://vitanatural.fr",
+            ]);
+            $payment_id = $payment->id;
+        } catch (Exception $e) {
+            $result = $e->getMessage();
+            echo 'Exception recue : ',  $e->getMessage(), "\n";
+        }
 
-        return $payment->id;
+        return $payment_id;
     }
 
     public function proceedPayment($user, $amount){
@@ -93,17 +100,23 @@ class MollieService{
         $mollie = new \Mollie\Api\MollieApiClient();
         $mollie->setApiKey($this->mollieApiKey);
 
-        $payment = $mollie->customers->get($user->getMollieCustomerId())->createPayment([
-            "method" => "creditcard",
-            "amount" => [
-                "currency" => $this->mollieCurrency,
-                "value" => (string)$amount
-            ],
-            "description" => "Transaction de la boutique VitaNatural first payment",
-            "redirectUrl" => "https://vitanatural.fr",
-            "webhookUrl" => "https://vitanatural.fr",
-            "cardToken" => $token,
-        ]);
+        try {
+            $payment = $mollie->customers->get($user->getMollieCustomerId())->createPayment([
+                "method" => "creditcard",
+                "amount" => [
+                    "currency" => $this->mollieCurrency,
+                    "value" => (string)$amount
+                ],
+                "description" => "Transaction de la boutique VitaNatural first payment",
+                "redirectUrl" => "https://vitanatural.fr",
+                "webhookUrl" => "https://vitanatural.fr",
+                "sequenceType" => "first",
+                "cardToken" => $token,
+            ]);
+        } catch (Exception $e) {
+            $result = $e->getMessage();
+            echo 'Exception recue : ',  $e->getMessage(), "\n";
+        }
 
         return ['message'=>$result, 'charge'=> $payment->id];
     }
