@@ -539,13 +539,13 @@ class PaymentController extends AbstractController
       * @Route("/success-payment", name="success_payment", methods={"GET"})
      */
     public function payementSuccess(){
-        
-        $mollie = new \Mollie\Api\MollieApiClient();
+
+        /*$mollie = new \Mollie\Api\MollieApiClient();
         $mollie->setApiKey("test_QKKPc3VeKURJAvuAB57w6k7z8Akf96");
         $payment = $mollie->payments->get("tr_uqBpvqyKWv");
         $customers = $mollie->customers->page();
         $datas = ['payment'=> $payment, 'customs'=>$customers];
-        dd($datas);
+        dd($datas);*/
 
         $formule = $this->formuleRepository->findAll();
         return $this->render('home/success_payment.html.twig', [
