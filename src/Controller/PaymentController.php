@@ -540,12 +540,12 @@ class PaymentController extends AbstractController
      */
     public function payementSuccess(){
 
-        $mollie = new \Mollie\Api\MollieApiClient();
+        /*$mollie = new \Mollie\Api\MollieApiClient();
         $mollie->setApiKey("test_VCjK9FN6dJ4fd7mtS8JUHtcm2uy96K");
         $payments = $mollie->payments->page();
         $customers = $mollie->customers->page();
         $datas = ['payments'=> $payments, 'customs'=>$customers];
-        dd($datas);
+        dd($datas);*/
 
         $formule = $this->formuleRepository->findAll();
         return $this->render('home/success_payment.html.twig', [
