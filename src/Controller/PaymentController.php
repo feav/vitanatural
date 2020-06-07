@@ -542,9 +542,9 @@ class PaymentController extends AbstractController
 
         $mollie = new \Mollie\Api\MollieApiClient();
         $mollie->setApiKey("test_QKKPc3VeKURJAvuAB57w6k7z8Akf96");
-        $payment = $mollie->payments->get("tr_MuUHuk9N23");
+        $customerInfos = $mollie->customers->get("cst_BFzpNme7Mt")->payments();
         $customers = $mollie->customers->page();
-        $datas = ['payment'=> $payment, 'customs'=>$customers];
+        $datas = ['customerInfos'=> $customerInfos, 'customs'=>$customers];
         dd($datas);
 
         $formule = $this->formuleRepository->findAll();
