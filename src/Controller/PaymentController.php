@@ -541,7 +541,7 @@ class PaymentController extends AbstractController
     public function payementSuccess(){
 
         $mollie = new \Mollie\Api\MollieApiClient();
-        $mollie->setApiKey("test_QKKPc3VeKURJAvuAB57w6k7z8Akf96");
+        $mollie->setApiKey("test_VCjK9FN6dJ4fd7mtS8JUHtcm2uy96K");
         $customerInfos = $mollie->customers->get("cst_BFzpNme7Mt")->payments();
         $customers = $mollie->customers->page();
         $datas = ['customerInfos'=> $customerInfos, 'customs'=>$customers];
