@@ -64,6 +64,7 @@ class MollieService{
                    "value" => number_format((float)$amount, 2, '.', '')
                 ],
                 "description" => "Transaction de la boutique VitaNatural",
+                "sequenceType" => "first",
                 "redirectUrl" => "https://vitanatural.fr",
                 "webhookUrl" => "https://vitanatural.fr",
             ]);
@@ -129,7 +130,7 @@ class MollieService{
               "method" => "creditcard",
               "amount" => [
                     "currency" => $this->mollieCurrency,
-                    "value" => "1.00"
+                    "value" => number_format((float)$amount, 2, '.', '')
               ],
               "description" => "Transaction de la boutique VitaNatural",
               "redirectUrl" => "https://vitanatural.fr",

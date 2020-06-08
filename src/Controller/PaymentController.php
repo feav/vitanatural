@@ -115,8 +115,8 @@ class PaymentController extends AbstractController
                 $message = $preparePaid['message'];
                 if($preparePaid['paid']){
                     $amount = $preparePaid['amount'];
-                    //$response = $this->mollie_s->customerFirstPaid($user, $token, $amount);
-                    $response = $this->mollie_s->proceedPaymentCart($amount, $token);
+                    $response = $this->mollie_s->customerFirstPaid($user, $token, $amount);
+                    //$response = $this->mollie_s->proceedPaymentCart($amount, $token);
                     $result = $response['message'];
                     $this->mollie_s->saveChargeToRefund($panier, $response['charge']);
                 }
