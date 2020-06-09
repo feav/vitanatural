@@ -27,7 +27,7 @@ class MollieWebhookController extends AbstractController
     	$mail = (new \Swift_Message('paiement status'))
                     ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
                     ->setTo('alexngoumo.an@gmail.com')
-                    ->setBody( "paiement status OUVERT entree",
+                    ->setBody( "paiement status OUVERT entree ".$request->request->get('id'),
                         'text/html'
                     );
                 $mailer->send($mail);
@@ -39,6 +39,16 @@ class MollieWebhookController extends AbstractController
 		    //$payment = $mollie->payments->get($_POST["id"]);
 		    $payment = $mollie->payments->get($request->request->get('id'));
 		    $orderId = $payment->metadata->order_id;
+
+
+		    $mail = (new \Swift_Message('paiement status'))
+                ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
+                ->setTo('alexngoumo.an@gmail.com')
+                ->setBody( "paiement status OUVERT entree in try ".$payment->status,
+                    'text/html'
+                );
+            $mailer->send($mail);
+
 
 		    /*
 		     * Update the order in the database.
