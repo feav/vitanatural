@@ -66,7 +66,7 @@ class MollieService{
                 "description" => "Transaction de la boutique VitaNatural",
                 "sequenceType" => "first",
                 "redirectUrl" => "https://vitanatural.fr",
-                "webhookUrl" => "https://vitanatural.fr",
+                "webhookUrl" => "https://vitanatural.fr/mollie-webhook",
             ]);
             $payment_id = $payment->id;
         } catch (Exception $e) {
@@ -109,7 +109,7 @@ class MollieService{
                 ],
                 "description" => "Transaction de la boutique VitaNatural first payment",
                 "redirectUrl" => "https://vitanatural.fr",
-                "webhookUrl" => "https://vitanatural.fr",
+                "webhookUrl" => "https://vitanatural.fr/mollie-webhook",
                 "sequenceType" => "first",
                 "cardToken" => $token,
             ]);
@@ -134,7 +134,7 @@ class MollieService{
               ],
               "description" => "Transaction de la boutique VitaNatural",
               "redirectUrl" => "https://vitanatural.fr",
-              "webhookUrl" => "https://vitanatural.fr",
+              "webhookUrl" => "https://vitanatural.fr/mollie-webhook",
               "cardToken" => $token,
         ]);
         return ['message'=>$result, 'charge'=> $payment->id];
