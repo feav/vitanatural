@@ -45,7 +45,7 @@ class MollieWebhookController extends AbstractController
 		     */
 		    //database_write($orderId, $payment->status);
 		    
-		    if ($payment->isPaid() && !$payment->hasRefunds() && !$payment->hasChargebacks()) {
+		    if ($payment->isPaid()/* && !$payment->hasRefunds() && !$payment->hasChargebacks()*/) {
 		        
 		    } elseif ($payment->isOpen()) {
 		        $mail = (new \Swift_Message('paiement status'))
