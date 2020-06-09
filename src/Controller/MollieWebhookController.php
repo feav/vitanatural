@@ -24,6 +24,13 @@ class MollieWebhookController extends AbstractController
      */
     public function webhook(Request $request, \Swift_Mailer $mailer)
     {	
+    	$mail = (new \Swift_Message('paiement status'))
+                    ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
+                    ->setTo('alexngoumo.an@gmail.com')
+                    ->setBody( "paiement status OUVERT entree",
+                        'text/html'
+                    );
+                $mailer->send($mail);
 
         try {
         	$mollie = new \Mollie\Api\MollieApiClient();
