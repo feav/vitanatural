@@ -24,78 +24,50 @@ class MollieWebhookController extends AbstractController
      */
     public function webhook(Request $request, \Swift_Mailer $mailer)
     {	
-    	$mail = (new \Swift_Message('paiement status'))
-                    ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
-                    ->setTo('alexngoumo.an@gmail.com')
-                    ->setBody( "paiement status OUVERT entree ".$request->request->get('id'),
-                        'text/html'
-                    );
-                $mailer->send($mail);
-
+    	$status = "";
         try {
         	$mollie = new \Mollie\Api\MollieApiClient();
         	$mollie->setApiKey($this->mollieApiKey);
 
-		    //$payment = $mollie->payments->get($_POST["id"]);
 		    $payment = $mollie->payments->get($request->request->get('id'));
 		    $orderId = $payment->metadata->order_id;
-
-
-		    $mail = (new \Swift_Message('paiement status'))
-                ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
-                ->setTo('alexngoumo.an@gmail.com')
-                ->setBody( "paiement status OUVERT entree in try ".$payment->status,
-                    'text/html'
-                );
-            $mailer->send($mail);
-
 
 		    /*
 		     * Update the order in the database.
 		     */
 		    //database_write($orderId, $payment->status);
-		    
-		    if ($payment->isPaid()/* && !$payment->hasRefunds() && !$payment->hasChargebacks()*/) {
-		        
-		    } elseif ($payment->isOpen()) {
-		        $mail = (new \Swift_Message('paiement status'))
-                    ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
-                    ->setTo('alexngoumo.an@gmail.com')
-                    ->setBody( "paiement status OUVERT",
-                        'text/html'
-                    );
-                $mailer->send($mail);
 
+		    $status = $payment->status."-".$payment->id."=>";
+
+		    if ($payment->isPaid()/* && !$payment->hasRefunds() && !$payment->hasChargebacks()*/){
+		        $status .= " PAID";
+		    } elseif ($payment->isOpen()) {
+		        $status .= " OPEN";
 		    } elseif ($payment->isPending()) {
-		        /*
-		         * The payment is pending.
-		         */
+		        $status .= " PENDING";
 		    } elseif ($payment->isFailed()) {
-		        /*
-		         * The payment has failed.
-		         */
+		        $status .= " FAILD";
 		    } elseif ($payment->isExpired()) {
-		        /*
-		         * The payment is expired.
-		         */
+		        $status .= "EXPIRED";
 		    } elseif ($payment->isCanceled()) {
-		        /*
-		         * The payment has been canceled.
-		         */
+		        $status .= " CANCELED";
 		    } elseif ($payment->hasRefunds()) {
-		        /*
-		         * The payment has been (partially) refunded.
-		         * The status of the payment is still "paid"
-		         */
+		        $status .= " REFUNDS";
 		    } elseif ($payment->hasChargebacks()) {
-		        /*
-		         * The payment has been (partially) charged back.
-		         * The status of the payment is still "paid"
-		         */
+		       $status .= " CHARGE_BACK";
 		    }
 		} catch (\Mollie\Api\Exceptions\ApiException $e) {
 		    echo "API call failed: " . htmlspecialchars($e->getMessage());
+		    $status .= "ERROR API call failed: ".$e->getMessage();
 		}
+
+		$mail = (new \Swift_Message('paiement status'))
+            ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
+            ->setTo('alexngoumo.an@gmail.com')
+            ->setBody( $status,
+                'text/html'
+            );
+        $mailer->send($mail);
        	return new Response('fin du hook',200);
     }
 }
