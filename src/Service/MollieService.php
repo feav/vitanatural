@@ -146,7 +146,7 @@ class MollieService{
 
         $checkoutUrl = "";
         if($payment->status != "open"){
-            if(!is_null($payment->details) && $payment->cardSecurity == "3dsecure" && !is_null($payment->_links->checkout)){
+            if(!is_null($payment->details) && $payment->details->cardSecurity == "3dsecure" && !is_null($payment->_links->checkout)){
                 $checkoutUrl = $payment->_links->checkout;
             }
         }
@@ -155,7 +155,7 @@ class MollieService{
             'checkoutUrl'=> $checkoutUrl
         ];
         var_dump($payment->details);
-        var_dump($payment->cardSecurity);
+        var_dump($payment->details->cardSecurity);
         var_dump($payment->_links->checkout);
         dd($payment);
         return ['message'=>$result, 'charge'=> $payment->id, 'infosPaid'=>$infosPaid];
