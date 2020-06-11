@@ -144,6 +144,7 @@ class MollieService{
               ],
         ]);
 
+        dd($payment);
         $checkoutUrl = "";
         if($payment->status != "paid"){
             if(!is_null($payment->details) && $payment->details->cardSecurity == "3dsecure" && !is_null($payment->_links->checkout)){
