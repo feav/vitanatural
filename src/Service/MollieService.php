@@ -136,7 +136,7 @@ class MollieService{
                     "value" => "1.00"
               ],
               "description" => "Transaction de la boutique VitaNatural. commande #".$panierId,
-              "redirectUrl" => "https://vitanatural.fr",
+              "redirectUrl" => "https://vitanatural.fr/nos-formules",
               "webhookUrl" => "https://vitanatural.fr/mollie-webhook",
               "cardToken" => $token,
               "metadata" => [
