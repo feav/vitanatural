@@ -139,7 +139,7 @@ class PaymentController extends AbstractController
         }
 
         if($result == ""){
-            return new Response(json_encode(array('status'=>200, "checkoutUrl"=>$checkoutUrl, "message"=>"Votre paiement a été envoyé, vous recevrez une Confirmation.")));
+            return new Response(json_encode(array('status'=>200, "checkoutUrl"=>$checkoutUrl, "message"=>"Votre paiement a été envoyé, vous recevrez une confirmation d'ici peu.")));
 
             $panier->setStatus(1);
             $panier->setPaiementDate(new \Datetime());
