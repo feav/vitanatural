@@ -123,7 +123,7 @@ class MollieService{
         return ['message'=>$result, 'charge'=> $payment->id];
     }
 
-    public function proceedPaymentCart($amount, $token){
+    public function proceedPaymentCart($panierId, $amount, $token){
         $result = "";
         $mollie = new \Mollie\Api\MollieApiClient();
         $mollie->setApiKey($this->mollieApiKey);
@@ -135,13 +135,28 @@ class MollieService{
                     //"value" => number_format((float)$amount, 2, '.', '')
                     "value" => "1.00"
               ],
-              "description" => "Transaction de la boutique VitaNatural",
+              "description" => "Transaction de la boutique VitaNatural, commande #".$panierId,
               "redirectUrl" => "https://vitanatural.fr",
               "webhookUrl" => "https://vitanatural.fr/mollie-webhook",
               "cardToken" => $token,
+              "metadata" => [
+                "order_id" => $panierId,
+              ],
         ]);
+
+        $checkoutUrl = "";
+        if($payment->status != "open"){
+            if(!is_null($payment->details) && $payment->cardSecurity == "3dsecure" && !is_null($payment->_links->checkout)){
+                $checkoutUrl = $payment->_links->checkout;
+            }
+        }
+
+        $infosPaid = [
+            'checkoutUrl'=> $checkoutUrl
+        ];
+        var_dump($infosPaid);
         dd($payment);
-        return ['message'=>$result, 'charge'=> $payment->id];
+        return ['message'=>$result, 'charge'=> $payment->id, 'infosPaid'=>$infosPaid];
     }
 
     public function refund($transaction, $amount = 0){
