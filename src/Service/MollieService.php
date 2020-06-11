@@ -149,9 +149,9 @@ class MollieService{
             if($payment->mode == "test" && !is_null($payment->details) && ( !is_null($payment->details->cardSecurity) && $payment->details->cardSecurity == "3dsecure" ) && !is_null($payment->_links->checkout)){
                 $checkoutUrl = $payment->_links->checkout->href;
             }
-        }
-        elseif( $payment->mode == "live" ){
-            $checkoutUrl = $payment->_links->checkout->href;
+            elseif( $payment->mode == "live" ){
+                $checkoutUrl = $payment->_links->checkout->href;
+            }
         }
 
         return ['message'=>$result, 'charge'=> $payment->id, 'checkoutUrl'=>$checkoutUrl];
