@@ -1011,16 +1011,14 @@
         var oReq = new XMLHttpRequest();
         oReq.open("POST", $('#form-stripe').attr('action'), true);
         oReq.onload = function(oEvent) {
-          console.log(oReq);
             if(oReq.response !== 'undefined' ){
               var datas = JSON.parse(oReq.response);
               if(datas.status = 200){
                 notification("Paiement commande", datas.message,"success");
-                console.log(datas.checkoutUrl);
+                window.location.href = datas.checkoutUrl;
               }
               else if(datas.status = 500){
                 notification("Paiement commande",datas.message,"error");
-                console.log(datas.checkoutUrl);
               }
               else
                 notification("Paiement commande",'Echec opération',"error");
