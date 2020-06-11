@@ -154,7 +154,9 @@ class MollieService{
         $infosPaid = [
             'checkoutUrl'=> $checkoutUrl
         ];
-        var_dump($infosPaid);
+        var_dump($payment->details);
+        var_dump($payment->cardSecurity);
+        var_dump($payment->_links->checkout);
         dd($payment);
         return ['message'=>$result, 'charge'=> $payment->id, 'infosPaid'=>$infosPaid];
     }
