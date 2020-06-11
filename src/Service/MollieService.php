@@ -140,6 +140,7 @@ class MollieService{
               "webhookUrl" => "https://vitanatural.fr/mollie-webhook",
               "cardToken" => $token,
         ]);
+        dd($payment);
         return ['message'=>$result, 'charge'=> $payment->id];
     }
 
