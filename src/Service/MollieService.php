@@ -135,7 +135,7 @@ class MollieService{
                     //"value" => number_format((float)$amount, 2, '.', '')
                     "value" => "1.00"
               ],
-              "description" => "Transaction de la boutique VitaNatural, commande #".$panierId,
+              "description" => "Transaction de la boutique VitaNatural. commande #".$panierId,
               "redirectUrl" => "https://vitanatural.fr",
               "webhookUrl" => "https://vitanatural.fr/mollie-webhook",
               "cardToken" => $token,
@@ -151,14 +151,8 @@ class MollieService{
             }
         }
 
-        $infosPaid = [
-            'checkoutUrl'=> $checkoutUrl
-        ];
-        var_dump($payment->details);
-        var_dump($payment->details->cardSecurity);
-        var_dump($payment->_links->checkout);
-        dd($payment);
-        return ['message'=>$result, 'charge'=> $payment->id, 'infosPaid'=>$infosPaid];
+        //dd($payment);
+        return ['message'=>$result, 'charge'=> $payment->id, 'checkoutUrl'=>$checkoutUrl];
     }
 
     public function refund($transaction, $amount = 0){

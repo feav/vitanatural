@@ -70,6 +70,7 @@ class PaymentController extends AbstractController
         $this->entityManager = $this->getDoctrine()->getManager();
         $user = $this->getUser();
         $message = $result = "";
+        $response = [];
 
         $token = $request->request->get('token');
         $panier = $this->panierRepository->findOneBy(['user'=>$user->getId(), 'status'=>0]);
@@ -103,7 +104,7 @@ class PaymentController extends AbstractController
                 }
             }
             $flashBag = $this->get('session')->getFlashBag()->clear();
-            $this->addFlash('success', 'Paiement effectué avec success');
+            $this->addFlash('success', 'Votre commande a été envoyé.');
         }
         else{
             $metadata = ['name'=>$user->getName(), 'email'=>$user->getEmail()];
@@ -118,6 +119,7 @@ class PaymentController extends AbstractController
                     //$response = $this->mollie_s->customerFirstPaid($user, $token, $amount);
                     $response = $this->mollie_s->proceedPaymentCart($panier->getId(), $amount, $token);
                     $result = $response['message'];
+                    $checkoutUrl = $response['checkoutUrl'];
                     $this->mollie_s->saveChargeToRefund($panier, $response['charge']);
                 }
             }
@@ -137,6 +139,8 @@ class PaymentController extends AbstractController
         }
 
         if($result == ""){
+            return new Response(json_encode('status'=>200, "checkoutUrl"=>$checkoutUrl, "message"=>"Votre paiement a été envoyé, vous recevrez une Confirmation."));
+
             $panier->setStatus(1);
             $panier->setPaiementDate(new \Datetime());
 

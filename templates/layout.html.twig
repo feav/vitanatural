@@ -1011,15 +1011,32 @@
         var oReq = new XMLHttpRequest();
         oReq.open("POST", $('#form-stripe').attr('action'), true);
         oReq.onload = function(oEvent) {
+          console.log(oReq);
+            if(oReq.response !== 'undefined' ){
+              $datas = JSON.parse(oReq.response);
+              if(datas.status = 200){
+                notification("Paiement commande", datas.message,"success");
+                console.log(datas.checkoutUrl);
+              }
+              else if(datas.status = 500){
+                notification("Paiement commande",datas.message,"error");
+                console.log(datas.checkoutUrl);
+              }
+              else
+                notification("Paiement commande",'Echec opération',"error");
+            }
+            else
+              notification("Paiement commande",'Echec opération',"error");
+
             if (oReq.status == 200) {
                 $(".success-checkmark").show().delay(3000).fadeOut();
                 $(".check-icon").show().show().delay(3000).fadeOut();
-                notification("Paiement commande",oReq.response,"success");
+                /*notification("Paiement commande",oReq.response,"success");*/
                 submitting('reset');
                 window.localStorage.removeItem('panier');
                 {#/*window.location.href = "{{path('nos_formule')}}";*/#}
             }else {
-                notification("Paiement commande",oReq.response,"error");
+                /*notification("Paiement commande",oReq.response,"error");*/
                 submitting('reset');
             }
         };
