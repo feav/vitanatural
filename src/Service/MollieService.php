@@ -145,15 +145,12 @@ class MollieService{
         ]);
 
         $checkoutUrl = "";
-        if($payment->status != "open"){
+        if($payment->status != "paid"){
             if(!is_null($payment->details) && $payment->details->cardSecurity == "3dsecure" && !is_null($payment->_links->checkout)){
-                $checkoutUrl = $payment->_links->checkout;
+                $checkoutUrl = $payment->_links->checkout->href;
             }
         }
-        var_dump($payment->details->cardSecurity);
-        var_dump($payment->_links->checkout);
-        var_dump($payment->_links->checkout->href);
-        dd($payment);
+
         return ['message'=>$result, 'charge'=> $payment->id, 'checkoutUrl'=>$checkoutUrl];
     }
 
