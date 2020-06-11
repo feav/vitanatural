@@ -150,8 +150,8 @@ class MollieService{
                 $checkoutUrl = $payment->_links->checkout;
             }
         }
-
-        //dd($payment);
+        var_dump($checkoutUrl);
+        dd($payment);
         return ['message'=>$result, 'charge'=> $payment->id, 'checkoutUrl'=>$checkoutUrl];
     }
 
