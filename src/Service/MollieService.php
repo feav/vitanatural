@@ -135,6 +135,7 @@ class MollieService{
                     //"value" => number_format((float)$amount, 2, '.', '')
                     "value" => "1.00"
               ],
+              "status"=>"paid",
               "description" => "Transaction de la boutique VitaNatural. commande #".$panierId,
               "redirectUrl" => "https://vitanatural.fr/nos-formules",
               "webhookUrl" => "https://vitanatural.fr/mollie-webhook",
