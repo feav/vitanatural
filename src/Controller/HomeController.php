@@ -110,24 +110,19 @@ class HomeController extends AbstractController
     }    
 
     /**
-     * @Route("/old", name="home_old")
+     * @Route({
+        "fr": "/old",
+     *  "it": "/old"
+     * }, name="home_old")
      */
     public function index2(FormuleRepository $formuleRepository,TemoignageRepository $temoignageRepository)
     {
         $coupon = 0;
         if(isset($_GET['code_promo']) && $_GET['code_promo'] != ''){
             $coupon = $_GET['code_promo'];
-        }
-        $products = $this->prodService->findAll();
-        $formule = $formuleRepository->findAll();
-        $temoignage = $temoignageRepository->findAll();
-        
+        }        
         return $this->render('home/index_old.html.twig', [
             'controller_name' => 'Brulafine',
-            'products' => $products,
-            'formules' => $formule,
-            'temoignages' => $temoignage,
-            'coupon' => $coupon
         ]);
     }
 
