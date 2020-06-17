@@ -111,12 +111,12 @@
         <div class="collapse navbar-collapse order-3 order-lg-2 justify-content-lg-center">
           <ul class="navbar-nav my-3 my-lg-0">
             <li class="nav-item"> <a href="{{path('home')}}" class="nav-link">{{ 'global.home'|trans({}, 'global') }}</a></li>
-            <li class="nav-item"> <a  href="{{path('marque')}}" class="nav-link">La{{ 'global.la_marque'|trans({}, 'global') }}</a></li>
+            <li class="nav-item"> <a  href="{{path('marque')}}" class="nav-link">{{ 'global.la_marque'|trans({}, 'global') }}</a></li>
             <li class="nav-item"> <a href="{{path('temoignage')}}" class="nav-link">{{ 'global.temoignage'|trans({}, 'global') }}</a></li>
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
               <li class="nav-item">
                 <div>
-                  <a aria-expanded="false" aria-haspopup="true" class="nav-link nav-item" href="{{path('account')}}" role="button">{{ 'global.mon_compte'|trans({}, 'global') }}</a>
+                  <a aria-expanded="false" aria-haspopup="true" class="nav-link" href="{{path('account')}}" role="button">{{ 'global.mon_compte'|trans({}, 'global') }}</a>
                 </div>
               </li>
             {% endif %}

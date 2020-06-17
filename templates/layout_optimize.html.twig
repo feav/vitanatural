@@ -74,7 +74,7 @@
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
               <li class="nav-item">
                 <div>
-                  <a aria-expanded="false" aria-haspopup="true" class="nav-link nav-item" href="{{path('account')}}" role="button">{{ 'global.mon_compte'|trans({}, 'global') }}</a>
+                  <a aria-expanded="false" aria-haspopup="true" class="nav-link" href="{{path('account')}}" role="button">{{ 'global.mon_compte'|trans({}, 'global') }}</a>
                 </div>
               </li>
             {% endif %}
