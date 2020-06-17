@@ -85,6 +85,26 @@ accueil:
   au_lieu: "au lieu de"
 
 
+  #temoignage
+
+  brule_graisse: "brule-graisse"
+  naturel: "NATUREL"
+  percent_vegane: "100% végane"
+  gelule_trois_actifs : "Une gélule composée de trois actifs bruleurs de graisse naturels particulièrement efficaces pour vaincre les
+  kilos en trop"
+  avis_client: "Avis des clients"
+  client_temoignent: "Nos clients temoignent, de la qualité du produit, ils ont perdu du poids avec quelques semaines"
+  livraison_24_48: "LIVRAISON 24/48H"
+  livraison_24_48_desc: "En France et dans le monde, Colissimo et UPS"
+  livraison_gratuite_desc_2: "Frais de port offerts dès 0 € d’achat"
+  satisfait_rembourse: "SATISFAIT OU REMBOURSÉ"
+  satisfait_rembourse_desc: "Pour un confort et une satisfaction maximum."
+  paiement_secure_2: "PAIEMENT SÉCURISÉ"
+  paiement_secure_2_desc: "Carte Bleue, Visa, Verified by VISA, Mastercard, SecureCode"
+  carte_fidelite: "CARTE FIDÉLITÉ"
+  carte_fidelite_desc: "Des réductions pour vous et pour vos amis."
+  rapport_qualite_prix: "RAPPORT QUALITÉ/PRIX"
+  rapport_qualite_prix_desc: "Pour des produits au prix le plus juste."
 
 
 

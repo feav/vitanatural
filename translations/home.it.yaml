@@ -86,3 +86,24 @@ accueil:
   objectis_detox: "Obiettivo Detox"
   au_lieu: "invece che"
 
+  #temoignage
+  brule_graisse: "brucia-grassi"
+  naturel: "NATURALE"
+  percent_vegane: "100% végane"
+  gelule_trois_actifs : "Una capsula gel composta da tre attivi bruciagrassi naturali particolarmente efficaci per eliminare i chili di troppo"
+  avis_client: "Opinione dei clienti"
+  client_temoignent: "I nostri clienti testimoniano la qualità del prodotto, hanno perduto peso in qualche settimana"
+  livraison_24_48: "LIVRAISON 24/48H"
+  livraison_24_48_desc: "En France et dans le monde, Colissimo et UPS"
+  livraison_gratuite_desc_2: "Frais de port offerts dès 0 € d’achat"
+  satisfait_rembourse: "SATISFAIT OU REMBOURSÉ"
+  satisfait_rembourse_desc: "Pour un confort et une satisfaction maximum."
+  paiement_secure_2: "PAIEMENT SÉCURISÉ"
+  paiement_secure_2_desc: "Carte Bleue, Visa, Verified by VISA, Mastercard, SecureCode"
+  carte_fidelite: "CARTE FIDÉLITÉ"
+  carte_fidelite_desc: "Des réductions pour vous et pour vos amis."
+  rapport_qualite_prix: "RAPPORT QUALITÉ/PRIX"
+  rapport_qualite_prix_desc: "Pour des produits au prix le plus juste."
+
+
+
