@@ -58,5 +58,33 @@ accueil:
   en_avez_assez: "Vous en avez pas eu assez ?"
   voir_temoignage: "Voir tous les témoignages."
 
+  #marque
+  mask_anti_point_noir: "Masque anti point noir"
+  peau_parfaite: "Une peau parfaite<br/>après"
+  quatre_passage: "4 passages"
+  point_noir: "Point noir"
+  ride: "Rides"
+  hydratation: "Hydratation"
+  masque_antipoint_noir_2: "Masque Anti Point Noir au"
+  point_noir_desc: "Berspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam."
+  add_card: "Ajouter au panier"
+  direct_paid: "Paiement direct"
+  aucun_produit: "Aucun produit enregistre"
+  nos_client_parle: "Nos clients en"
+  parlent: "parlent"
+  mieux_que_nous: "mieux que nous."
+  gamme_au_service: "Toute une gamme au service de votre beauté."
+  peau_merite: "Votre peau mérite le meilleure et le naturel."
+  cree_vita: "Vita Natural à été crée par deux Français, un expert en médecine vous en parle !"
+  efficacite_maque: "Ce masque à une efficacité triple action : Il enlèvera vos points noirs tout en hydratant votre peau pour réparer vos pores nettoyer de vos points noirs et luttera contre le relachement de la peau et les rides."
+  nos_produit: "Nos autres"
+  produits: "produits"
+  objectis_minceur: "Objectif Minceur"
+  objectis_drainer: "Objectif Drainer"
+  objectis_detox: "Objectif Détox"
+  au_lieu: "au lieu de"
+
+
+
 
 

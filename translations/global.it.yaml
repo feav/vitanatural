@@ -9,7 +9,7 @@ global:
   deconnexion: 'Deconnexion'
   informations: "Informations"
   mon_compte: "Mon compte"
-  panier_vide: 'votre panier est vide'
+  panier_vide: 'Il vostro carrello è vuoto'
   je_valide: 'je valide'
   paiement_de: 'Paiement de'
   offert: "Gratuito"
@@ -20,10 +20,11 @@ global:
   debit_auto_text: "Vous serez automatiquement debité sur la precedente carte utilisée"
   avoir_compte: 'Vous avez déjà un compte?'
   connectez_vous: 'Connectez-vous'
+  ajouter: "Aggiungere"
   enter_infos_connexion: 'Entrer vos informations de connexion'
   buy_now: "Acquista subito"
   pop_cookies: "Spedizione gratuita a partire da 45€ - Pagamenti in 3 rate senza costi aggiuntivi a partire da 60€.<br>Gli ordini vengono spediti tutti i giorni e consegnati nonostante il Coronavirus."
-  percent_securise: "Transactions 100% sécurisées grâce au cryptage SSL."
+  percent_securise: "Transazioni 100% sicure grazie al criptaggio SSL."
   foot_p: "Per la vostra salute mangiate almeno 5 porzioni di frutta e verdura al giorno – www.mangerbouger.fr. I prodotti
     Castalis sono degli integratori alimentari. A questo titolo, non si sostituiscono in alcun caso a una alimentazione
     sana, varia ed equilibrata. Le informazioni e i dati diffusi sul sito provengono da fonti legittime e valide e sono

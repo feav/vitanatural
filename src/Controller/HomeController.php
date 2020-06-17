@@ -176,8 +176,12 @@ class HomeController extends AbstractController
             'message' => $message
         ]);
     }
+
     /**
-     * @Route("/masque-anti-point-noir-au-the-vert", name="marque")
+     * @Route({
+        "fr": "/masque-anti-point-noir-au-the-vert",
+     *  "it": "/nero-verde-dot-mask"
+     * }, name="marque")
      */
     public function marque(FormuleRepository $formuleRepository,TemoignageRepository $temoignageRepository)
     {
@@ -189,7 +193,8 @@ class HomeController extends AbstractController
             'controller_name' => 'Vitalnaturel',
             'products' => $products,
             'formules' => $formule,
-            'temoignages' => $temoignage
+            'temoignages' => $temoignage,
+            'url_name'=>'marque'
         ]);
     }
     /**

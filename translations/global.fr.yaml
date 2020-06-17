@@ -21,6 +21,7 @@ global:
   debit_auto_text: "Vous serez automatiquement debité sur la precedente carte utilisée"
   avoir_compte: 'Vous avez déjà un compte?'
   connectez_vous: 'Connectez-vous'
+  ajouter: "Ajouter"
   enter_infos_connexion: 'Entrer vos informations de connexion'
   pop_cookies: "Livraison gratuite à partir de 45€ - Payez en 3X sans frais dès 60€.<br>Les commandes sont expédiées tous les jours et livrées malgré le virus."
   percent_securise: "Transactions 100% sécurisées grâce au cryptage SSL."

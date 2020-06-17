@@ -1,5 +1,5 @@
 {% extends 'layout_optimize.html.twig' %}
-{% block title %} {{parent()}} | The Masque anti point noir {% endblock %}
+{% block title %} {{parent()}} | {{ 'accueil.mask_anti_point_noir'|trans({}, 'home') }} {% endblock %}
 {% block meta %}
 <meta name="description" content="">
 {% endblock %}
@@ -8,6 +8,9 @@
 {{parent()}}
   <link rel="stylesheet" type="text/css" href="{{asset('assets/css/marque.css')}}">
 {% endblock %}
+
+{% block url_trans %}{{ path(''~url_name, {'_locale': app.request.locale == "fr" ? "it" : "fr"}) }}{% endblock %}
+
 {% block body_web %}
 
 <div data-overlay class="bg-primary-3 jarallax text-white" data-jarallax data-speed="0.2">
@@ -19,12 +22,12 @@
                <h2 class="display-4" style="
                   margin-bottom: 5px;
                   font-weight: 100;
-                  ">Un Masque redoutable<br/>pour vos points noir !</h2>
+                  ">{{ 'accueil.h1'|trans({}, 'home') }}</h2>
                <div class="lead" style="
                   font-size: 29px;
                   font-weight: 700;
                   text-transform: uppercase;
-                  ">Objectif peau parfaite en 4 passages.</div>
+                  ">{{ 'accueil.h2'|trans({}, 'home') }}</div>
             </div>
          </div>
       </div>
@@ -51,13 +54,13 @@
                margin-bottom: 15px;
                font-weight: 500;
                line-height: 20px;
-               ">Une gélule composée de trois actifs brûleurs de graisse naturels particulièrement efficaces pour vaincre les kilos en trop *</p>
+               ">{{ 'accueil.p1'|trans({}, 'home') }} *</p>
             <a href="{{path('marque')}}#commande" class="btn btn-primary-3 btn-lg" style="
                border-radius: 6px;
                font-weight: 500;
                font-size: 18px;
                padding: 15px 30px;
-               ">Achetez maintenant</a>
+               ">{{ 'global.buy_now'|trans({}, 'global') }}</a>
          </div>
       </div>
    </div>
@@ -70,10 +73,8 @@
                <img  alt="miniature" loading="lazy" style="width: 60px;height: auto;" src="https://www.brulafine.com/assets/images/footer-icon-01.svg"  class="jarallax-img">
             </div>
             <div>
-               <p>100% NATUREL</p>
-               <p>Ingrédients végétaux,
-                  sains et efficaces.
-               </p>
+               <p>{{ 'accueil.percent_naturel'|trans({}, 'home') }}</p>
+               <p>{{ 'accueil.percent_naturel_desc'|trans({}, 'home') }}</p>
             </div>
          </div>
          <div >
@@ -81,10 +82,8 @@
                <img  alt="miniature" style="width: 60px;height: auto;" src="https://www.brulafine.com/assets/images/footer-icon-04.svg" loading="lazy"   class="jarallax-img">
             </div>
             <div >
-               <p >FABRIQUÉ EN FRANCE</p>
-               <p >Engagement local,
-                  Production locale.
-               </p>
+               <p >{{ 'accueil.made_in'|trans({}, 'home') }}</p>
+               <p >{{ 'accueil.made_in_desc'|trans({}, 'home') }}</p>
             </div>
          </div>
          <div >
@@ -92,8 +91,8 @@
                <img  alt="miniature" style="width: 60px;height: auto;" src="https://www.brulafine.com/assets/images/footer-icon-07.svg"  class="jarallax-img" loading="lazy" >
             </div>
             <div >
-               <p >PAR UN LABORATOIRE</p>
-               <p >Toutes nos cures ont été crée par un laboratoire Français.</p>
+               <p >{{ 'accueil.by_laboratoire'|trans({}, 'home') }}</p>
+               <p >{{ 'accueil.by_laboratoire_desc'|trans({}, 'home') }}</p>
             </div>
          </div>
          <div >
@@ -101,8 +100,8 @@
                <img  alt="miniature" style="width: 60px;height: auto;" src="https://www.brulafine.com/assets/images/footer-icon-05.svg"  class="jarallax-img" loading="lazy" >
             </div>
             <div >
-               <p >LIVRAISON GRATUITE</p>
-               <p >Frais de port offerts en rejoignant le Club Nutridia.</p>
+               <p >{{ 'accueil.livraison_gratuite'|trans({}, 'home') }}</p>
+               <p >{{ 'accueil.livraison_gratuite_desc'|trans({}, 'home') }}</p>
             </div>
          </div>
       </div>
