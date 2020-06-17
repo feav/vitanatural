@@ -123,6 +123,7 @@ class HomeController extends AbstractController
         }        
         return $this->render('home/index_old.html.twig', [
             'controller_name' => 'Brulafine',
+            'coupon' => $coupon
         ]);
     }
 
