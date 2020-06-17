@@ -1,0 +1,41 @@
+global:
+  home: "Home"
+  ingredient: "Ingredienti"
+  la_marque: "Il brand"
+  temoignage: "Testimonianze"
+  je_commande: "Ordinare"
+  navigation: "Navigation"
+  connexion: "Connexion"
+  deconnexion: 'Deconnexion'
+  informations: "Informations"
+  mon_compte: "Mon compte"
+  panier_vide: 'votre panier est vide'
+  je_valide: 'je valide'
+  paiement_de: 'Paiement de'
+  offert: "Gratuito"
+  one_clik_paid: 'Payer en 1 click'
+  paid_by_stripe: 'Paiements sécurisés par Stripe.'
+  secure_paid: 'Paiement securisé'
+  valider: 'Valider'
+  debit_auto_text: "Vous serez automatiquement debité sur la precedente carte utilisée"
+  avoir_compte: 'Vous avez déjà un compte?'
+  connectez_vous: 'Connectez-vous'
+  enter_infos_connexion: 'Entrer vos informations de connexion'
+  buy_now: "Acquista subito"
+  pop_cookies: "Spedizione gratuita a partire da 45€ - Pagamenti in 3 rate senza costi aggiuntivi a partire da 60€.<br>Gli ordini vengono spediti tutti i giorni e consegnati nonostante il Coronavirus."
+  percent_securise: "Transactions 100% sécurisées grâce au cryptage SSL."
+  foot_p: "Per la vostra salute mangiate almeno 5 porzioni di frutta e verdura al giorno – www.mangerbouger.fr. I prodotti
+    Castalis sono degli integratori alimentari. A questo titolo, non si sostituiscono in alcun caso a una alimentazione
+    sana, varia ed equilibrata. Le informazioni e i dati diffusi sul sito provengono da fonti legittime e valide e sono
+    elaborate con la più grande cura e precisione. Nonostante ciò queste informazioni, dati, affermazioni e
+    dichiarazioni non sono state approvate da alcun tipo di organismo di governo o qualsiasi altro tipo di autorità
+    medica. Gli integratori alimentari sani, naturali e di alta qualità prodotti da Castalis non hanno come obiettivo
+    il diagnosticare, il trattare, il curare, il guarire, il prevenire e/o impedire le malattie. L’origine naturale, sana,
+    vegetale e vegana degli ingredienti che utilizziamo nei nostri prodotti ne fa degli integratori alimentari di prima
+    scelta. Non necessitano di alcuna prescrizione medica. Nonostante ciò, vi invitiamo a consultare
+    imperativamente il vostro medico prima di cominciare a consumare dei complementi alimentari, prima di
+    seguire un regime o partecipare a un programma di coaching, specialmente di tipo sportivo. In effetti, ciascuna
+    persona è unica, i risultati individuali possono variare e certe controindicazioni personali possono apparire.
+    Queste consultazioni col vostro medico di base vi permetteranno di verificare che gli ingredienti utilizzati nei
+    nostri complementi alimentari siano compatibili con il vostro caso specifico e i trattamenti medicali che state
+    già seguendo o che potreste seguire. Il vostro benessere è il nostro obiettivo numero uno."

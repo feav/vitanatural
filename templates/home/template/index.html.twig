@@ -1,4 +1,6 @@
-
+<style type="text/css">
+   h3{text-transform: lowercase;}
+</style>
 <section class="p-0 bg-primary text-white row no-gutters">
    <div class="col-lg-5 col-xl-6">
       <img src="{{asset('assets/img/remove-masque.gif')}}"   loading="lazy"  class=" w-100 h-100" style="height: 556px !important;"  style="width: 210px;float: right;margin-right: 25%;">
@@ -9,7 +11,7 @@
          <div class="container">
             <div class="row justify-content-center">
                <div class="col col-md-10 col-xl-9">
-                  <h3 class="h1">“We are working at almost twice the capacity”</h3>
+                  <h3 class="h1">{{ 'accueil.h2_2'|trans({}, 'home') }}</h3>
                   <p class="lead">
                      Non pulvinar neque laoreet suspendisse interdum Catelyn libero id. Olenna imp leo in vitae turpis massa. Sapien habitant Tyrion.
                   </p>
@@ -27,7 +29,7 @@
       <div class="row section-title justify-content-center text-center">
          <div class="col-md-9 col-lg-8 col-xl-10">
             <img src="https://imgur.com/rDzfdp3.png"  loading="lazy"  class="logo scrolled-logo" style="width: 200px;height: auto;margin-bottom: -95px;" >
-            <h3 class="display-4" style="font-size: 49px;color: #1d1d1d;font-family: 'Poppins', sans-serif;">Détoxifier votre peau !</h3>
+            <h3 class="display-4" style="font-size: 49px;color: #1d1d1d;font-family: 'Poppins', sans-serif;">{{ 'accueil.detoxifier_peau'|trans({}, 'home') }}</h3>
          </div>
       </div>
       <div class="container">
@@ -35,13 +37,19 @@
             <div class="col">
                <ul class="nav nav-pills lead mb-4 mb-md-5 justify-content-center" id="myTab" role="tablist">
                   <li class="nav-item">
-                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Enlève vos points noir</a>
+                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
+                        {{ 'accueil.enlever_point_noir'|trans({}, 'home') }}
+                     </a>
                   </li>
                   <li class="nav-item">
-                     <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Lutte contre les rides</a>
+                     <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">
+                        {{ 'accueil.lutte_ride'|trans({}, 'home') }}
+                     </a>
                   </li>
                   <li class="nav-item">
-                     <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Hydrate</a>
+                     <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">
+                        {{ 'accueil.hydrate'|trans({}, 'home') }}
+                     </a>
                   </li>
                </ul>
                <div class="tab-content" id="myTabContent">
@@ -49,14 +57,14 @@
                      <div class="row align-items-center justify-content-around">
                         <div class="col-lg-6 col-xl-5 text-center text-lg-left mb-4 mb-md-5 mb-lg-0">
                            <div class="pr-lg-4 pr-xl-5 aos-init aos-animate" data-aos="fade-right">
-                              <h3 class="h1">Une perte de poids <mark data-aos="highlight-text" data-aos-delay="250" class="aos-init aos-animate" style="
+                              <h3 class="h1">{{ 'accueil.perte_poid'|trans({}, 'home') }} <mark data-aos="highlight-text" data-aos-delay="250" class="aos-init aos-animate" style="
                                  background-image: linear-gradient(120deg, #8bc889 0%, #f7f9fc 100%);
-                                 ">rapide et durable</mark>.</h3>
+                                 "></mark>.</h3>
                               <p style="
                                  font-weight: 500;
                                  margin-bottom: 20px;
                                  color: #8bc889;
-                                 ">72% des régimes se conclu souvent en un gain de poids quelques temps après. Notre cure vous permet de garder votre ligne.</p>
+                                 ">{{ 'accueil.p3'|trans({}, 'home') }}</p>
                               <div class="d-flex flex-wrap justify-content-center justify-content-lg-start">
                                  <div class="mb-3 mr-4 ml-lg-0 mr-lg-4 aos-init aos-animate" data-aos="fade-left" data-aos-delay="100">
                                     <div class="d-flex align-items-center">
@@ -65,7 +73,7 @@
                                              <path d="M20 6L9 17L4 12" stroke="#2C3038" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                                           </svg>
                                        </div>
-                                       <h6 class="mb-0 ml-3" style="font-weight: 500;">L'extrait naturel de thé vert avec EGCG aide à augmenter le métabolisme et à stimuler l'oxydation des graisses.</h6>
+                                       <h6 class="mb-0 ml-3" style="font-weight: 500;">{{ 'accueil.p3_1'|trans({}, 'home') }}</h6>
                                     </div>
                                  </div>
                                  <div class="mb-3 mr-4 ml-lg-0 mr-lg-4 aos-init aos-animate" data-aos="fade-left" data-aos-delay="200">
@@ -77,7 +85,7 @@
                                        </div>
                                        <h6 class="mb-0 ml-3" style="
                                           font-weight: 500;
-                                          ">Le Kola aide à l'accompagnement de l'amincissement.</h6>
+                                          ">{{ 'accueil.p3_2'|trans({}, 'home') }}</h6>
                                     </div>
                                  </div>
                               </div>
@@ -211,7 +219,7 @@
       <div class="row align-items-center justify-content-around">
          <div class="col-md-9 col-lg-6 col-xl-7 mb-4 mb-lg-0 order-lg-2 pl-lg-5">
             <div>
-               <h2 class="h1 text-center text-lg-left">Proche de vous !</h2>
+               <h2 class="h1 text-center text-lg-left">{{ 'accueil.proche_de_vous'|trans({}, 'home') }}</h2>
                <div class="d-flex flex-wrap justify-content-center justify-content-lg-start">
                   <div class="my-4">
                      <div class="d-flex">
@@ -227,8 +235,8 @@
                            </svg>
                         </div>
                         <div>
-                           <h5>Support de 9h à 18h du lundi au vendredi</h5>
-                           <div>Un support Chat, Email et Téléphone Français et Anglais est à votre écoute avec une réponse en 24h.</div>
+                           <h5>{{ 'accueil.h2_3'|trans({}, 'home') }}</h5>
+                           <div>{{ 'accueil.p4'|trans({}, 'home') }}</div>
                         </div>
                      </div>
                   </div>
@@ -245,8 +253,8 @@
                            </svg>
                         </div>
                         <div>
-                           <h5>Livraison Gratuite en France</h5>
-                           <div>Une livraison Gratuite jusqu'à chez-vous et à l'internationnal.</div>
+                           <h5>{{ 'accueil.h2_4'|trans({}, 'home') }}</h5>
+                           <div>{{ 'accueil.p5'|trans({}, 'home') }}</div>
                         </div>
                      </div>
                   </div>
@@ -263,8 +271,8 @@
                            </svg>
                         </div>
                         <div>
-                           <h5>Une marque crée par deux Français</h5>
-                           <div>La marque VitaNatural est le fruit de plusieurs années de développement afin d'obtenir un masque naturel et efficace.</div>
+                           <h5>{{ 'accueil.h2_5'|trans({}, 'home') }}</h5>
+                           <div>{{ 'accueil.p6'|trans({}, 'home') }}</div>
                         </div>
                      </div>
                   </div>
@@ -283,7 +291,7 @@
       <div class="row section-title justify-content-center text-center">
          <div class="col-md-9 col-lg-8 col-xl-10">
             <img src="https://imgur.com/rDzfdp3.png"  loading="lazy"  class="img-fluid"  style="width: 200px;height: auto;margin-bottom: -95px;">
-            <h3 class="display-4" style="font-size: 49px;color: #1d1d1d;font-family: 'Poppins', sans-serif;">Rapide et efficace.</h3>
+            <h3 class="display-4" style="font-size: 49px;color: #1d1d1d;font-family: 'Poppins', sans-serif;">{{ 'accueil.rapide_efficace'|trans({}, 'home') }}</h3>
          </div>
       </div>
       <div class="row text-center">
@@ -294,13 +302,13 @@
                   margin-bottom: 10px;
                   font-size: 24px;
                   font-weight: 300;
-                  ">Humidifier</h5>
+                  ">{{ 'accueil.humidifier'|trans({}, 'home') }}</h5>
                <h5 style="
                   margin-bottom: 10px;
                   font-size: 15px;
                   font-weight: 500;
                   padding: 0px 30px;
-                  ">Ouvrez les pores de votre visage à l'aide d'un linge chaud de 3 à 7 minutes ou appliquez-le après une douche.</h5>
+                  ">{{ 'accueil.humidifier_desc'|trans({}, 'home') }}</h5>
                <img src="{{asset('assets/img/j0CCKZt-min.png')}}"  loading="lazy"  class="img-fluid"   style="height: 250px;">
             </div>
          </div>
@@ -321,13 +329,13 @@
                   margin-bottom: 10px;
                   font-size: 24px;
                   font-weight: 300;
-                  ">Appliquer</h5>
+                  ">{{ 'accueil.appliquer'|trans({}, 'home') }}</h5>
                <h5 style="
                   margin-bottom: 10px;
                   font-size: 15px;
                   font-weight: 500;
                   padding: 0px 30px;
-                  ">Appliquer uniformément sur le nez, le visage, le front et le menton, etc.</h5>
+                  ">{{ 'accueil.appliquer_desc'|trans({}, 'home') }}</h5>
                <img src="{{asset('assets/img/dPLdHzE-min.png')}}"  loading="lazy"  class="img-fluid"  style="height: 250px;">
             </div>
          </div>
@@ -345,13 +353,13 @@
                   margin-bottom: 10px;
                   font-size: 24px;
                   font-weight: 300;
-                  ">Rincer</h5>
+                  ">{{ 'accueil.rincer'|trans({}, 'home') }}</h5>
                <h5 style="
                   margin-bottom: 10px;
                   font-size: 15px;
                   font-weight: 500;
                   padding: 0px 30px;
-                  ">Attendez 15 à 25 minutes, retirez le masque lorsqu'il est complètement sec puis rincer à l'eau claire.</h5>
+                  ">{{ 'accueil.rincer_desc'|trans({}, 'home') }}</h5>
                <img src="{{asset('assets/img/wuwDbxe-min.png')}}"  class="img-fluid" loading="lazy" style="height: 250px;">
             </div>
          </div>
@@ -374,61 +382,61 @@
             <div class="row justify-content-center">
                <div class="col col-md-10 col-xl-9">
                   <div class="text-white text-center text-lg-left">
-                     <h3 class="h1">Cure crée par un laboratoire Français et produit en France.</h3>
+                     <h3 class="h1">{{ 'accueil.cure_cree'|trans({}, 'home') }}</h3>
                      <p class="lead">
-                        Nous nous souçions de votre santé, c'est pourquoi nous avons pris le partie d'avoir fait appel à un Laboratoire Français avec une composition 100% naturel sans danger pour vous avec un maximum d'efficacité.
+                        {{ 'accueil.cure_desc'|trans({}, 'home') }}
                      </p>
                   </div>
                   <div class="d-flex flex-wrap justify-content-center justify-content-lg-start mt-4 mt-md-5">
                      <div class="mx-2 ml-sm-0 ml-sm-0 mb-2 bg-white rounded p-2 pr-3 p-md-3 pr-md-4">
                         <div class="d-flex align-items-center">
                            <img src="https://cdn1.iconfinder.com/data/icons/flat-green-organic-natural-badges/500/100-vegan-4-512.png"  class="img-fluid "  style=" height: 27px; " loading="lazy">
-                           <h6 class="mb-0 ml-2">Véganes</h6>
+                           <h6 class="mb-0 ml-2">{{ 'accueil.vegane'|trans({}, 'home') }}</h6>
                         </div>
                      </div>
                      <div class="mx-2 ml-sm-0 ml-sm-0 mb-2 bg-white rounded p-2 pr-3 p-md-3 pr-md-4">
                         <div class="d-flex align-items-center">
                            <img src="https://cdn0.iconfinder.com/data/icons/vegan-4/64/broccoli-food-vegan-supermarket-512.png"  class="img-fluid "  style=" height: 27px; " loading="lazy">
-                           <h6 class="mb-0 ml-2">Sains et Naturels</h6>
+                           <h6 class="mb-0 ml-2">{{ 'accueil.saint_naturel'|trans({}, 'home') }}</h6>
                         </div>
                      </div>
                      <div class="mx-2 ml-sm-0 ml-sm-0 mb-2 bg-white rounded p-2 pr-3 p-md-3 pr-md-4">
                         <div class="d-flex align-items-center">
                            <img src="https://cdn0.iconfinder.com/data/icons/vegan-4/64/broccoli-food-vegan-supermarket-512.png"  class="img-fluid "  style=" height: 27px; " loading="lazy">
-                           <h6 class="mb-0 ml-2">Sans OGM</h6>
-                        </div>
-                     </div>
-                     <div class="mx-2 ml-sm-0 ml-sm-0 mb-2 bg-white rounded p-2 pr-3 p-md-3 pr-md-4">
-                        <div class="d-flex align-items-center">
-
-                           <img src="https://cdn0.iconfinder.com/data/icons/vegan-4/64/broccoli-food-vegan-supermarket-512.png"  class="img-fluid "  style=" height: 27px; " loading="lazy">
-                           <h6 class="mb-0 ml-2">Sans Colorants</h6>
+                           <h6 class="mb-0 ml-2">{{ 'accueil.sans_ogm'|trans({}, 'home') }}</h6>
                         </div>
                      </div>
                      <div class="mx-2 ml-sm-0 ml-sm-0 mb-2 bg-white rounded p-2 pr-3 p-md-3 pr-md-4">
                         <div class="d-flex align-items-center">
 
                            <img src="https://cdn0.iconfinder.com/data/icons/vegan-4/64/broccoli-food-vegan-supermarket-512.png"  class="img-fluid "  style=" height: 27px; " loading="lazy">
-                           <h6 class="mb-0 ml-2">Sans Conservateurs</h6>
-                        </div>
-                     </div>
-                     <div class="mx-2 ml-sm-0 ml-sm-0 mb-2 bg-white rounded p-2 pr-3 p-md-3 pr-md-4">
-                        <div class="d-flex align-items-center">
-                           <img src="https://cdn0.iconfinder.com/data/icons/vegan-4/64/broccoli-food-vegan-supermarket-512.png"  class="img-fluid "  style=" height: 27px; " loading="lazy">
-                           <h6 class="mb-0 ml-2">Sans Gluten</h6>
-                        </div>
-                     </div>
-                     <div class="mx-2 ml-sm-0 ml-sm-0 mb-2 bg-white rounded p-2 pr-3 p-md-3 pr-md-4">
-                        <div class="d-flex align-items-center">
-                           <img src="https://cdn0.iconfinder.com/data/icons/vegan-4/64/broccoli-food-vegan-supermarket-512.png"  class="img-fluid "  style=" height: 27px; " loading="lazy">
-                           <h6 class="mb-0 ml-2">Sans HPMC</h6>
+                           <h6 class="mb-0 ml-2">{{ 'accueil.sans_collorant'|trans({}, 'home') }}</h6>
                         </div>
                      </div>
                      <div class="mx-2 ml-sm-0 ml-sm-0 mb-2 bg-white rounded p-2 pr-3 p-md-3 pr-md-4">
                         <div class="d-flex align-items-center">
 
                            <img src="https://cdn0.iconfinder.com/data/icons/vegan-4/64/broccoli-food-vegan-supermarket-512.png"  class="img-fluid "  style=" height: 27px; " loading="lazy">
-                           <h6 class="mb-0 ml-2">Sans Dioxyde de titane</h6>
+                           <h6 class="mb-0 ml-2">{{ 'accueil.sans_concervateur'|trans({}, 'home') }}</h6>
+                        </div>
+                     </div>
+                     <div class="mx-2 ml-sm-0 ml-sm-0 mb-2 bg-white rounded p-2 pr-3 p-md-3 pr-md-4">
+                        <div class="d-flex align-items-center">
+                           <img src="https://cdn0.iconfinder.com/data/icons/vegan-4/64/broccoli-food-vegan-supermarket-512.png"  class="img-fluid "  style=" height: 27px; " loading="lazy">
+                           <h6 class="mb-0 ml-2">{{ 'accueil.sans_gluten'|trans({}, 'home') }}</h6>
+                        </div>
+                     </div>
+                     <div class="mx-2 ml-sm-0 ml-sm-0 mb-2 bg-white rounded p-2 pr-3 p-md-3 pr-md-4">
+                        <div class="d-flex align-items-center">
+                           <img src="https://cdn0.iconfinder.com/data/icons/vegan-4/64/broccoli-food-vegan-supermarket-512.png"  class="img-fluid "  style=" height: 27px; " loading="lazy">
+                           <h6 class="mb-0 ml-2">{{ 'accueil.sans_HPMC'|trans({}, 'home') }}</h6>
+                        </div>
+                     </div>
+                     <div class="mx-2 ml-sm-0 ml-sm-0 mb-2 bg-white rounded p-2 pr-3 p-md-3 pr-md-4">
+                        <div class="d-flex align-items-center">
+
+                           <img src="https://cdn0.iconfinder.com/data/icons/vegan-4/64/broccoli-food-vegan-supermarket-512.png"  class="img-fluid "  style=" height: 27px; " loading="lazy">
+                           <h6 class="mb-0 ml-2">{{ 'accueil.sans_dioxyde'|trans({}, 'home') }}</h6>
                         </div>
                      </div>
                   </div>
@@ -447,7 +455,7 @@
                font-size: 49px;
                color: #1d1d1d;
                font-family: 'Poppins', sans-serif;
-               ">Les ingrédiants</h3>
+               ">{{ 'accueil.les_ingredients'|trans({}, 'home') }}</h3>
          </div>
       </div>
       <div class="row" style="
@@ -459,8 +467,8 @@
                   <img src="https://www.bienmanger.com/tinyMceData/images/contents/475/content_lg.jpg" class="img-fluid rounded" loading="lazy">
                </div>
                <div class="col">
-                  <h4>Thé vert</h4>
-                  <p>Le thé vert est naturellement riche en antioxydants, qui aident à protéger l'organisme contre les radicaux libres. Il a également été démontré que le thé vert a la capacité de rajeunir les vieilles cellules de la peau qui sont à la fin de leur cycle de vie, avec l'avantage supplémentaire d'avoir des propriétés anti-inflammatoires.</p>
+                  <h4>{{ 'accueil.the_vert'|trans({}, 'home') }}</h4>
+                  <p>{{ 'accueil.the_vert_desc'|trans({}, 'home') }}</p>
                </div>
             </div>
          </div>
@@ -470,8 +478,8 @@
                   <img src="https://fac.img.pmdstatic.net/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2Ffac.2F2018.2F11.2F28.2Ff2bdec7f-bbad-46c5-9220-1e51a427f5d3.2Ejpeg/1200x1200/quality/80/crop-from/center/top-10-des-aliments-les-plus-riches-en-vitamine-c.jpeg" loading="lazy" class="img-fluid rounded"  >
                </div>
                <div class="col">
-                  <h4>La vitamine C</h4>
-                  <p>Un puissant antioxydant pour améliorer la pureté du teint et restaurer l'aspect uniforme de la peau.</p>
+                  <h4>{{ 'accueil.vitamine_c'|trans({}, 'home') }}</h4>
+                  <p>{{ 'accueil.vitamine_c_desc'|trans({}, 'home') }}</p>
                </div>
             </div>
          </div>
@@ -481,8 +489,8 @@
                   <img src="assets/img/square-3.jpg" loading="lazy" class=" img-fluid rounded" >
                </div>
                <div class="col">
-                  <h4>Extraits botaniques</h4>
-                  <p>Gorgés d'antioxydants anti-âge, les extraits botaniques aident à calmer, apaiser et rééquilibrer la peau.</p>
+                  <h4>{{ 'accueil.extrait_botanique'|trans({}, 'home') }}</h4>
+                  <p>{{ 'accueil.extrait_botanique_desc'|trans({}, 'home') }}</p>
                </div>
             </div>
          </div>

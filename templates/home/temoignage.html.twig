@@ -15,6 +15,7 @@
    }
 </style>
 {% endblock %}
+{% block url_trans %}{{ path(''~url_name, {'_locale': app.request.locale == "fr" ? "it" : "fr"}) }}{% endblock %}
 {% block body_web %}
    <div class="o-hidden" data-overlay="" style="padding-top: 80px !important;">
       <section class="pb-0 no-border-bottom" >

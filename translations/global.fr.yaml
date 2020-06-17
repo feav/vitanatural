@@ -1,0 +1,37 @@
+global:
+  home: "Accueil"
+  ingredient: "Ingrédients"
+  la_marque: "La marque"
+  temoignage: "Témoignages"
+  je_commande: "Je commande"
+  navigation: "Navigation"
+  connexion: "Connexion"
+  deconnexion: 'Deconnexion'
+  informations: "Informations"
+  buy_now: "Acheter maintenant"
+  mon_compte: "Mon compte"
+  panier_vide: 'votre panier est vide'
+  je_valide: 'je valide'
+  paiement_de: 'Paiement de'
+  offert: "Offert"
+  one_clik_paid: 'Payer en 1 click'
+  paid_by_stripe: 'Paiements sécurisés par Stripe.'
+  secure_paid: 'Paiement securisé'
+  valider: 'Valider'
+  debit_auto_text: "Vous serez automatiquement debité sur la precedente carte utilisée"
+  avoir_compte: 'Vous avez déjà un compte?'
+  connectez_vous: 'Connectez-vous'
+  enter_infos_connexion: 'Entrer vos informations de connexion'
+  pop_cookies: "Livraison gratuite à partir de 45€ - Payez en 3X sans frais dès 60€.<br>Les commandes sont expédiées tous les jours et livrées malgré le virus."
+  percent_securise: "Transactions 100% sécurisées grâce au cryptage SSL."
+  foot_p: "Pour votre santé, mangez au moins cinq fruits et légumes par jour - www.mangerbouger.fr Les produits Castalis sont des compléments alimentaires.
+  À ce titre, ils ne se substituent en aucun cas à une alimentation saine, variée et équilibrée. Les informations et données diffusées sur le site
+  proviennent de sources légitimes et valides et elles sont élaborées avec le plus grand soin et la plus grande précision. Cependant ces informations,
+  données, affirmations et déclarations n’ont été approuvées par aucune agence gouvernementale ou toute autre autorité médicale. Les
+  compléments alimentaires sains, naturels et de haute qualité, produits par Castalis, n’ont pas pour but de diagnostiquer, traiter, soigner, guérir,
+  prévenir et/ou empêcher les maladies. L’origine naturelle, saine, végétale et végane des ingrédients que nous utilisons dans nos produits en fait
+  des compléments alimentaires de tout premier choix. Ils ne nécessitent aucune prescription médicale. Cependant, nous vous invitons à consulter
+  impérativement votre médecin avant de commencer à consommer des compléments alimentaires, à suivre un régime ou à participer à un
+  programme de coaching, notamment sportif. En effet, chaque personne est unique, les résultats individuels peuvent varier et certaines contreindications personnelles peuvent exister. Cette consultation avec votre médecin traitant vous permettra de vérifier que les ingrédients utilisés dans
+  nos compléments alimentaires sont compatibles avec votre cas particulier et les traitements médicaux que vous suivez déjà ou pouvez être amenés
+  à suivre. Votre bien-être est notre objectif numéro un."

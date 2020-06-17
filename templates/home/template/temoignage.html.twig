@@ -3,8 +3,8 @@
       <div class="row section-title justify-content-center text-center">
          <div class="col-md-9 col-lg-8 col-xl-8">
             <h3 class="display-4" style="
-               margin-bottom: 0;
-               ">Témoignages</h3>
+               margin-bottom: 0;text-transform:lowercase;
+               ">{{ 'global.temoignage'|trans({}, 'global') }}</h3>
          </div>
       </div>
       <div class="row">
@@ -58,7 +58,7 @@
             </div>
          </div>
          {% else %}
-         <div>Aucun temoignage enregistre</div>
+         <div>{{ 'accueil.aucun_temoigange'|trans({}, 'home') }}</div>
          {% endfor %}
       </div>
    </div>
@@ -72,13 +72,13 @@
          <div class="col-md-12 col-lg-8 col-xl-12">
             <h3 class="display-4" style="
                font-size: 50px;
-               margin-bottom: 20px;
-               ">Ne vous fier pas à n'importe qui.</h3>
+               margin-bottom: 20px;text-transform:lowercase;
+               ">{{ 'accueil.alert_fier_pas'|trans({}, 'home') }}</h3>
             <h3 class="display-4" style="
                font-size: 30px;
-               ">Faite leurs <mark data-aos="highlight-text" data-aos-delay="250" class="aos-init aos-animate" style="
+               ">{{ 'accueil.faites_leur'|trans({}, 'home') }} <mark data-aos="highlight-text" data-aos-delay="250" class="aos-init aos-animate" style="
                background-image: linear-gradient(120deg, #009b72 0%, #ffffff 100%);
-               ">confiance</mark>.</h3>
+               ">{{ 'accueil.confiance'|trans({}, 'home') }}</mark>.</h3>
          </div>
       </div>
       <div class="row justify-content-center">
@@ -106,7 +106,7 @@
          <div class="col-auto">
             <div class="alert bg-secondary" style="
                margin-bottom: 0px;
-               ">Vous en avez pas eu assez ? <a href="{{path('temoignage')}}">Voir tous les témoignages</a>
+               ">{{ 'accueil.en_avez_assez'|trans({}, 'home') }} <a href="{{path('temoignage')}}">{{ 'accueil.voir_temoignage'|trans({}, 'home') }}</a>
             </div>
          </div>
       </div>

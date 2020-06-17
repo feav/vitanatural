@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\ProductService;
 use App\Repository\FormuleRepository;
@@ -50,8 +52,36 @@ class HomeController extends AbstractController
         $this->UserRepository = $userRepository;
         $this->params_dir = $params_dir;
     }
+
+
     /**
-     * @Route("/", name="home")
+     * @Route("/setlocale/{lang}", name="setLocale")
+     */
+    public function setLocale($lang, Request $request)
+    {
+        $url = $request->headers->get('referer');
+        if(empty($url)){
+            $url = $this->generateUrl('home');
+        }
+        if ($lang == "it")
+            $url = str_replace("/"."fr/", "/"."it/", $url);
+        else
+            $url = str_replace("/"."it/", "/"."fr/", $url);
+
+        return $this->redirect($url);
+    }
+
+    public function getTranslateUrl($request, $path_name){
+        $currentLocal = $request->getLocale() == "fr" ? "it" : "fr";
+        $url_trans = $this->generateUrl($path_name, ['_locale' => $currentLocal],UrlGeneratorInterface::ABSOLUTE_URL);
+        return $url_trans;
+    }
+
+    /**
+     * @Route({
+        "fr": "/",
+     *  "it": "/"
+     * }, name="home")
      */
     public function index(FormuleRepository $formuleRepository,TemoignageRepository $temoignageRepository)
     {
@@ -68,7 +98,8 @@ class HomeController extends AbstractController
             'products' => $products,
             'formules' => $formule,
             'temoignages' => $temoignage,
-            'coupon' => $coupon
+            'coupon' => $coupon,
+            'url_name'=>'home'
         ]);
     }    
 
@@ -172,14 +203,19 @@ class HomeController extends AbstractController
         ]);
     }
     /**
-     * @Route("/temoignage", name="temoignage")
+     * @Route({
+        "fr": "/temoignage",
+     *  "it": "/temoignage"
+     * }, name="temoignage")
      */
-    public function temoignage(FormuleRepository $formuleRepository,TemoignageRepository $temoignageRepository)
+    public function temoignage(Request $request, FormuleRepository $formuleRepository,TemoignageRepository $temoignageRepository)
     {
         $temoignage = $temoignageRepository->findAll();
+        
         return $this->render('home/temoignage.html.twig', [
             'controller_name' => 'Nutridia',
-            'temoignages' => $temoignage
+            'temoignages' => $temoignage,
+            'url_name'=>'temoignage'
         ]);
     }
     /**

@@ -30,7 +30,7 @@
       <div class="container">
           <div class="row no-gutters align-items-md-center justify-content-center">
               <div class="col-lg-11 col-md d-flex flex-column flex-md-row align-items-md-center justify-content-lg-center">
-                  <div class="mb-3 mb-md-0">Livraison gratuite à partir de 45€ - Payez en 3X sans frais dès 60€.<br>Les commandes sont expédiées tous les jours et livrées malgré le virus.</div>
+                  <div class="mb-3 mb-md-0">{{ 'global.pop_cookies'|trans({}, 'global') }}</div>
               </div>
               <div class="col-auto position-absolute right">
                   <button type="button" class="close p-0 position-relative" data-dismiss="alert" aria-label="Close">
@@ -57,23 +57,24 @@
                  <img alt="Navbar Toggler Open Icon"  loading="lazy" class="navbar-toggler-open icon icon-sm" data-inject-svg src="{{ asset('assets/img/icons/interface/icon-menu.svg')}}">
                  <img alt="Navbar Toggler Close Icon"  loading="lazy" class="navbar-toggler-close icon icon-sm" data-inject-svg src="{{ asset('assets/img/icons/interface/icon-x.svg')}}">
                </button>
-                <a href="{{path('marque')}}#commande" class="btn btn-primary ml-lg-4 mr-3 mr-md-4 mr-lg-0 d-none d-sm-block order-lg-3" style=" font-weight: 400; ">Je commande</a>
+                <a href="{{path('marque')}}#commande" class="btn btn-primary mr-3 mr-md-4 mr-lg-0 d-none d-sm-block order-lg-3" style=" font-weight: 400; ">{{ 'global.je_commande'|trans({}, 'global') }}</a>
                <span class="separe-nav-xs"></span>
                <a class="btn btn-primary ml-lg-4 mr-lg-0 d-sm-block order-lg-3 toggle-cart cart-btn"> <span class="nb-product-cart">0</span><i class="fa fa-shopping-cart shopping-cart"></i></a>
+               <a class="nav-link" href="{% block url_trans %}{% endblock %}">
+                  <img style="height: 19px;" src="{% if app.request.locale == "it" %}{{asset('assets/img/flag/fr.png')}}{% else %}{{asset('assets/img/flag/it.png')}}{% endif %}" alt="lang" class=""/>
+               </a>
             </div>
 
 
         <div class="collapse navbar-collapse order-3 order-lg-2 justify-content-lg-center">
           <ul class="navbar-nav my-3 my-lg-0">
-            <li class="nav-item"> <a href="{{path('home')}}" class="nav-link">Accueil</a></li>
-            <li class="nav-item"> <a href="{{path('home')}}#ingredients" class="nav-link">Ingrédients</a></li>
-            <li class="nav-item"> <a  href="{{path('marque')}}" class="nav-link">La marque</a></li>
-            <li class="nav-item"> <a href="{{path('temoignage')}}" class="nav-link">Témoignages</a></li>
-            <li class="nav-item"> <a href="#" class="nav-link">Questions</a></li>
+            <li class="nav-item"> <a href="{{path('home')}}" class="nav-link">{{ 'global.home'|trans({}, 'global') }}</a></li>
+            <li class="nav-item"> <a  href="{{path('marque')}}" class="nav-link">{{ 'global.la_marque'|trans({}, 'global') }}</a></li>
+            <li class="nav-item"> <a href="{{path('temoignage')}}" class="nav-link">{{ 'global.temoignage'|trans({}, 'global') }}</a></li>
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
               <li class="nav-item">
                 <div>
-                  <a aria-expanded="false" aria-haspopup="true" class="nav-link nav-item" href="{{path('account')}}" role="button">Mon compte</a>
+                  <a aria-expanded="false" aria-haspopup="true" class="nav-link nav-item" href="{{path('account')}}" role="button">{{ 'global.mon_compte'|trans({}, 'global') }}</a>
                 </div>
               </li>
             {% endif %}
@@ -95,7 +96,7 @@
 
     <div class="cart-wrapper">
       <i class="fa fa-arrow-right toggle-cart"></i>
-      <div class="empty-cart" style="text-align:center">Votre panier est vide</div>
+      <div class="empty-cart" style="text-align:center">{{ 'global.panier_vide'|trans({}, 'global') }}</div>
       <div class="cart-container">
         <div class="product-list">
           <div class="card-list-product">
@@ -104,7 +105,7 @@
           </div>
           <div class="form-group form-coupon">
               <input type="text" name="code-promo" id="code-promo-input" class="form-control" placeholder="Code promo..." style="border-radius:0">
-              <a href="javascript:void()" onclick ="addCouponToCard('#code-promo-input',1)" class="valide-coupon">je valide!</a>
+              <a href="javascript:void()" onclick ="addCouponToCard('#code-promo-input',1)" class="valide-coupon">{{ 'global.je_valide'|trans({}, 'global') }}</a>
             </div>
             <ul class="totaux card-list-coupon">
             </ul>
@@ -113,11 +114,11 @@
             <ul class="list-recap">
             </ul>
             <div>
-              <a href="{{path('paiement_cart')}}" class="btn btn-primary ml-lg-4 mr-3 mr-md-4 mr-lg-0 d-sm-block order-lg-3 goto-checkout">Paiement de <b class="cart-total-pay">o</b>€ <strike><i class="cart-total-reduction">0</i>€ </strike></a>
+              <a href="{{path('paiement_cart')}}" class="btn btn-primary ml-lg-4 mr-3 mr-md-4 mr-lg-0 d-sm-block order-lg-3 goto-checkout">{{ 'global.paiement_de'|trans({}, 'global') }} <b class="cart-total-pay">o</b>€ <strike><i class="cart-total-reduction">0</i>€ </strike></a>
             </div>
             {% if is_granted('IS_AUTHENTICATED_FULLY') and (app.user.getStripeCustomId is not null) %}
               <div style="text-align: center;margin-top: 19px;font-size: 16px">
-                  <a href="{{path('direct_paid')}}" class="oneClickPaid" style="text-decoration: underline;" title="Vous serez automatiquement debité sur la precedente carte utilisée">Payer en 1 click</a><br>
+                  <a href="{{path('direct_paid')}}" class="oneClickPaid" style="text-decoration: underline;" title="{{ 'global.debit_auto_text'|trans({}, 'global') }}">{{ 'global.one_clik_paid'|trans({}, 'global') }}</a><br>
                   <small style="display: block;margin-top: 6px;">Pour le paiement en un click, Vous serez automatiquement debité sur votre precedente carte utilisée</small>
               </div>
             {% endif %}
@@ -125,7 +126,7 @@
                 <img alt="miniature"  loading="lazy" style="height: 30px;border: 1px solid #e8e8e8;padding: 0px 10px;border-radius: 5px;background: #fdfdfd;" src="https://cdn3.iconfinder.com/data/icons/payment-method-1/64/_Visa-512.png">
                 <img alt="miniature"  loading="lazy" style="height: 30px;border: 1px solid #e8e8e8;padding: 0px 10px;margin: 0px 15px;border-radius: 5px;background: #fdfdfd;" src="https://cdn3.iconfinder.com/data/icons/payment-method-1/64/_Mastercard-512.png">
                 <img alt="miniature" style="height: 30px;border: 1px solid #e8e8e8;padding: 0px 10px;border-radius: 5px;background: #fdfdfd;"  loading="lazy" src="https://cdn3.iconfinder.com/data/icons/payment-method-1/64/_Maestro-512.png"> 
-                <p style="font-size: 12px;font-weight: 400;margin-top: 10px;margin-bottom: 15px;">Paiements sécurisés par Stripe.</p>
+                <p style="font-size: 12px;font-weight: 400;margin-top: 10px;margin-bottom: 15px;">{{ 'global.paid_by_stripe'|trans({}, 'global') }}</p>
             </div>
         </div>
       </div>
@@ -148,7 +149,7 @@
                 <li class="list-inline-item"><i class="fa fa-cc-discover fa-2x"></i></li>
             </ul>
             <div class="w-100 pt-4">
-              <h5 class="h4" style="margin: 1.5rem; color: #d81b60">Paiement securisé <i class="fa fa-key"></i></h5>
+              <h5 class="h4" style="margin: 1.5rem; color: #d81b60">{{ 'global.secure_paid'|trans({}, 'global') }} <i class="fa fa-key"></i></h5>
             </div>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">
@@ -172,7 +173,7 @@
                   <!-- Used to display form errors. -->
                   <div id="card-errors" role="alert"></div>
                 </div>
-              <button class="btn btn-primary btn-block submit" type="submit" style="margin-top: 20px;">Valider</button>
+              <button class="btn btn-primary btn-block submit" type="submit" style="margin-top: 20px;">{{ 'global.valider'|trans({}, 'global') }}</button>
               <div class="lds-ripple"><div></div><div></div></div>
               <div class="success-checkmark">
                 <div class="check-icon">
@@ -184,7 +185,7 @@
               </div>
             </form>
             <div class="text-center text-small mt-3">
-              Vous avez déjà un compte? <a href="javascript:void()" class="open-sign-in-modal">Connectez-vous</a>
+              {{ 'global.avoir_compte'|trans({}, 'global') }} <a href="javascript:void()" class="open-sign-in-modal">{{ 'global.connectez_vous'|trans({}, 'global') }}</a>
             </div>
           </div>
         </div>
@@ -195,8 +196,8 @@
         <div class="modal-content">
           <div class="modal-header text-center border-0">
             <div class="w-100 pt-4">
-              <h5 class="h3">Connexion</h5>
-              <div>Entrer vos informations de connexion</div>
+              <h5 class="h3">{{ 'global.connexion'|trans({}, 'global') }}</h5>
+              <div>{{ 'global.enter_infos_connexion'|trans({}, 'global') }}</div>
             </div>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">
@@ -227,7 +228,7 @@
                   <label class="custom-control-label" for="sign-in-remember">Remember me next time</label>
                 </div>
               </div>
-              <button class="btn btn-primary btn-block submit" type="submit">Connexion</button>
+              <button class="btn btn-primary btn-block submit" type="submit">{{ 'global.connexion'|trans({}, 'global') }}</button>
               <div class="lds-ripple"><div></div><div></div></div>
                 <div class="success-checkmark">
                   <div class="check-icon">
@@ -252,31 +253,31 @@
                   <h5>Navigation</h5>
                   <ul class="nav flex-row flex-md-column">
                      <li class="nav-item mr-3 mr-md-0">
-                        <a href="landing-1.html" class="nav-link fade-page px-0 py-2">Accueil</a>
+                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">{{ 'global.home'|trans({}, 'global') }}</a>
                      </li>
                      <li class="nav-item mr-3 mr-md-0">
-                        <a href="landing-2.html" class="nav-link fade-page px-0 py-2">Nos produits</a>
+                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Nos produits</a>
                      </li>
                      <li class="nav-item mr-3 mr-md-0">
-                        <a href="landing-3.html" class="nav-link fade-page px-0 py-2">Les ingrédiants</a>
+                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Les ingrédiants</a>
                      </li>
                      <li class="nav-item mr-3 mr-md-0">
-                        <a href="landing-4.html" class="nav-link fade-page px-0 py-2">Témoignages</a>
+                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">{{ 'global.temoignage'|trans({}, 'global') }}</a>
                      </li>
                      <li class="nav-item mr-3 mr-md-0">
-                        <a href="landing-5.html" class="nav-link fade-page px-0 py-2">Coaching</a>
+                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Coaching</a>
                      </li>
                      <li class="nav-item mr-3 mr-md-0">
-                        <a href="landing-6.html" class="nav-link fade-page px-0 py-2">Nous contacter</a>
+                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Nous contacter</a>
                      </li>
                      <li class="nav-item mr-3 mr-md-0">
-                        <a href="landing-6.html" class="nav-link fade-page px-0 py-2">Plan du site</a>
+                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Plan du site</a>
                      </li>
                      <li class="nav-item mr-3 mr-md-0">
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                        <a href="{{ path('app_logout') }}" data-id="je_minscris-form" class="nav-link px-0 py-2">Deconnexion</a>
+                        <a href="{{ path('app_logout') }}" data-id="je_minscris-form" class="nav-link px-0 py-2">{{ 'global.deconnexion'|trans({}, 'global') }}</a>
                     {% else %}   
-                        <a href="{{ path('app_login') }}" data-id="je_minscris-form" class="nav-link px-0 py-2">Connexion</a>
+                        <a href="{{ path('app_login') }}" data-id="je_minscris-form" class="nav-link px-0 py-2">{{ 'global.connexion'|trans({}, 'global') }}</a>
 
                     {% endif %}
                   </li>
@@ -286,22 +287,22 @@
                   <h5>Nos produits</h5>
                   <ul class="nav flex-row flex-md-column">
                      <li class="nav-item mr-3 mr-md-0">
-                        <a href="company-about-1.html" class="nav-link fade-page px-0 py-2">Minceur</a>
+                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Minceur</a>
                      </li>
                      <li class="nav-item mr-3 mr-md-0">
-                        <a href="blog-listing-1.html" class="nav-link fade-page px-0 py-2">Sommeil</a>
+                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Sommeil</a>
                      </li>
                      <li class="nav-item mr-3 mr-md-0">
-                        <a href="help-center-home.html" class="nav-link fade-page px-0 py-2">EveilActif</a>
+                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">EveilActif</a>
                      </li>
                      <li class="nav-item mr-3 mr-md-0">
-                        <a href="careers-1.html" class="nav-link fade-page px-0 py-2">Circulation</a>
+                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Circulation</a>
                      </li>
                      <li class="nav-item mr-3 mr-md-0">
-                        <a href="case-studies.html" class="nav-link fade-page px-0 py-2">ActifPousse</a>
+                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">ActifPousse</a>
                      </li>
                      <li class="nav-item mr-3 mr-md-0">
-                        <a href="pricing-plans.html" class="nav-link fade-page px-0 py-2">PeauParfaite</a>
+                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">PeauParfaite</a>
                      </li>
                   </ul>
                </div>
@@ -309,25 +310,25 @@
                   <h5>Informations</h5>
                   <ul class="nav flex-row flex-md-column">
                      <li class="nav-item mr-3 mr-md-0">
-                        <a href="company-about-1.html" class="nav-link fade-page px-0 py-2">Partenariat et Affiliation</a>
+                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Partenariat et Affiliation</a>
                      </li>
                      <li class="nav-item mr-3 mr-md-0">
-                        <a href="blog-listing-1.html" class="nav-link fade-page px-0 py-2">Paiement sécurisé</a>
+                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Paiement sécurisé</a>
                      </li>
                      <li class="nav-item mr-3 mr-md-0">
-                        <a href="help-center-home.html" class="nav-link fade-page px-0 py-2">Charte de confidentialité</a>
+                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Charte de confidentialité</a>
                      </li>
                      <li class="nav-item mr-3 mr-md-0">
-                        <a href="careers-1.html" class="nav-link fade-page px-0 py-2">C.G.U.</a>
+                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">C.G.U.</a>
                      </li>
                      <li class="nav-item mr-3 mr-md-0">
-                        <a href="case-studies.html" class="nav-link fade-page px-0 py-2">C.G.V.</a>
+                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">C.G.V.</a>
                      </li>
                      <li class="nav-item mr-3 mr-md-0">
-                        <a href="pricing-plans.html" class="nav-link fade-page px-0 py-2">Cookies</a>
+                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Cookies</a>
                      </li>
                      <li class="nav-item mr-3 mr-md-0">
-                        <a href="pricing-plans.html" class="nav-link fade-page px-0 py-2">Mentions légales</a>
+                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Mentions légales</a>
                      </li>
                   </ul>
                </div>
@@ -365,7 +366,7 @@
                <div class="col-auto">
                   <div class="d-flex flex-column flex-sm-row align-items-center text-small">
                      <div class="text-muted">
-                        Transactions 100% sécurisées grâce au cryptage SSL.
+                        {{ 'global.percent_securise'|trans({}, 'global') }}
                      </div>
                   </div>
                </div>
@@ -393,8 +394,7 @@
                <div class="col-auto">
                   <div class="d-flex flex-column flex-sm-row align-items-center text-small">
                      <div class="text-muted" style=" font-size: 11px;margin: 20px 0px; ">
-                        Pour votre santé, mangez au moins cinq fruits et légumes par jour - www.mangerbouger.fr
-                        Les produits Castalis sont des compléments alimentaires. À ce titre, ils ne se substituent en aucun cas à une alimentation saine, variée et équilibrée. Les informations et données diffusées sur le site proviennent de sources légitimes et valides et elles sont élaborées avec le plus grand soin et la plus grande précision. Cependant ces informations, données, affirmations et déclarations n’ont été approuvées par aucune agence gouvernementale ou toute autre autorité médicale. Les compléments alimentaires sains, naturels et de haute qualité, produits par Castalis, n’ont pas pour but de diagnostiquer, traiter, soigner, guérir, prévenir et/ou empêcher les maladies. L’origine naturelle, saine, végétale et végane des ingrédients que nous utilisons dans nos produits en fait des compléments alimentaires de tout premier choix. Ils ne nécessitent aucune prescription médicale. Cependant, nous vous invitons à consulter impérativement votre médecin avant de commencer à consommer des compléments alimentaires, à suivre un régime ou à participer à un programme de coaching, notamment sportif. En effet, chaque personne est unique, les résultats individuels peuvent varier et certaines contre-indications personnelles peuvent exister. Cette consultation avec votre médecin traitant vous permettra de vérifier que les ingrédients utilisés dans nos compléments alimentaires sont compatibles avec votre cas particulier et les traitements médicaux que vous suivez déjà ou pouvez être amenés à suivre. Votre bien-être est notre objectif numéro un.
+                        {{ 'global.foot_p'|trans({}, 'global') }}
                      </div>
                   </div>
                </div>
@@ -410,7 +410,7 @@
             </div>
          </div>
       </footer>
-      <a href="{{path('marque')}}" class="btn btn-primary goto-formule">Acheter maintenant</a>
+      <a href="{{path('marque')}}" class="btn btn-primary goto-formule">{{ 'global.buy_now'|trans({}, 'global') }}</a>
       <a href="#top" class="btn btn-primary rounded-circle btn-back-to-top" data-smooth-scroll data-aos="fade-up" data-aos-offset="2000" data-aos-mirror="true" data-aos-once="false">
       <img src="assets/img/icons/interface/icon-arrow-up.svg"  loading="lazy"class="icon bg-white" data-inject-svg>
       </a>
@@ -513,7 +513,7 @@
               '</div>'+
               '<ul class="detail-list">'+
                 '<li class="detail-item product-name">'+
-                  (parseInt(price.toFixed(1))? name : 'Offert : '+ name )+
+                  (parseInt(price.toFixed(1))? name : '{{ 'global.offert'|trans({}, 'global') }} : '+ name )+
                 '</li>'+
                 '<li class="detail-item product-qte">'+' x '+price+'€ <strike>'+(parseFloat(oldprice).toFixed(1)*quantity)+'€</strike>'+
                 '</li>'+
