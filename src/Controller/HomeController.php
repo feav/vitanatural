@@ -54,6 +54,12 @@ class HomeController extends AbstractController
     }
 
 
+    public function homeLocate(Request $request)
+    {
+        $url = $this->generateUrl('home', ['_locale' => 'fr'],UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->redirect($url);
+    }
+
     /**
      * @Route("/setlocale/{lang}", name="setLocale")
      */

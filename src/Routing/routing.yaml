@@ -1,3 +1,7 @@
+home_locate:
+   path: /
+   controller: App\Controller\HomeController::homeLocate
+
 user:
   resource: 'user.yaml'
   prefix: /user
