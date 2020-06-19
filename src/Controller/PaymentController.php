@@ -33,6 +33,7 @@ class PaymentController extends AbstractController
 {   
     private $params_dir;
     private $mollie_s;
+    private $stripe_s;
     private $user_s;
     private $userRepository;
     private $panierRepository;
@@ -42,9 +43,10 @@ class PaymentController extends AbstractController
     private $global_s;
     private $formuleRepository;
 
-    public function __construct(ParameterBagInterface $params_dir, UserRepository $userRepository, UserService $user_s, MollieService $mollie_s, AbonnementRepository $abonnementRepository, PanierRepository $panierRepository, CommandeRepository $commandeRepository, GlobalService $global_s, FormuleRepository $formuleRepository){
+    public function __construct(ParameterBagInterface $params_dir, UserRepository $userRepository, UserService $user_s, MollieService $mollie_s, AbonnementRepository $abonnementRepository, PanierRepository $panierRepository, CommandeRepository $commandeRepository, GlobalService $global_s, FormuleRepository $formuleRepository, StripeService $stripe_s){
         $this->params_dir = $params_dir;
         $this->mollie_s = $mollie_s;
+        $this->stripe_s = $stripe_s;
         $this->user_s = $user_s;
         $this->global_s = $global_s;
         $this->userRepository = $userRepository;
@@ -72,15 +74,16 @@ class PaymentController extends AbstractController
         $message = $result = "";
         $response = [];
 
-        $token = $request->request->get('token');
+        $stripeSource = $request->request->get('stripeSource');
         $panier = $this->panierRepository->findOneBy(['user'=>$user->getId(), 'status'=>0]);
         if(!is_null($panier)){
             $amount = $panier->getTotalPrice();
-            if(!$amount)
-                return new Response("le montant de votre commande est null", 500);
+            if(!$amount){
+                return new Response(json_encode(array('status'=>500, "checkoutUrl"=>"", "message"=>"le montant de votre commande est null")));
+            }
         }
         else
-            return new Response("Vous n'avez aucun panier en attente de paiement", 500);
+            return new Response(json_encode(array('status'=>500, "checkoutUrl"=>"", "message"=>"Vous n'avez aucun panier en attente de paiement")));
         
         if(is_null($user)){
             $email = $request->request->get('email');
@@ -92,14 +95,14 @@ class PaymentController extends AbstractController
             $message = "Un compte vous a été crée, des informations de connexion vous ont été envoyées à l'adresse ".$user->getEmail();
             $metadata = ['name'=>$user->getName(), 'email'=>$user->getEmail()];
 
-            if($token !== null && $amount !== null) {
-                $this->mollie_s->createMollieCustom($token, $metadata);
+            if($stripeSource !== null && $amount !== null) {
+                 $this->stripe_s->createStripeCustom($request->request->get('stripeSource'), $metadata);
                 $preparePaid = $this->preparePaid($panier, $mailer);
                 $message = $preparePaid['message'];
                 if($preparePaid['paid']){
                     $amount = $preparePaid['amount'];
-                    $response = $this->mollie_s->customerFirstPaid($user, $token, $amount);
-                    $this->mollie_s->saveChargeToRefund($panier, $response['charge']);
+                    $response = $this->stripe_s->proceedPayment($user, $amount);
+                    $this->stripe_s->saveChargeToRefund($panier, $response['charge']);
                     $result = $response['message'];
                 }
             }
@@ -110,36 +113,33 @@ class PaymentController extends AbstractController
             $metadata = ['name'=>$user->getName(), 'email'=>$user->getEmail()];
             
             /* si l'utilisateur a renseigné une carte on lui creer un nouveau custom */
-            if($token !== null && $amount !== null) {
-                $this->mollie_s->createMollieCustom($token, $metadata);
+            if($stripeSource !== null && $amount !== null) {
+                $this->stripe_s->createStripeCustom($request->request->get('stripeSource'), $metadata);
                 $preparePaid = $this->preparePaid($panier, $mailer);
                 $message = $preparePaid['message'];
                 if($preparePaid['paid']){
                     $amount = $preparePaid['amount'];
-                    //$response = $this->mollie_s->customerFirstPaid($user, $token, $amount);
-                    $response = $this->mollie_s->proceedPaymentCart($panier->getId(), $amount, $token);
+                    $response = $this->stripe_s->proceedPayment($user, $amount);
                     $result = $response['message'];
-                    $checkoutUrl = $response['checkoutUrl'];
-                    $this->mollie_s->saveChargeToRefund($panier, $response['charge']);
+                    $this->stripe_s->saveChargeToRefund($panier, $response['charge']);
                 }
             }
-            elseif($user->getMollieCustomerId() !=""){
+            elseif($user->getStripeCustomId() !=""){
                 $preparePaid = $this->preparePaid($panier, $mailer);
                 $message = $preparePaid['message'];
                 if($preparePaid['paid']){
                     $amount = $preparePaid['amount'];
-                    $response = $this->mollie_s->proceedPayment($user, $amount);
-                    //$response = $this->mollie_s->proceedPaymentCart($panier->getId(), $amount, $token);
-                    $this->mollie_s->saveChargeToRefund($panier, $response['charge']);
+                    $response = $this->stripe_s->proceedPayment($user, $amount);
+                    $this->stripe_s->saveChargeToRefund($panier, $response['charge']);
                     $result = $response['message'];
                 }
             }
             else
-                return new Response("Vous n'avez entré aucune carte", 500);
+                return new Response(json_encode(array('status'=>500, "checkoutUrl"=>"", "message"=>"Vous n'avez entré aucune carte")));
         }
 
         if($result == ""){
-            return new Response(json_encode(array('status'=>200, "checkoutUrl"=>$checkoutUrl, "message"=>"Votre paiement a été envoyé, vous recevrez une confirmation d'ici peu.")));
+            //return new Response(json_encode(array('status'=>200, "checkoutUrl"=>$checkoutUrl, "message"=>"Votre paiement a été envoyé, vous recevrez une confirmation d'ici peu.")));
 
             $panier->setStatus(1);
             $panier->setPaiementDate(new \Datetime());
@@ -168,11 +168,12 @@ class PaymentController extends AbstractController
 
             $this->sendMail($mailer, $user, $panier, $save_path, $amount);
             
-            return new Response($message, 200);
+            return new Response(json_encode(array('status'=>200, "checkoutUrl"=>"", "message"=>"Votre paiement a été envoyé, vous recevrez une confirmation d'ici peu.")));
         }
-        else
-            return new Response('Erreur : ' . $errorMessage , 500);
-        return new Response(json_encode(['ok'=>true]));
+        else{
+            return new Response(json_encode(array('status'=>500, "checkoutUrl"=>"", "message"=>"Une erreur s'est produite")));
+        }
+        return new Response(json_encode(array('status'=>200, "checkoutUrl"=>"", "message"=>"aucune action Effectuée")));
     }
 
     public function sendMail($mailer, $user, $panier, $commande_pdf, $amount){
@@ -283,8 +284,8 @@ class PaymentController extends AbstractController
         $message = $preparePaid['message'];
         if($preparePaid['paid']){
             $amount = $preparePaid['amount'];
-            $response = $this->mollie_s->proceedPayment($user, $amount);
-            $this->mollie_s->saveChargeToRefund($panier, $response['charge']);
+            $response = $this->stripe_s->proceedPayment($user, $amount);
+            $this->stripe_s->saveChargeToRefund($panier, $response['charge']);
             $result = $response['message'];
         }
 
@@ -332,7 +333,7 @@ class PaymentController extends AbstractController
         foreach ($abonnements as $key => $value) {
             $result = "";
             $user = $value->getUser();
-            if($value->getActive() && $user->getMollieCustomerId()){
+            if($value->getActive() && $user->getStripeCustomId()){
                 $date = $value->getStart();
                 $date->add(new \DateInterval('P'.$value->getFormule()->getTryDays().'D'));
                 

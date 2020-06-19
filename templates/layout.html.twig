@@ -158,7 +158,7 @@
             <div>
               <a href="{{path('paiement_cart')}}" class="btn btn-primary ml-lg-4 mr-3 mr-md-4 mr-lg-0 d-sm-block order-lg-3 goto-checkout">{{ 'global.paiement_de'|trans({}, 'global') }} <b class="cart-total-pay">o</b>€ <strike><i class="cart-total-reduction">0</i>€ </strike></a>
             </div>
-            {% if is_granted('IS_AUTHENTICATED_FULLY') and (app.user.getMollieCustomerId is not null) %}
+            {% if is_granted('IS_AUTHENTICATED_FULLY') and (app.user.getStripeCustomId is not null) %}
               <div style="text-align: center;margin-top: 19px;font-size: 16px">
                   <a href="{{path('direct_paid')}}" class="oneClickPaid" style="text-decoration: underline;" title="{{ 'global.debit_auto_text'|trans({}, 'global') }}">{{ 'global.one_clik_paid'|trans({}, 'global') }}</a><br>
                   <small style="display: block;margin-top: 6px;">Pour le paiement en un click, Vous serez automatiquement debité sur votre precedente carte utilisée</small>
