@@ -105,4 +105,47 @@ class StripeService{
 
         return 1;
     }
+
+    /* abonnement avec definition du prix */
+    public function subscription($user, $abonnement){
+
+        if($abonnement->getFormule()->getMonth() == 1){
+            $interval = 'month';
+        }
+        elseif($abonnement->getFormule()->getMonth() == 12)
+            $interval = 'year';
+
+        \Stripe\Stripe::setApiKey($this->stripeApiKey);
+        $subscription = \Stripe\Subscription::create([
+          'customer' => $user->getStripeCustomId(),
+          'trial_period_days'=>(int)$abonnement->getFormule()->getTryDays(),
+          'items' => [[
+            'price_data' => [
+              'unit_amount' => 100*$abonnement->getFormule()->getPrice(),
+              'currency' => $this->stripeCurrency,
+              'product' => $abonnement->getFormule()->getStripeProductId(),
+              'recurring' => [
+                'interval' => $interval,
+              ],
+            ],
+          ]],
+        ]);
+        return $subscription['id'];
+    }
+
+    public function getAllProduct(){
+        $stripe = new \Stripe\StripeClient($this->stripeApiKey);
+        $products = $stripe->products->all();
+        if(!(array)$products)
+            return [];
+        return $products['data'];
+    }
+
+    public function createProduct(){
+        \Stripe\Stripe::setApiKey($this->stripeApiKey);
+        $product = \Stripe\Product::create([
+          'name' => 'abonnement vitanatural',
+        ]);
+        return $product;
+    }
 }

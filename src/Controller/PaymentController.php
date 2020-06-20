@@ -143,16 +143,12 @@ class PaymentController extends AbstractController
 
             $panier->setStatus(1);
             $panier->setPaiementDate(new \Datetime());
-
             if(count($panier->getAbonnements())){
                 $abonnement = $panier->getAbonnements()[0];
-                $tryDays = $abonnement->getFormule()->getTryDays();
-                if($tryDays == 0){
+                if($abonnement->getFormule()->getTryDays() == 0)
                     $abonnement->setState(1);
-                }
             }
             $this->entityManager->flush();
-
             $assetFile = $this->params_dir->get('file_upload_dir');
             if (!file_exists($request->server->get('DOCUMENT_ROOT') .'/'. $assetFile)) {
                 mkdir($request->server->get('DOCUMENT_ROOT') .'/'. $assetFile, 0705);
@@ -168,7 +164,7 @@ class PaymentController extends AbstractController
 
             $this->sendMail($mailer, $user, $panier, $save_path, $amount);
             
-            return new Response(json_encode(array('status'=>200, "checkoutUrl"=>"", "message"=>"Votre paiement a été envoyé, vous recevrez une confirmation d'ici peu.")));
+            return new Response(json_encode(array('status'=>200, "checkoutUrl"=>"", "message"=>$message)));
         }
         else{
             return new Response(json_encode(array('status'=>500, "checkoutUrl"=>"", "message"=>"Une erreur s'est produite")));
@@ -276,10 +272,6 @@ class PaymentController extends AbstractController
         else
             return new Response("Vous n'avez aucun panier en attente de paiement", 500);
         
-        /*$amount = $panier->getTotalPrice();
-        $response = $this->mollie_s->proceedPayment($user, $amount);
-        $this->mollie_s->saveChargeToRefund($panier, $response['charge']);
-        $result = $response['message'];*/
         $preparePaid = $this->preparePaid($panier, $mailer);
         $message = $preparePaid['message'];
         if($preparePaid['paid']){
@@ -295,13 +287,10 @@ class PaymentController extends AbstractController
             $panier->setPaiementDate(new \Datetime());
             if(count($panier->getAbonnements())){
                 $abonnement = $panier->getAbonnements()[0];
-                $tryDays = $abonnement->getFormule()->getTryDays();
-                if($tryDays == 0){
+                if($abonnement->getFormule()->getTryDays() == 0)
                     $abonnement->setState(1);
-                }
             }
             $this->entityManager->flush();
-
             $assetFile = $this->params_dir->get('file_upload_dir');
             if (!file_exists($request->server->get('DOCUMENT_ROOT') .'/'. $assetFile)) {
                 mkdir($request->server->get('DOCUMENT_ROOT') .'/'. $assetFile, 0705);
@@ -315,13 +304,12 @@ class PaymentController extends AbstractController
             ];
             //$dompdf = $this->generatePdf('emails/facture.html.twig', $panier , $params);
             $this->sendMail($mailer, $user, $panier, $save_path, $amount);
-            $response = new Response(json_encode($message), 200);
+            return new Response(json_encode(array('status'=>200, "checkoutUrl"=>"", "message"=>$message)));
         }
         else
-            $response = new Response(json_encode('Erreur : ' . $errorMessage), 500);
+            return new Response(json_encode(array('status'=>500, "checkoutUrl"=>"", "message"=>"Une erreur s'est produite")));
 
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
+         return new Response(json_encode(array('status'=>200, "checkoutUrl"=>"", "message"=>"aucune action Effectuée")));
     }
 
     /**
@@ -432,38 +420,22 @@ class PaymentController extends AbstractController
     }
 
     public function preparePaid($panier, $mailer){
-        $user = $this->getUser();
         $amount = $panier->getTotalPrice();
-        /*$amount = $panier->getTotalPrice() - $panier->getTotalReduction();
-        $amount = ( $amount <0 ) ? 0 : $amount;*/
-        $message = "Paiement Effectué avec Succèss";
         if(count($panier->getAbonnements())){
-            $message = "Votre abonnement sera facturé apres la periode d'essaie";   
+            $this->stripe_s->subscription($this->getUser(), $panier->getAbonnements()[0]);
+            $this->addFlash('success', "Votre abonnement a été pris en compte");
+            $response = ['paid'=>false, 'message'=>"Votre abonnement a été pris en compte", 'amount'=>0];
         }
-        if(!count($panier->getCommandes())){
+        if(count($panier->getCommandes())){
             $this->entityManager = $this->getDoctrine()->getManager();
             $panier->setPaiementDate(new \Datetime());
             $this->entityManager->flush();
             
-            $this->addFlash('success', "Votre abonnement sera facturé apres la periode d'essaie");
-            return ['paid'=>false, 'message'=>"Votre abonnement sera facturé apres la periode d'essaie", 'amount'=>0];
+            $this->addFlash('success', "Paiement Effectué avec Succèss");
+            $response = ['paid'=>true, 'message'=>"Paiement Effectué avec Succèss", 'amount'=>$amount];
         }
-        elseif(count($panier->getAbonnements())){
-            $message = "Paiement Effectué avec Succèss. Votre abonnement sera facturé apres la periode d'essaie";
-            $abonnement = $panier->getAbonnements()[0];
-            $abonnementAmount = $abonnement->getFormule()->getPrice();
-            //$amount -= $abonnementAmount;
-        }
-        if(count($panier->getAbonnements())){
-            $abonnement = $panier->getAbonnements()[0];
-            $tryDays = $abonnement->getFormule()->getTryDays();
-            if($tryDays == 0){
-                return ['paid'=>true, 'message'=>"Paiement Effectué avec Succèss", 'amount'=>$panier->getTotalPrice()];
-            }
-        }
-        return ['paid'=>true, 'message'=>$message, 'amount'=>$amount];
+        return $response;
     }
-
 
     /**
      * @Route("/resiliation-abonnement/{id}", name="abonnement_resilie", methods={"GET"})
@@ -544,14 +516,6 @@ class PaymentController extends AbstractController
       * @Route("/success-payment", name="success_payment", methods={"GET"})
      */
     public function payementSuccess(){
-
-        /*$mollie = new \Mollie\Api\MollieApiClient();
-        $mollie->setApiKey("test_VCjK9FN6dJ4fd7mtS8JUHtcm2uy96K");
-        $payments = $mollie->payments->page();
-        $customers = $mollie->customers->page();
-        $datas = ['payments'=> $payments, 'customs'=>$customers];
-        dd($datas);*/
-
         $formule = $this->formuleRepository->findAll();
         return $this->render('home/success_payment.html.twig', [
             'formules' => $formule

@@ -1053,8 +1053,8 @@
           async: true,
           data: {},
           success: function(data, status) {
+            $that.text('Payer');
             $that.css('pointer-events', 'auto');
-            $that.text($realText);
             notification("Paiement commande","Opération effectuée avec succèss","success");
             window.localStorage.removeItem('panier');
             if($formulePaid)
@@ -1064,8 +1064,8 @@
 
           },
           error: function(xhr, responseText, errorThrown) {
+            $that.text('Payer');
             $that.css('pointer-events', 'auto');
-            $that.text($realText);
             notification("Paiement commande",xhr.responseText,"error");
           }
       });
