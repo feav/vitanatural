@@ -51,8 +51,8 @@
                         {% for panier in paniers %}
                         <tr>
                            <td>{{ panier.emmission ? panier.emmission|date('Y-m-d') : '' }}</td>
-                           <td>{{ panier.priceShipping }}</td>
-                           <td>{{ panier.totalPrice }}</td>
+                           <td>{{ panier.priceShipping }}€</td>
+                           <td>{{ panier.totalPrice }}€</td>
                            <td>
                               <a href="{{ path('panier_edit', {'id': panier.id}) }}">Editer</a>
                               {{ include('panier/_delete_form.html.twig') }}
