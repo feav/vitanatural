@@ -34,65 +34,24 @@
                   <table id="html5-extension" class="table table-hover non-hover" style="width:100%">
                      <tbody>
                         <tr>
-                            <td style="text-align:center">DETAILS PRODUITS</td>
+                            <th>Date Emission</th>
+                            <td>{{ panier.emmission ? panier.emmission|date('Y-m-d') : '' }}</td>
                         </tr>
                         <tr>
-                            <td>
-                                <table width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th>nom</th><th>Quantité</th><th>prix unique</th>
-                                            <th>prix total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for cmd in panier.commandes %}
-                                        <tr>
-                                            <td>{{cmd.product.name}}</td>
-                                            <td>{{cmd.quantity}}</td>
-                                            <td>{{cmd.price}}€</td>
-                                            <td>{{cmd.price*cmd.quantity}}€</td>
-                                        </tr>   
-                                    {% endfor %}
-                                    <tr><td colspan="4" style="text-align:center">TOTAUX ET DATES</td></tr>
-                                    <tr>
-                                        <th>Cout Total</th>
-                                        <td colspan="3" style="text-align:center"><b>{{ panier.totalPrice }}€</b></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Date Emission</th>
-                                        <td colspan="3" style="text-align:center"><b>{{ panier.emmission ? panier.emmission|date('Y-m-d') : '' }}</b></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Date Paiement</th>
-                                        <td colspan="3" style="text-align:center"><b>{{ panier.getPaiementDate ? panier.getPaiementDate|date('Y-m-d') : '' }}</b></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </td>
+                            <th>Ville</th>
+                            <td>{{ app.user.town }}</td>
                         </tr>
                         <tr>
-                            <td style="text-align:center">INFORMATIONS LIVRAISON</td>
+                            <th>Code poste</th>
+                            <td>{{ app.user.getZipCode() }}</td>
                         </tr>
                         <tr>
-                            <td>
-                                <table width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th>Pays</th><th>Ville</th><th>Code poste</th>
-                                            <th>Rue</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                          <td>{{ livraison ? livraison.country : ''}}</td>
-                                          <td>{{ livraison ? livraison.town : ''}}</td>
-                                         <td>{{ livraison ? livraison.zip_code : '' }}</td>
-                                         <td>{{ livraison ? livraison.street : '' }}</td>
-                                        </tr>   
-                                    </tbody>
-                                </table>
-                            </td>
+                            <th>Rue</th>
+                            <td>{{ app.user.street }}</td>
+                        </tr>
+                        <tr>
+                            <th>Cout Total</th>
+                            <td>{{ panier.totalPrice }}€</td>
                         </tr>
                      </tbody>
                   </table>
@@ -112,6 +71,7 @@
 <script src="{{asset('assetsBo/plugins/table/datatable/button-ext/buttons.html5.min.js')}}"></script>
 <script src="{{asset('assetsBo/plugins/table/datatable/button-ext/buttons.print.min.js')}}"></script>
 <script>
+   $('#sidebar .menu.menu-commande').addClass('active');
    $('#html5-extension').DataTable( {
        dom: '<"row"<"col-md-12"<"row"<"col-md-6"B><"col-md-6"f> > ><"col-md-12"rt> <"col-md-12"<"row"<"col-md-5"i><"col-md-7"p>>> >',
        buttons: {
@@ -128,6 +88,7 @@
        "lengthMenu": [7, 10, 20, 50],
        "pageLength": 7 
    } );
-   $('#sidebar .menu.menu-panier').addClass('active');
+      $('#sidebar .menu.menu-panier').addClass('active');
+
 </script>
 {% endblock %}

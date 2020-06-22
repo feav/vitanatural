@@ -89,6 +89,11 @@ class Panier
      * @ORM\Column(type="integer", nullable=true)
      */
     private $remboursement;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $livraison;
     
     public function __construct()
     {
@@ -365,6 +370,18 @@ class Panier
     public function setRemboursement(?int $remboursement): self
     {
         $this->remboursement = $remboursement;
+
+        return $this;
+    }
+
+    public function getLivraison(): ?string
+    {
+        return $this->livraison;
+    }
+
+    public function setLivraison(?string $livraison): self
+    {
+        $this->livraison = $livraison;
 
         return $this;
     }

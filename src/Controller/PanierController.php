@@ -56,6 +56,7 @@ class PanierController extends AbstractController
     {
         return $this->render('panier/show.html.twig', [
             'panier' => $panier,
+            'livraison'=>unserialize($panier->getLivraison())
         ]);
     }
 

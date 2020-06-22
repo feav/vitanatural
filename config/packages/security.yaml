@@ -35,5 +35,9 @@ security:
 
         # or require ROLE_ADMIN or IS_AUTHENTICATED_FULLY for /admin*
         - { path: '^/dashboard', roles: [IS_AUTHENTICATED_FULLY] }
+        - { path: '^/it/dashboard', roles: [IS_AUTHENTICATED_FULLY] }
+        - { path: '^/fr/dashboard', roles: [IS_AUTHENTICATED_FULLY] }
 
         - { path: '^/account', roles: [IS_AUTHENTICATED_FULLY]}
+        - { path: '^/fr/account', roles: [IS_AUTHENTICATED_FULLY]}
+        - { path: '^/it/account', roles: [IS_AUTHENTICATED_FULLY]}
