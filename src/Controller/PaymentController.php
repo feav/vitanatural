@@ -309,7 +309,7 @@ class PaymentController extends AbstractController
         else
             return new Response(json_encode(array('status'=>500, "checkoutUrl"=>"", "message"=>"Une erreur s'est produite")));
 
-         return new Response(json_encode(array('status'=>200, "checkoutUrl"=>"", "message"=>"aucune action Effectuée")));
+        return new Response(json_encode(array('status'=>200, "checkoutUrl"=>"", "message"=>"aucune action Effectuée")));
     }
 
     /**

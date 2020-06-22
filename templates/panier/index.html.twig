@@ -43,7 +43,6 @@
                         <tr>
                            <th>Emission</th>
                            <th>Prix de Livraison</th>
-                           <th>Token</th>
                            <th>Cout Total</th>
                            <th>actions</th>
                         </tr>
@@ -53,7 +52,6 @@
                         <tr>
                            <td>{{ panier.emmission ? panier.emmission|date('Y-m-d') : '' }}</td>
                            <td>{{ panier.priceShipping }}</td>
-                           <td><div class="badge badge-warning">{{ panier.token }}</div></td>
                            <td>{{ panier.totalPrice }}</td>
                            <td>
                               <a href="{{ path('panier_edit', {'id': panier.id}) }}">Editer</a>

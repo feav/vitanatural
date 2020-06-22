@@ -15,7 +15,9 @@ class ListController extends AbstractController
      */
     public function index(Request $request)
     {
-        return $this->redirectToRoute('account');
-       
+    	if($this->isGranted('ROLE_ADMIN'))
+        	return $this->redirectToRoute('account');
+        else
+       		return $this->redirectToRoute('panier_index');
     }
 }
