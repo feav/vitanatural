@@ -64,7 +64,7 @@ class StripeService{
 
     public function proceedPayment($user, $amount){
 
-        $result = "";
+        $result = $chargeId = "";
         Stripe::setApiKey($this->stripeApiKey);
         try {
             $chargeId = $this->paidByStripeCustom($user->getStripeCustomId(), $amount);
