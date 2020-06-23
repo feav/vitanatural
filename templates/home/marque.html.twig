@@ -7,11 +7,6 @@
 {% block stylesheets %}
 {{parent()}}
   <link rel="stylesheet" type="text/css" href="{{asset('assets/css/marque.css')}}">
-  <style type="text/css">
-      nav.position-lock.navbar ul.navbar-nav li.nav-item a {
-            color: #fff;
-       }
-  </style>
 {% endblock %}
 
 {% block url_trans %}{{ path(''~url_name, {'_locale': app.request.locale == "fr" ? "it" : "fr"}) }}{% endblock %}
@@ -70,7 +65,7 @@
       </div>
    </div>
 </section>
-<section style=" padding-top: 100px;  " class="rowlyo-section">
+<section class="rowlyo-section">
    <div class="container">
       <div class="row justify-content-center rowlyo">
          <div >
@@ -313,19 +308,9 @@
                         <div class="custom-control custom-radio mr-4 {% if number == 2 %} active {% endif %}" for="product-{{product.id}}-{{number}}">
                            <div style="width: 50%;">
                                 <label for="product-{{product.id}}-{{number}}">
-
                                    <span>
-                                      
                                     <img src="{{asset('assets/img/TPNsH9D.png')}}"  alt="The" class="buy-product " loading="lazy">
                                   </span>
-
-                                  {% if product.getNumberOfGift(number) %}
-                                    <span style="color: #258152;font-size: 30px;">+</span>
-                                  <span>
-                                   <img  src="{{asset('assets/img/TPNsH9D.png')}}"  alt="
-                                   The" class="gift-product buy-product" loading="lazy" >
-                                    </span>
-                                  {% endif %}
 
                                </label> 
                            </div>
@@ -392,7 +377,7 @@
                            {% if temoignage.image %}
                            <div class="rounded o-hidden" style="border-radius: 0.3125rem 0.3125rem 0 0 !important;margin: -10px -10px 20px -10px;">
                               <div class="d-flex position-relative align-items-center justify-content-center rounded">
-                                  <img src="{{temoignage.image }}"  class="rounded img-fluid"  loading="lazy"  style="width: 100%;height: 220px;" >
+                                  <img data-src="{{temoignage.image }}"  class="lazy rounded img-fluid"  loading="lazy"  style="width: 100%;height: 220px;" >
                                  </a>
                               </div>
                            </div> 
