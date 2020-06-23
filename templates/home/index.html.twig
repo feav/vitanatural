@@ -7,6 +7,11 @@
 {% block stylesheets %}
 {{parent()}}
   <link rel="stylesheet" type="text/css" href="{{asset('assets/css/index.css')}}">
+  <style type="text/css">
+    nav.position-lock.navbar ul.navbar-nav li.nav-item a {
+      color: rgba(0,0,0,.7);
+    }
+  </style>
 {% endblock %}
 
 {% block url_trans %}{{ path(''~url_name, {'_locale': app.request.locale == "fr" ? "it" : "fr"}) }}{% endblock %}
