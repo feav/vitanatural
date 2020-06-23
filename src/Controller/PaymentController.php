@@ -290,11 +290,6 @@ class PaymentController extends AbstractController
         if($result == ""){
             $panier->setStatus(1);
             $panier->setPaiementDate(new \Datetime());
-            if(count($panier->getCommandes())){
-                $infosLivraison = ['town'=>$user->getTown(), 'country'=>$user->getCountry(), 'street'=> $user->getStreet(), 'zip_code'=>$user->getZipCode()];
-                $infosLivraison = serialize($infosLivraison);
-                $panier->setLivraison($infosLivraison);
-            }
             if(count($panier->getAbonnements())){
                 $abonnement = $panier->getAbonnements()[0];
                 if($abonnement->getFormule()->getTryDays() == 0)

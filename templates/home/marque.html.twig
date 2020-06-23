@@ -7,6 +7,11 @@
 {% block stylesheets %}
 {{parent()}}
   <link rel="stylesheet" type="text/css" href="{{asset('assets/css/marque.css')}}">
+  <style type="text/css">
+      nav.position-lock.navbar ul.navbar-nav li.nav-item a {
+            color: #fff;
+       }
+  </style>
 {% endblock %}
 
 {% block url_trans %}{{ path(''~url_name, {'_locale': app.request.locale == "fr" ? "it" : "fr"}) }}{% endblock %}
@@ -299,12 +304,10 @@
                   <div data-aosx="fade-right">
                      <h1 class="display-5">Masque Anti Point Noir au <mark data-aosx="highlight-text" data-aos-delay="200">Thé Vert</mark> !</h1>
                      <p class="lead">
-                        Berspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.
                      </p>
 
                     {% for product in products  %}
 
-                    
                      <div class="d-flex flex-wrap products-pack" style=" margin-bottom: 20px; ">
                       {% for number in 1..4  %}
                         <div class="custom-control custom-radio mr-4 {% if number == 2 %} active {% endif %}" for="product-{{product.id}}-{{number}}">
@@ -312,20 +315,15 @@
                                 <label for="product-{{product.id}}-{{number}}">
 
                                    <span>
-                                     {% for i in 1..number  %}
                                       
-                                       <img src="https://imgur.com/TPNsH9D.png"  alt="The" class="buy-product " loading="lazy"  {% if i == number %} style="margin-right: 0;" {% endif %}>
-                                     {% endfor  %}
+                                    <img src="{{asset('assets/img/TPNsH9D.png')}}"  alt="The" class="buy-product " loading="lazy"  {% if i == number %} style="margin-right: 0;" {% endif %}>
                                   </span>
 
                                   {% if product.getNumberOfGift(number) %}
                                     <span style="color: #258152;font-size: 30px;">+</span>
                                   <span>
-                                    {% for i in 1..product.getNumberOfGift(number)  %}
-
-                                   <img  src="https://imgur.com/TPNsH9D.png"  alt="
+                                   <img  src="{{asset('assets/img/TPNsH9D.png')}}"  alt="
                                    The" class="gift-product buy-product" loading="lazy" >
-                                    {% endfor  %}
                                     </span>
                                   {% endif %}
 
@@ -418,7 +416,7 @@
                            </div>
                            <p style="
                               ">{{temoignage.text|raw }}</p>
-                           <img src="https://i.ya-webdesign.com/images/loading-gif-png-5.gif" data-srcset="{{asset('assets/img/prod-min.png')}} 1x"  class="lazy"  style="width: 50px;height: auto;margin-bottom: -45px;" data-src="{{asset('assets/img/prod-min.png')}}">
+                           <img src="https://i.ya-webdesign.com/images/loading-gif-png-5.gif" data-srcset="{{asset('assets/img/prod-min.png')}} 1x"  class="lazy"  style="height: 90px;margin-bottom: -45px;" data-src="{{asset('assets/img/TPNsH9D.png')}}">
                            <div style="
                               background: #ef357af7;
                               color: #ffffff;
