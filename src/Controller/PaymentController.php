@@ -412,22 +412,14 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @Route("/webhook-subscription", name="webhook_subscription")
+     * @Route("/webhook-subscription", name="webhook_subscription", methods={"POST"})
      */
     public function subscriptionWebhook(Request $request, \Swift_Mailer $mailer){
         
         \Stripe\Stripe::setApiKey('sk_test_zJN82UbRA4k1a6Mvna4rV3qn');
 
-        $options = array(
-            'http' => array(
-                'header'  =>  "Accept:application/json\r\n" .
-                              "X-Requested-With:XMLHttpRequest\r\n",
-                'method'  => 'GET'
-            ),
-        );
-        $context = stream_context_create($options);
-
-        $payload = file_get_contents('php://input',true, $context);
+        //$payload = @file_get_contents('php://input');
+        $payload = $request->request;
         $event = null;
 
         try {
