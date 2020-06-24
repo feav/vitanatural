@@ -148,4 +148,45 @@ class StripeService{
         ]);
         return $product;
     }
+
+
+    public function subscriptionWebhook(){
+        \Stripe\Stripe::setApiKey($this->stripeApiKey);
+        $payload = @file_get_contents('php://input');
+        $event = null;
+
+        try {
+            $event = \Stripe\Event::constructFrom(
+                json_decode($payload, true)
+            );
+        } catch(\UnexpectedValueException $e) {
+            // Invalid payload
+            http_response_code(400);
+            exit();
+        }
+
+        // Handle the event
+        switch ($event->type) {
+            case 'payment_intent.succeeded':
+                $paymentIntent = $event->data->object; 
+                break;
+            case 'payment_method.attached':
+                $paymentMethod = $event->data->object; 
+                break;
+            case 'charge.pending':
+                $paymentMethod = $event->data->object; 
+                break;
+            case 'charge.succeeded':
+                $paymentMethod = $event->data->object; 
+                break;
+            case 'charge.failed':
+                $paymentMethod = $event->data->object; 
+                break;
+            default:
+                http_response_code(400);
+                exit();
+        }
+
+        http_response_code(200);
+    }
 }

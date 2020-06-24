@@ -390,6 +390,7 @@ class PaymentController extends AbstractController
 
         return new Response("renouvellé");
     }
+
     public function createNewAbonnement($abonnement){
         $this->entityManager = $this->getDoctrine()->getManager();
         $entity = new Abonnement();
@@ -408,6 +409,64 @@ class PaymentController extends AbstractController
         $this->entityManager->persist($entity);
         $this->entityManager->flush();
         return 1;
+    }
+
+    /**
+     * @Route("/webhook-subscription", name="webhook_subscription")
+     */
+    public function subscriptionWebhook(Request $request, \Swift_Mailer $mailer){
+        \Stripe\Stripe::setApiKey("sk_test_zJN82UbRA4k1a6Mvna4rV3qn");
+        $payload = @file_get_contents('php://input');
+        $event = null;
+
+        try {
+            $event = \Stripe\Event::constructFrom(
+                json_decode($payload, true)
+            );
+        } catch(\UnexpectedValueException $e) {
+            // Invalid payload
+            http_response_code(400);
+            exit();
+        }
+        $message ="";
+        // Handle the event
+        switch ($event->type) {
+            case 'payment_intent.succeeded':
+                $paymentIntent = $event->data->object; 
+                break;
+            case 'payment_method.attached':
+                $paymentMethod = $event->data->object; 
+                break;
+            case 'charge.pending':
+                $paymentMethod = $event->data->object; 
+                $message = "pending";
+                break;
+            case 'charge.succeeded':
+                $paymentMethod = $event->data->object; 
+                $message = "succeeded";
+                break;
+            case 'charge.failed':
+                $paymentMethod = $event->data->object; 
+                $message = "failed";
+                break;
+            default:
+                http_response_code(400);
+                exit();
+        }
+
+         try {
+            $mail = (new \Swift_Message("Stripe webhook"))
+                ->setFrom(array('alexngoumo.an@gmail.com' => 'webhook'))
+                ->setTo("alexngoumo.an@gmail.com")
+                ->setBody($message,
+                    'text/html'
+                );
+            $mailer->send($mail);
+        } catch (Exception $e) {
+            print_r($e->getMessage());
+        }        
+
+        http_response_code(200);
     }
 
     public function generatePdf($template, $data, $params, $type_produit = "product"){
