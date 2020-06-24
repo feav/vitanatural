@@ -436,24 +436,22 @@ class PaymentController extends AbstractController
         switch ($event->type) {
             case 'payment_intent.succeeded':
                 $paymentIntent = $event->data->object; 
+                $message .= " payment_intent_succeeded"
                 break;
-            case 'payment_method.attached':
-                $paymentMethod = $event->data->object; 
-                break;
-            case 'invoice.created':
-                $paymentMethod = $event->data->object; 
-                $message = "created";
+            case 'payment_intent.failed':
+                $paymentIntent = $event->data->object; 
+                $message .= " payment_intent_failed"
                 break;
             case 'invoice.payment_succeeded':
                 $paymentMethod = $event->data->object; 
-                $message = "payment_succeeded";
+                $message .= " payment_succeeded";
                 break;
             case 'invoice.payment_failed':
                 $paymentMethod = $event->data->object; 
-                $message = "payment_failed";
+                $message = " payment_failed";
                 break;
             default:
-                return new Response('error400',400);
+                return new Response('Evenement inconnu',400);
                 /*http_response_code(400);
                 exit();*/
         }
@@ -471,7 +469,7 @@ class PaymentController extends AbstractController
         }        
 
         //http_response_code(200);
-        return new Response('good',200);
+        return new Response('Evenement terminé avec success',200);
     }
 
     public function generatePdf($template, $data, $params, $type_produit = "product"){
