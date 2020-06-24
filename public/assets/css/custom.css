@@ -15,7 +15,7 @@
 }
 .drapeau >*{flex:1;}
 .drapeau .couleur:nth-child(1) {
-    background: #045086;
+    background: #146eaf;
 }
 .drapeau .couleur:nth-child(2) {
     background: #fff;
