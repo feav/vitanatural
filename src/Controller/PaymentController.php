@@ -425,30 +425,39 @@ class PaymentController extends AbstractController
         \Stripe\Stripe::setApiKey('sk_test_zJN82UbRA4k1a6Mvna4rV3qn');
 
         $data = json_decode($request->getContent(), true);
-        if ($data === null) {
+        /*if ($data === null) {
             throw new \Exception('Bad JSON body from Stripe!');
         }
         $eventId = $data['id'];
-        $event = $this->findEvent($eventId);
+        $event = $this->findEvent($eventId);*/
+
+        $event = null;
+        try {
+            $event = \Stripe\Event::constructFrom(
+                json_decode($data, true)
+            );
+        } catch(\UnexpectedValueException $e) {
+            return new Response('Evenement inconnu',400);
+        }
 
         $message ="";
         // Handle the event
         switch ($event->type) {
             case 'payment_intent.succeeded':
                 $paymentIntent = $event->data->object; 
-                $message .= " payment_intent_succeeded";
+                $message = "payment_intent_succeeded";
                 break;
-            case 'payment_intent.failed':
+            case 'payment_intent.payment_failed':
                 $paymentIntent = $event->data->object; 
-                $message .= " payment_intent_failed";
+                $message = "payment_intent_failed";
                 break;
             case 'invoice.payment_succeeded':
                 $paymentMethod = $event->data->object; 
-                $message .= " payment_succeeded";
+                $message = "invoice.payment_succeeded";
                 break;
             case 'invoice.payment_failed':
                 $paymentMethod = $event->data->object; 
-                $message = " payment_failed";
+                $message = "invoice.payment_failed";
                 break;
             default:
                 return new Response('Evenement inconnu',400);
