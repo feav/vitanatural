@@ -411,26 +411,25 @@ class PaymentController extends AbstractController
         return 1;
     }
 
+
+    public function findEvent($eventId)
+    {
+        return \Stripe\Event::retrieve($eventId);
+    }
+
     /**
-     * @Route("/webhook-subscription", name="webhook_subscription", methods={"POST"})
+     * @Route("/webhook-subscription", name="webhook_subscription")
      */
     public function subscriptionWebhook(Request $request, \Swift_Mailer $mailer){
         
         \Stripe\Stripe::setApiKey('sk_test_zJN82UbRA4k1a6Mvna4rV3qn');
 
-        //$payload = @file_get_contents('php://input');
-        $payload = $request->request;
-        $event = null;
-
-        try {
-            $event = \Stripe\Event::constructFrom(
-                json_decode($payload, true)
-            );
-        } catch(\UnexpectedValueException $e) {
-            // Invalid payload
-            http_response_code(400);
-            exit();
+        $data = json_decode($request->getContent(), true);
+        if ($data === null) {
+            throw new \Exception('Bad JSON body from Stripe!');
         }
+        $eventId = $data['id'];
+        $event = $this->findEvent($eventId);
 
         $message ="";
         // Handle the event
