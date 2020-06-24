@@ -436,11 +436,11 @@ class PaymentController extends AbstractController
         switch ($event->type) {
             case 'payment_intent.succeeded':
                 $paymentIntent = $event->data->object; 
-                $message .= " payment_intent_succeeded"
+                $message .= " payment_intent_succeeded";
                 break;
             case 'payment_intent.failed':
                 $paymentIntent = $event->data->object; 
-                $message .= " payment_intent_failed"
+                $message .= " payment_intent_failed";
                 break;
             case 'invoice.payment_succeeded':
                 $paymentMethod = $event->data->object; 
