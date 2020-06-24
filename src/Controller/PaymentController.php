@@ -421,10 +421,77 @@ class PaymentController extends AbstractController
         // If you are testing your webhook locally with the Stripe CLI you
         // can find the endpoint's secret by running `stripe listen`
         // Otherwise, find your endpoint's secret in your webhook settings in the Developer Dashboard
+
+$payload = <<<'EOT'
+{
+    "created": 1326853478,
+    "livemode": false,
+    "id": "evt_00000000000000",
+    "type": "source.chargeable",
+    "object": "event",
+    "request": {
+        "id": null,
+        "idempotency_key": null
+    },
+    "pending_webhooks": 1,
+    "api_version": "2017-08-15",
+    "data": {
+        "object": {
+            "id": "src_00000000000000",
+            "object": "source",
+            "amount": 1000,
+            "client_secret": "src_client_secret_Ba0X1grvBpb66V9g84IeD6ir",
+            "created": 1507990933,
+            "currency": "usd",
+            "flow": "receiver",
+            "livemode": false,
+            "metadata": {},
+            "owner": {
+                "address": null,
+                "email": "jenny.rosen@example.com",
+                "name": null,
+                "phone": null,
+                "verified_address": null,
+                "verified_email": null,
+                "verified_name": null,
+                "verified_phone": null
+            },
+            "receiver": {
+                "address": "test_1MBhWS3uv4ynCfQXF3xQjJkzFPukr4K56N",
+                "amount_charged": 0,
+                "amount_received": 0,
+                "amount_returned": 0,
+                "refund_attributes_method": "email",
+                "refund_attributes_status": "missing"
+            },
+            "statement_descriptor": null,
+            "status": "pending",
+            "type": "bitcoin",
+            "usage": "single_use",
+            "bitcoin": {
+                "address": "test_1MBhWS3uv4ynCfQXF3xQjJkzFPukr4K56N",
+                "amount": 2371000,
+                "amount_charged": 0,
+                "amount_received": 0,
+                "amount_returned": 0,
+                "uri": "bitcoin:test_1MBhWS3uv4ynCfQXF3xQjJkzFPukr4K56N?amount=0.02371000"
+            }
+        }
+    }
+}
+EOT;
+
+$data = json_decode($payload, true);
+
+$event = \Stripe\Event::constructFrom($data, null);
+http_response_code(200);
+
+
         $endpoint_secret = 'whsec_pFTmJZ2dC8y8xeJ9b4HEIcdcCrbYOXoL';
 
         $payload = @file_get_contents('php://input');
-        $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
+        $sig_header = apache_request_headers();
+        dd($sig_header);
         $event = null;
 
         try {
