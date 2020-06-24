@@ -425,20 +425,11 @@ class PaymentController extends AbstractController
         \Stripe\Stripe::setApiKey('sk_test_zJN82UbRA4k1a6Mvna4rV3qn');
 
         $data = json_decode($request->getContent(), true);
-        /*if ($data === null) {
+        if ($data === null) {
             throw new \Exception('Bad JSON body from Stripe!');
         }
         $eventId = $data['id'];
-        $event = $this->findEvent($eventId);*/
-
-        $event = null;
-        try {
-            $event = \Stripe\Event::constructFrom(
-                json_decode($data, true)
-            );
-        } catch(\UnexpectedValueException $e) {
-            return new Response('Evenement inconnu',400);
-        }
+        $event = $this->findEvent($eventId);
 
         $message ="";
         // Handle the event
