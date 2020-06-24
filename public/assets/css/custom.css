@@ -10,10 +10,10 @@
 .drapeau {
     display: flex;
     align-items: stretch;
-    height: 22px;
+    height: 19px;
     width: 100%;
 }
-.drapeau >*{flex:1;}
+.drapeau .couleur{width: 100%;}
 .drapeau .couleur:nth-child(1) {
     background: #146eaf;
 }
