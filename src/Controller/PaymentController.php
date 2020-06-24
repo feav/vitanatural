@@ -437,17 +437,17 @@ class PaymentController extends AbstractController
             case 'payment_method.attached':
                 $paymentMethod = $event->data->object; 
                 break;
-            case 'charge.pending':
+            case 'invoice.created':
                 $paymentMethod = $event->data->object; 
-                $message = "pending";
+                $message = "created";
                 break;
-            case 'charge.succeeded':
+            case 'invoice.payment_succeeded':
                 $paymentMethod = $event->data->object; 
-                $message = "succeeded";
+                $message = "payment_succeeded";
                 break;
-            case 'charge.failed':
+            case 'invoice.payment_failed':
                 $paymentMethod = $event->data->object; 
-                $message = "failed";
+                $message = "payment_failed";
                 break;
             default:
                 http_response_code(400);
