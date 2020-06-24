@@ -421,25 +421,11 @@ class PaymentController extends AbstractController
      * @Route("/webhook-subscription", name="webhook_subscription")
      */
     public function subscriptionWebhook(Request $request, \Swift_Mailer $mailer){
-        $mail = (new \Swift_Message("Stripe webhook"))
-                ->setFrom(array('alexngoumo.an@gmail.com' => 'webhook'))
-                ->setTo("alexngoumo.an@gmail.com")
-                ->setBody("DATA null",
-                    'text/html'
-                );
-            $mailer->send($mail);
 
         \Stripe\Stripe::setApiKey('sk_test_zJN82UbRA4k1a6Mvna4rV3qn');
 
         $data = json_decode($request->getContent(), true);
         if ($data === null) {
-            $mail = (new \Swift_Message("Stripe webhook"))
-                ->setFrom(array('alexngoumo.an@gmail.com' => 'webhook'))
-                ->setTo("alexngoumo.an@gmail.com")
-                ->setBody("DATA null",
-                    'text/html'
-                );
-            $mailer->send($mail);
             throw new \Exception('Bad JSON body from Stripe!');
         }
         $eventId = $data['id'];
