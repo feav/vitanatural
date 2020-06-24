@@ -418,7 +418,16 @@ class PaymentController extends AbstractController
         
         \Stripe\Stripe::setApiKey('sk_test_zJN82UbRA4k1a6Mvna4rV3qn');
 
-        $payload = @file_get_contents('php://input');
+        $options = array(
+            'http' => array(
+                'header'  =>  "Accept:application/json\r\n" .
+                              "X-Requested-With:XMLHttpRequest\r\n",
+                'method'  => 'GET'
+            ),
+        );
+        $context = stream_context_create($options);
+
+        $payload = file_get_contents('php://input',true, $context);
         $event = null;
 
         try {
