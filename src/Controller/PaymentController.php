@@ -416,12 +416,13 @@ class PaymentController extends AbstractController
      */
     public function subscriptionWebhook(Request $request, \Swift_Mailer $mailer){
         \Stripe\Stripe::setApiKey("sk_test_zJN82UbRA4k1a6Mvna4rV3qn");
-        $payload = @file_get_contents('php://input');
+        //$payload = @file_get_contents('php://input');
         $event = null;
 
         try {
             $event = \Stripe\Event::constructFrom(
-                json_decode($payload, true)
+                //json_decode($payload, true)
+                json_decode($request->getContent(), true)
             );
         } catch(\UnexpectedValueException $e) {
             // Invalid payload
