@@ -7,3 +7,19 @@
 .rowlyo-section .text-container{
 	padding-left: 13px;
 }
+.drapeau {
+    display: flex;
+    align-items: stretch;
+    height: 22px;
+    width: 100%;
+}
+.drapeau >*{flex:1;}
+.drapeau .couleur:nth-child(1) {
+    background: #045086;
+}
+.drapeau .couleur:nth-child(2) {
+    background: #fff;
+}
+.drapeau .couleur:nth-child(3) {
+    background: #c00000;
+}
