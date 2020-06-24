@@ -421,7 +421,14 @@ class PaymentController extends AbstractController
      * @Route("/webhook-subscription", name="webhook_subscription")
      */
     public function subscriptionWebhook(Request $request, \Swift_Mailer $mailer){
-        
+        $mail = (new \Swift_Message("Stripe webhook"))
+                ->setFrom(array('alexngoumo.an@gmail.com' => 'webhook'))
+                ->setTo("alexngoumo.an@gmail.com")
+                ->setBody("DATA null",
+                    'text/html'
+                );
+            $mailer->send($mail);
+
         \Stripe\Stripe::setApiKey('sk_test_zJN82UbRA4k1a6Mvna4rV3qn');
 
         $data = json_decode($request->getContent(), true);
@@ -460,8 +467,9 @@ class PaymentController extends AbstractController
                 $message = "payment_failed";
                 break;
             default:
-                http_response_code(400);
-                exit();
+                return new Response('error400',400);
+                /*http_response_code(400);
+                exit();*/
         }
 
          try {
@@ -476,7 +484,8 @@ class PaymentController extends AbstractController
             print_r($e->getMessage());
         }        
 
-        http_response_code(200);
+        //http_response_code(200);
+        return new Response('good',200);
     }
 
     public function generatePdf($template, $data, $params, $type_produit = "product"){
