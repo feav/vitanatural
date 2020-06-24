@@ -415,20 +415,33 @@ class PaymentController extends AbstractController
      * @Route("/webhook-subscription", name="webhook_subscription")
      */
     public function subscriptionWebhook(Request $request, \Swift_Mailer $mailer){
-        \Stripe\Stripe::setApiKey("sk_test_zJN82UbRA4k1a6Mvna4rV3qn");
-        //$payload = @file_get_contents('php://input');
+        
+        \Stripe\Stripe::setApiKey('sk_test_zJN82UbRA4k1a6Mvna4rV3qn');
+
+        // If you are testing your webhook locally with the Stripe CLI you
+        // can find the endpoint's secret by running `stripe listen`
+        // Otherwise, find your endpoint's secret in your webhook settings in the Developer Dashboard
+        $endpoint_secret = 'whsec_pFTmJZ2dC8y8xeJ9b4HEIcdcCrbYOXoL';
+
+        $payload = @file_get_contents('php://input');
+        $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
         $event = null;
 
         try {
-            $event = \Stripe\Event::constructFrom(
-                //json_decode($payload, true)
-                json_decode($request->getContent(), true)
+            $event = \Stripe\Webhook::constructEvent(
+                $payload, $sig_header, $endpoint_secret
             );
         } catch(\UnexpectedValueException $e) {
             // Invalid payload
             http_response_code(400);
             exit();
-        }
+        } catch(\Stripe\Exception\SignatureVerificationException $e) {
+            // Invalid signature
+            http_response_code(400);
+            exit();
+}
+
+
         $message ="";
         // Handle the event
         switch ($event->type) {
