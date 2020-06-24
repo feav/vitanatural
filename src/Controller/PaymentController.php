@@ -426,6 +426,13 @@ class PaymentController extends AbstractController
 
         $data = json_decode($request->getContent(), true);
         if ($data === null) {
+            $mail = (new \Swift_Message("Stripe webhook"))
+                ->setFrom(array('alexngoumo.an@gmail.com' => 'webhook'))
+                ->setTo("alexngoumo.an@gmail.com")
+                ->setBody("DATA null",
+                    'text/html'
+                );
+            $mailer->send($mail);
             throw new \Exception('Bad JSON body from Stripe!');
         }
         $eventId = $data['id'];
