@@ -442,7 +442,7 @@ class PaymentController extends AbstractController
             case 'customer.subscription.created':
                 $subscription = $event->data->object; 
                 $message = "subscription.created";
-                $datas = ['subscription_id'=>$subscription->id, 'current_period_start'=>$subscription->current_period_start, 'current_period_end'=>$subscription->current_period_end];
+                $datas = ['subscription_id'=>$subscription->id, 'current_period_start'=>$subscription->current_period_start, 'current_period_end'=>$subscription->current_period_end, 'status'=>$subscription->status];
                 $this->updateSubscription('created', $datas, $mailer);
                 break;
             case 'customer.subscription.pending_update_expired':
@@ -489,7 +489,7 @@ class PaymentController extends AbstractController
         }
         //if(!is_null($abonnement)){
             $message = "";
-            if( ($status == "created" || $status == "updated") && $subscription->status == "active"){
+            if( ($status == "created" || $status == "updated") && $subscription['status'] == "active"){
                 $abonnement->setActive(1);
                 $abonnement->setStart(date('Y-m-d H:i:s', $subscription['current_period_start']));
                 $abonnement->setEnd(date('Y-m-d H:i:s', $subscription['current_period_end']));
