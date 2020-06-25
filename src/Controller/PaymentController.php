@@ -453,12 +453,12 @@ class PaymentController extends AbstractController
                 break;
             case 'invoice.payment_succeeded':
                 $paymentMethod = $event->data->object; 
-                $message = "invoice.payment_succeeded ".$paymentMethod->lines->data->subscription." - ".$paymentMethod->lines->data->metadata->abonnement_id;
+                $message = "invoice.payment_succeeded ".$paymentMethod->lines->data[0]->subscription." - ".$paymentMethod->lines->data[0]->metadata['abonnement_id'];
                 if(!is_null($paymentMethod->billing_reason) && ($paymentMethod->billing_reason == "subscription_create" || $paymentMethod->billing_reason == "subscription_cycle" ) ){
                     $status = $paymentMethod->status;//paid
                     $customer_email = $paymentMethod->customer_email;
                     $invoice_pdf = $paymentMethod->invoice_pdf;
-                    $subscription = $paymentMethod->lines->data->subscription;
+                    $subscription = $paymentMethod->lines[0]->data->subscription;
                     $message .= " ".$paymentMethod->billing_reason;
                     //$this->updateAbonn($status, $subscription);
                 }
