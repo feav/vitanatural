@@ -460,7 +460,7 @@ class PaymentController extends AbstractController
 
     public function updateSubscription($status, $subscription, $mailer){
         $user = $this->userRepository->findOneBy(['stripe_custom_id'=>$subscription->customer]);
-        $abonnement = $this->abonnementRepository->findOneBy['user'=>$user->getId()];
+        $abonnement = $this->abonnementRepository->findOneBy(['user'=>$user->getId()]);
         if(!is_null($abonnement)){
 
 
