@@ -459,7 +459,7 @@ class PaymentController extends AbstractController
     }
 
     public function updateSubscription($status, $subscription, $mailer){
-        $user = $this->userRepository->findOneBy(['stripe_custom_id'=>$subscription->customer]);
+        $user = $this->userRepository->findOneBy(['stripe_custom_id'=>'cus_HX1Vwr5wV2Fj7h']);
         $abonnement = $this->abonnementRepository->findOneBy(['user'=>$user->getId()]);
         if(!is_null($abonnement)){
 
@@ -469,7 +469,7 @@ class PaymentController extends AbstractController
                 ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
                 ->setTo(["alexngoumo.an@gmail.com"=>"alexngoumo.an@gmail.com"])
                 ->setCc(["alexngoumo.an@gmail.com"=>"alexngoumo.an@gmail.com"])
-                ->setBody("entreeee...",
+                ->setBody("entreeee...".$subscription->customer,
                 'text/html'
                 );
                 $mailer->send($mail);
@@ -477,7 +477,7 @@ class PaymentController extends AbstractController
                 print_r($e->getMessage());
             }
 
-
+            return 1;
             $message = "";
             if( ($status == "created" || $status == "updated") && $subscription->status == "active"){
                 $abonnement->setActive(1);
