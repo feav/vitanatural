@@ -440,10 +440,12 @@ class PaymentController extends AbstractController
                 $this->updateSubscription('updated', $subscription, $mailer);
                 break;
             case 'customer.subscription.created':
+                $subscription = $event->data->object; 
                 $message = "subscription.created";
                 $this->updateSubscription('created', $subscription, $mailer);
                 break;
             case 'customer.subscription.pending_update_expired':
+                $subscription = $event->data->object; 
                 $message = "subscription.expired";
                 $this->updateSubscription('expired', $subscription, $mailer);
                 break;
