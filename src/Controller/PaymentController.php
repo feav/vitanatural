@@ -435,62 +435,59 @@ class PaymentController extends AbstractController
         // Handle the event
         switch ($event->type) {
             case 'customer.subscription.updated':
+                $subscription = $event->data->object; 
                 $message = "subscription.updated";
+                $this->updateSubscription('updated', $subscription, $mailer);
                 break;
             case 'customer.subscription.created':
                 $message = "subscription.created";
+                $this->updateSubscription('created', $subscription, $mailer);
                 break;
-            case 'payment_intent.payment_failed':
-                $paymentIntent = $event->data->object; 
-                if( !is_null($paymentIntent->charges->data->description) && ($paymentIntent->charges->data->description == "Subscription creation" || $paymentIntent->charges->data->description == "Subscription update" ) ){
-                    $message = "payment_intent_failed";
-                    $description = $paymentIntent->charges->data->description;
-                    $source_id = $paymentIntent->charges->data->source->id;
-                    $status = $paymentIntent->charges->data->source->status;//failed
-                    $message .= " ".$description;
-                    //$this->updateAbonn($status, $source_id);
-                }
-                break;
-            case 'invoice.payment_succeeded':
-                $paymentMethod = $event->data->object; 
-                $message = "invoice.payment_succeeded ".$paymentMethod->lines->data[0]->subscription." - ".$paymentMethod->lines->data[0]->metadata->abonnement_id;
-                if(!is_null($paymentMethod->billing_reason) && ($paymentMethod->billing_reason == "subscription_create" || $paymentMethod->billing_reason == "subscription_cycle" ) ){
-                    $status = $paymentMethod->status;//paid
-                    $customer_email = $paymentMethod->customer_email;
-                    $invoice_pdf = $paymentMethod->invoice_pdf;
-                    $subscription = $paymentMethod->lines[0]->data->subscription;
-                    $message .= " ".$paymentMethod->billing_reason;
-                    //$this->updateAbonn($status, $subscription);
-                }
-                break;
-            case 'invoice.payment_failed':
-                $paymentMethod = $event->data->object; 
-                $message = "invoice.payment_failed";
+            case 'customer.subscription.pending_update_expired':
+                $message = "subscription.expired";
+                $this->updateSubscription('expired', $subscription, $mailer);
                 break;
             default:
                 return new Response('Evenement inconnu',400);
                 /*http_response_code(400);
                 exit();*/
         }
-
-         try {
-            $mail = (new \Swift_Message("Stripe webhook"))
-                ->setFrom(array('alexngoumo.an@gmail.com' => 'webhook'))
-                ->setTo("alexngoumo.an@gmail.com")
-                ->setBody($message,
-                    'text/html'
-                );
-            $mailer->send($mail);
-        } catch (Exception $e) {
-            print_r($e->getMessage());
-        }        
-
         //http_response_code(200);
         return new Response('Evenement terminé avec success',200);
     }
 
-    public function updateAbonn(){
-
+    public function updateSubscription($status, $subscription, $mailer){
+        $abonnement = $this->abonnementRepository->findOneBy(['subscription'=>$subscription->id]);
+        if(!is_null($abonnement)){
+            $message = "";
+            if( ($status == "created" || $status == "updated") && $subscription->status == "active"){
+                $abonnement->setActive(1);
+                $abonnement->setStart(date('Y-m-d H:i:s', $subscription->current_period_start));
+                $abonnement->setEnd(date('Y-m-d H:i:s', $subscription->current_period_end));
+                
+                $msg2 = ($status == "created") ? "crée" : "renouvellé";
+                $message="<p> Bonjour, <br> nous vous confirmons que votre abonnement a été ".$msg2." avec succèss. </p>";
+            }
+            if($status == "expired"){
+                $abonnement->setActive(0);
+                $message="<p> Bonjour, <br> nous n'avons pas pu renouveller abonnement, il sera donc resilié</p>";
+            }
+            $this->entityManager->flush();
+            $user = $abonnement->getUser();
+            try {
+            $mail = (new \Swift_Message("Abonnement Vitanatural"))
+                ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
+                ->setCc("alexngoumo.an@gmail.com")
+                ->setTo([$user->getEmail()=> $user->getEmail()])
+                ->setBody($message,
+                    'text/html'
+                );
+                $mailer->send($mail);
+            } catch (Exception $e) {
+                print_r($e->getMessage());
+            }
+        }
+        return 1;
     }
 
     public function generatePdf($template, $data, $params, $type_produit = "product"){
@@ -550,7 +547,7 @@ class PaymentController extends AbstractController
         $content = "<p>Votre abonnement a bien été resilié</p>";
         $url = $this->generateUrl('home', [], UrlGenerator::ABSOLUTE_URL);
         try {
-            $mail = (new \Swift_Message("Résiliation d'abonement"))
+            $mail = (new \Swift_Message("Résiliation d'abonnement"))
                 ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
                 ->setTo([$user->getEmail()=>$user->getName()])
                 ->setCc("alexngoumo.an@gmail.com")

@@ -134,6 +134,7 @@ class StripeService{
                 'abonnement_id' => $abonnement->getId()
             ]
         ]);
+        $this->updateAbonnement($subscription['id'], $abonnement);
         return $subscription['id'];
     }
 
@@ -153,6 +154,10 @@ class StripeService{
         return $product;
     }
 
+    public function updateAbonnement($subscription, $abonnement){
+        $abonnement->setSubscription($subscription);
+        $this->em->flush();
+    }
 
     public function subscriptionWebhook(){
         \Stripe\Stripe::setApiKey($this->stripeApiKey);
