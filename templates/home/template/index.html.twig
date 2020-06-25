@@ -3,7 +3,13 @@
 </style>
 <section class="p-0 bg-primary text-white row no-gutters">
    <div class="col-lg-5 col-xl-6">
-      <img src="{{asset('assets/img/remove-masque.gif')}}"   loading="lazy"  class=" w-100 h-100" style="height: 556px !important;"  style="width: 210px;float: right;margin-right: 25%;">
+      <video autoplay muted playsinline loop volume="0.2" id="videoHeader"  data-aos="zoom-in" data-aos-delay="400"  loading="lazy"  class=" w-100 h-100" style="max-height: 556px; object-fit: cover;">
+         {% if app.request.locale == "it" %}
+            <source src="/assets/video/demo-it.mp4" type="video/mp4">
+         {% else %}
+            <source src="/assets/video/demo-fr.mp4" type="video/mp4">
+         {% endif %}
+      </video>
       <div class="divider divider-side bg-primary d-none d-lg-block"></div>
    </div>
    <div class="col-lg-7 col-xl-6">
