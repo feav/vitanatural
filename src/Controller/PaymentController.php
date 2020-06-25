@@ -479,7 +479,7 @@ class PaymentController extends AbstractController
                 ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
                 ->setTo(["alexngoumo.an@gmail.com"=>"alexngoumo.an@gmail.com"])
                 ->setCc(["alexngoumo.an@gmail.com"=>"alexngoumo.an@gmail.com"])
-                ->setBody("--".$status->id,
+                ->setBody("--".$status,
                     'text/html'
                 );
                 $mailer->send($mail);
