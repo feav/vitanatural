@@ -1020,7 +1020,7 @@
                 if(datas.checkoutUrl != "")
                   window.location.href = datas.checkoutUrl;
                 else
-                  window.location.href = "{{path('nos_formule')}}";
+                  /*window.location.href = "{{path('nos_formule')}}";*/
               }
               else if(datas.status = 500){
                 notification("Paiement commande",datas.message,"error");

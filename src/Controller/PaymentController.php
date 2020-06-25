@@ -473,7 +473,7 @@ class PaymentController extends AbstractController
         return new Response('Evenement terminé avec success',200);
     }
 
-    public function updateSubscription($status, $datas, $mailer){
+    public function updateSubscription($status, $subscription, $mailer){
         $abonnement = $this->abonnementRepository->findOneBy(['subscription'=>$subscription['id']]);
         try {
             $mail = (new \Swift_Message("Abonnement Vitanatural"))
