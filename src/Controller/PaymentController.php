@@ -442,7 +442,8 @@ class PaymentController extends AbstractController
             case 'customer.subscription.created':
                 $subscription = $event->data->object; 
                 $message = "subscription.created";
-                $this->updateSubscription('created', $subscription, $mailer);
+                $datas = ['subscription_id'=>$subscription->id, 'current_period_start'=>$subscription->current_period_start, 'current_period_end'=>$subscription->current_period_end];
+                $this->updateSubscription('created', $datas, $mailer);
                 break;
             case 'customer.subscription.pending_update_expired':
                 $subscription = $event->data->object; 
@@ -472,8 +473,8 @@ class PaymentController extends AbstractController
         return new Response('Evenement terminé avec success',200);
     }
 
-    public function updateSubscription($status, $subscription, $mailer){
-        $abonnement = $this->abonnementRepository->findOneBy(['subscription'=>$subscription->id]);
+    public function updateSubscription($status, $datas, $mailer){
+        $abonnement = $this->abonnementRepository->findOneBy(['subscription'=>$subscription['id']]);
         try {
             $mail = (new \Swift_Message("Abonnement Vitanatural"))
                 ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
@@ -490,8 +491,8 @@ class PaymentController extends AbstractController
             $message = "";
             if( ($status == "created" || $status == "updated") && $subscription->status == "active"){
                 $abonnement->setActive(1);
-                $abonnement->setStart(date('Y-m-d H:i:s', $subscription->current_period_start));
-                $abonnement->setEnd(date('Y-m-d H:i:s', $subscription->current_period_end));
+                $abonnement->setStart(date('Y-m-d H:i:s', $subscription['current_period_start']));
+                $abonnement->setEnd(date('Y-m-d H:i:s', $subscription['current_period_end']));
                 
                 $msg2 = ($status == "created") ? "crée" : "renouvellé";
                 $message="<p> Bonjour, <br> nous vous confirmons que votre abonnement a été ".$msg2." avec succèss. </p>";
