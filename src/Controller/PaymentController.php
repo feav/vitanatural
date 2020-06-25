@@ -459,30 +459,13 @@ class PaymentController extends AbstractController
     }
 
     public function updateSubscription($status, $subscription, $mailer){
-        $user = $this->userRepository->findOneBy(['stripe_custom_id'=>$subscription->customer]);
-        $abonnement = $this->abonnementRepository->findOneBy(['user'=>$user->getId()]);
+        $abonnement = $this->abonnementRepository->findOneBy(['subscription'=>$subscription->id]);
         if(!is_null($abonnement)){
-
-
-            try {
-                $mail = (new \Swift_Message("Abonnement Vitanatural"))
-                ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
-                ->setTo(["alexngoumo.an@gmail.com"=>"alexngoumo.an@gmail.com"])
-                ->setCc(["alexngoumo.an@gmail.com"=>"alexngoumo.an@gmail.com"])
-                ->setBody("entreeee...",
-                'text/html'
-                );
-                $mailer->send($mail);
-            } catch (Exception $e) {
-                print_r($e->getMessage());
-            }
-
-
             $message = "";
             if( ($status == "created" || $status == "updated") && $subscription->status == "active"){
                 $abonnement->setActive(1);
-                $abonnement->setStart(date('Y-m-d H:i:s', $subscription->current_period_start));
-                $abonnement->setEnd(date('Y-m-d H:i:s', $subscription->current_period_end));
+                $abonnement->setStart(new \DateTime(date('Y-m-d H:i:s', $subscription->current_period_start)));
+                $abonnement->setEnd(new \DateTime(date('Y-m-d H:i:s', $subscription->current_period_end)));
                 
                 $msg2 = ($status == "created") ? "crée" : "renouvellé";
                 $message="<p> Bonjour, <br> nous vous confirmons que votre abonnement a été ".$msg2." avec succèss. </p>";
