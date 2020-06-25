@@ -434,6 +434,12 @@ class PaymentController extends AbstractController
         $message ="";
         // Handle the event
         switch ($event->type) {
+            case 'customer.subscription.updated':
+                $message = "subscription.updated";
+                break;
+            case 'customer.subscription.created':
+                $message = "subscription.created";
+                break;
             case 'payment_intent.payment_failed':
                 $paymentIntent = $event->data->object; 
                 if( !is_null($paymentIntent->charges->data->description) && ($paymentIntent->charges->data->description == "Subscription creation" || $paymentIntent->charges->data->description == "Subscription update" ) ){
@@ -481,6 +487,10 @@ class PaymentController extends AbstractController
 
         //http_response_code(200);
         return new Response('Evenement terminé avec success',200);
+    }
+
+    public function updateAbonn(){
+
     }
 
     public function generatePdf($template, $data, $params, $type_produit = "product"){
