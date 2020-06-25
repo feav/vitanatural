@@ -459,6 +459,8 @@ class PaymentController extends AbstractController
     }
 
     public function updateSubscription($status, $subscription, $mailer){
+
+        $this->entityManager = $this->getDoctrine()->getManager();
         $abonnement = $this->abonnementRepository->findOneBy(['subscription'=>$subscription->id]);
         if(!is_null($abonnement)){
             $message = "";
