@@ -432,6 +432,18 @@ class PaymentController extends AbstractController
                 $message = "subscription.expired";
                 $this->updateSubscription('expired', $subscription, $mailer);
                 break;
+            case 'invoice.payment_succeeded':
+                $paymentMethod = $event->data->object; 
+                $message = "invoice.payment_succeeded ".$paymentMethod->lines->data[0]->subscription." - ".$paymentMethod->lines->data[0]->metadata->abonnement_id;
+                if(!is_null($paymentMethod->billing_reason) && ($paymentMethod->billing_reason == "subscription_create" || $paymentMethod->billing_reason == "subscription_cycle" ) ){
+                    $status = $paymentMethod->status;//paid
+                    $customer_email = $paymentMethod->customer_email;
+                    $invoice_pdf = $paymentMethod->invoice_pdf;
+                    $subscription = $paymentMethod->lines->data[0]->subscription;
+                    $message .= " ".$paymentMethod->billing_reason."--".$invoice_pdf;
+                    $this->testMail($message, $mailer);
+                }
+                break;
             default:
                 return new Response('Evenement inconnu',400);
                 /*http_response_code(400);
@@ -439,6 +451,22 @@ class PaymentController extends AbstractController
         }
         //http_response_code(200);
         return new Response('Evenement terminé avec success',200);
+    }
+
+    public function testMail($message, $mailer){
+        try {
+                $mail = (new \Swift_Message("testMail abonnement"))
+                ->setFrom(array("alexngoumo.an@gmail.com" => 'testMail'))
+                ->setTo("alexngoumo.an@gmail.com")
+                ->setBody(
+                        $message,
+                    'text/html'
+                );
+                $mailer->send($mail);
+            } catch (Exception $e) {
+                print_r($e->getMessage());
+        }
+        return 1;
     }
 
     public function updateSubscription($status, $subscription, $mailer){
@@ -467,7 +495,7 @@ class PaymentController extends AbstractController
             $user = $abonnement->getUser();
             $url = $this->generateUrl('home', [], UrlGenerator::ABSOLUTE_URL);
             try {
-            $mail = (new \Swift_Message("Succèss abonnement"))
+                $mail = (new \Swift_Message("Succèss abonnement"))
                 ->setFrom(array($user->getEmail() => 'Vitanatural'))
                 ->setCc("alexngoumo.an@gmail.com")
                 ->setTo([$user->getEmail()=> $user->getEmail()])
