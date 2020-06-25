@@ -440,27 +440,12 @@ class PaymentController extends AbstractController
                 $this->updateSubscription('updated', $subscription, $mailer);
                 break;
             case 'customer.subscription.created':
-                $subscription = $event->data->object; 
+                $subscription = $event->data->object;
                 $message = "subscription.created";
-                $datas = ['subscription_id'=>$subscription->id, 'current_period_start'=>$subscription->current_period_start, 'current_period_end'=>$subscription->current_period_end, 'status'=>$subscription->status];
-
-                try {
-                    $mail = (new \Swift_Message("Abonnement Vitanatural"))
-                    ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
-                    ->setTo(["alexngoumo.an@gmail.com"=>"alexngoumo.an@gmail.com"])
-                    ->setCc(["alexngoumo.an@gmail.com"=>"alexngoumo.an@gmail.com"])
-                    ->setBody($message."-".$subscription->id,
-                    'text/html'
-                    );
-                    $mailer->send($mail);
-                } catch (Exception $e) {
-                    print_r($e->getMessage());
-                }
-                $this->sendM($mailer, $subscription);
-                //$this->updateSubscription('created', $datas, $mailer);
+                $this->updateSubscription('created', $subscription, $mailer);
                 break;
             case 'customer.subscription.pending_update_expired':
-                $subscription = $event->data->object; 
+                $subscription = $event->data->object;
                 $message = "subscription.expired";
                 $this->updateSubscription('expired', $subscription, $mailer);
                 break;
@@ -470,47 +455,34 @@ class PaymentController extends AbstractController
                 exit();*/
         }
         //http_response_code(200);
-
-        
-
         return new Response('Evenement terminé avec success',200);
     }
 
-    public function sendM($mailer, $m){
-        try {
-            $mail = (new \Swift_Message("Abonnement Vitanatural"))
-            ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
-            ->setTo(["alexngoumo.an@gmail.com"=>"alexngoumo.an@gmail.com"])
-            ->setCc(["alexngoumo.an@gmail.com"=>"alexngoumo.an@gmail.com"])
-            ->setBody($m->id,
-            'text/html'
-            );
-            $mailer->send($mail);
-        } catch (Exception $e) {
-            print_r($e->getMessage());
-        }
-        return 1;
-    }
     public function updateSubscription($status, $subscription, $mailer){
-        $abonnement = $this->abonnementRepository->findOneBy(['subscription'=>$subscription['subscription_id']]);
-        try {
-            $mail = (new \Swift_Message("Abonnement Vitanatural"))
+        $user = $this->userRepository->findOneBy(['stripe_custom_id'=>$subscription->customer]);
+        $abonnement = $this->abonnementRepository->findOneBy['user'=>$user->getId()];
+        if(!is_null($abonnement)){
+
+
+            try {
+                $mail = (new \Swift_Message("Abonnement Vitanatural"))
                 ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
                 ->setTo(["alexngoumo.an@gmail.com"=>"alexngoumo.an@gmail.com"])
                 ->setCc(["alexngoumo.an@gmail.com"=>"alexngoumo.an@gmail.com"])
-                ->setBody("--".$status,
-                    'text/html'
+                ->setBody("entreeee...",
+                'text/html'
                 );
                 $mailer->send($mail);
             } catch (Exception $e) {
                 print_r($e->getMessage());
-        }
-        //if(!is_null($abonnement)){
+            }
+
+
             $message = "";
-            if( ($status == "created" || $status == "updated") && $subscription['status'] == "active"){
+            if( ($status == "created" || $status == "updated") && $subscription->status == "active"){
                 $abonnement->setActive(1);
-                $abonnement->setStart(date('Y-m-d H:i:s', $subscription['current_period_start']));
-                $abonnement->setEnd(date('Y-m-d H:i:s', $subscription['current_period_end']));
+                $abonnement->setStart(date('Y-m-d H:i:s', $subscription->current_period_start));
+                $abonnement->setEnd(date('Y-m-d H:i:s', $subscription->current_period_end));
                 
                 $msg2 = ($status == "created") ? "crée" : "renouvellé";
                 $message="<p> Bonjour, <br> nous vous confirmons que votre abonnement a été ".$msg2." avec succèss. </p>";
@@ -523,7 +495,7 @@ class PaymentController extends AbstractController
             $user = $abonnement->getUser();
             try {
             $mail = (new \Swift_Message("Abonnement Vitanatural"))
-                ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
+                ->setFrom(array($user->getEmail() => 'webhook'))
                 ->setCc("alexngoumo.an@gmail.com")
                 ->setTo([$user->getEmail()=> $user->getEmail()])
                 ->setBody($message,
@@ -533,7 +505,7 @@ class PaymentController extends AbstractController
             } catch (Exception $e) {
                 print_r($e->getMessage());
             }
-        //}
+        }
         return 1;
     }
 
