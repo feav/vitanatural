@@ -456,7 +456,7 @@ class PaymentController extends AbstractController
                 } catch (Exception $e) {
                     print_r($e->getMessage());
                 }
-                $this->sendM($mailer, "sub___ss");
+                $this->sendM($mailer, $subscription->id);
                 //$this->updateSubscription('created', $datas, $mailer);
                 break;
             case 'customer.subscription.pending_update_expired':
