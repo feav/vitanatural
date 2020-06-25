@@ -474,7 +474,7 @@ class PaymentController extends AbstractController
     }
 
     public function updateSubscription($status, $subscription, $mailer){
-        $abonnement = $this->abonnementRepository->findOneBy(['subscription'=>$subscription['id']]);
+        $abonnement = $this->abonnementRepository->findOneBy(['subscription'=>$subscription['subscription_id']]);
         try {
             $mail = (new \Swift_Message("Abonnement Vitanatural"))
                 ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
