@@ -161,8 +161,8 @@ class PaymentController extends AbstractController
                 'total_price'=>$amount
             ];
             //$dompdf = $this->generatePdf('emails/facture.html.twig', $panier , $params);
-
-            $this->sendMail($mailer, $user, $panier, $save_path, $amount);
+            if(count($panier->getCommandes()))
+                $this->sendMail($mailer, $user, $panier, $save_path, $amount);
             
             return new Response(json_encode(array('status'=>200, "checkoutUrl"=>"", "message"=>$message)));
         }
@@ -298,7 +298,9 @@ class PaymentController extends AbstractController
                 'total_price'=>$amount
             ];
             //$dompdf = $this->generatePdf('emails/facture.html.twig', $panier , $params);
-            $this->sendMail($mailer, $user, $panier, $save_path, $amount);
+            if(count($panier->getCommandes()))
+                $this->sendMail($mailer, $user, $panier, $save_path, $amount);
+            
             return new Response(json_encode(array('status'=>200, "checkoutUrl"=>"", "message"=>$message)));
         }
         else
