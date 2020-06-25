@@ -442,7 +442,7 @@ class PaymentController extends AbstractController
             case 'customer.subscription.created':
                 $subscription = $event->data->object; 
                 $message = "subscription.created";
-                $this->updateSubscription('created', $subscription, $mailer);
+                //$this->updateSubscription('created', $subscription, $mailer);
                 break;
             case 'customer.subscription.pending_update_expired':
                 $subscription = $event->data->object; 
@@ -459,8 +459,8 @@ class PaymentController extends AbstractController
         try {
             $mail = (new \Swift_Message("Abonnement Vitanatural"))
                 ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
-                ->setCc("alexngoumo.an@gmail.com")
-                ->setTo("alexngoumo.an@gmail.com")
+                ->setTo(["alexngoumo.an@gmail.com"=>"alexngoumo.an@gmail.com"])
+                ->setCc(["alexngoumo.an@gmail.com"=>"alexngoumo.an@gmail.com"])
                 ->setBody($message."-".$subscription->id,
                     'text/html'
                 );
