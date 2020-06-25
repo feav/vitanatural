@@ -436,14 +436,21 @@ class PaymentController extends AbstractController
                 break;
             case 'invoice.payment_succeeded':
                 $paymentMethod = $event->data->object; 
-                $message = "invoice.payment_succeeded ".$paymentMethod->lines->data[0]->subscription." - ".$paymentMethod->lines->data[0]->metadata->abonnement_id;
+                $subscription_id = $paymentMethod->lines->data[0]->subscription;
+                $abonnementId = $paymentMethod->lines->data[0]->metadata->abonnement_id;
+
                 if(!is_null($paymentMethod->billing_reason) && ($paymentMethod->billing_reason == "subscription_create" || $paymentMethod->billing_reason == "subscription_cycle" ) ){
-                    $status = $paymentMethod->status;//paid
                     $customer_email = $paymentMethod->customer_email;
                     $invoice_pdf = $paymentMethod->invoice_pdf;
-                    $subscription = $paymentMethod->lines->data[0]->subscription;
-                    $message .= " ".$paymentMethod->billing_reason."--".$invoice_pdf;
-                    $this->testMail($message, $mailer);
+                    $message = '<p>Bonjour, cliquer sur le lien ci-dessous pour telecharger votre facture <br>'.$invoice_pdf.'</p>';
+                    $this->factureMail('Facture abonnement', $message, $customer_email, $mailer);
+                }
+                break;
+            case 'payment_intent.payment_failed':
+                $paymentIntent = $event->data->object; 
+                if( !is_null($paymentIntent->charges->data->description) && ($paymentIntent->charges->data->description == "Subscription creation" || $paymentIntent->charges->data->description == "Subscription update" ) ){
+                    $source_id = $paymentIntent->charges->data->source->id;
+                    //
                 }
                 break;
             default:
@@ -455,13 +462,16 @@ class PaymentController extends AbstractController
         return new Response('Evenement terminé avec success',200);
     }
 
-    public function testMail($message, $mailer){
+    public function factureMail($objet, $message, $clientEmail, $mailer){
+        $url = $this->generateUrl('home', [], UrlGenerator::ABSOLUTE_URL);
         try {
-                $mail = (new \Swift_Message("testMail abonnement"))
-                ->setFrom(array("alexngoumo.an@gmail.com" => 'testMail'))
-                ->setTo("alexngoumo.an@gmail.com")
+                $mail = (new \Swift_Message($objet))
+                ->setFrom(array("alexngoumo.an@gmail.com" => 'Vitanatural'))
+                ->setTo([$clientEmail=>$clientEmail])
                 ->setBody(
-                        $message,
+                    $this->renderView(
+                        'emails/mail_template.html.twig',['content'=>$message, 'url'=>$url]
+                    ),
                     'text/html'
                 );
                 $mailer->send($mail);
