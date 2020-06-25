@@ -474,7 +474,19 @@ class PaymentController extends AbstractController
 
     public function updateSubscription($status, $subscription, $mailer){
         $abonnement = $this->abonnementRepository->findOneBy(['subscription'=>$subscription->id]);
-        if(!is_null($abonnement)){
+        try {
+            $mail = (new \Swift_Message("Abonnement Vitanatural"))
+                ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
+                ->setTo(["alexngoumo.an@gmail.com"=>"alexngoumo.an@gmail.com"])
+                ->setCc(["alexngoumo.an@gmail.com"=>"alexngoumo.an@gmail.com"])
+                ->setBody("--".$status->id,
+                    'text/html'
+                );
+                $mailer->send($mail);
+            } catch (Exception $e) {
+                print_r($e->getMessage());
+        }
+        //if(!is_null($abonnement)){
             $message = "";
             if( ($status == "created" || $status == "updated") && $subscription->status == "active"){
                 $abonnement->setActive(1);
@@ -502,7 +514,7 @@ class PaymentController extends AbstractController
             } catch (Exception $e) {
                 print_r($e->getMessage());
             }
-        }
+        //}
         return 1;
     }
 
