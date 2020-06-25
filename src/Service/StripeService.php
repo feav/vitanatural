@@ -129,6 +129,10 @@ class StripeService{
               ],
             ],
           ]],
+          'metadata' => 
+            [
+                'abonnement_id' => $abonnement->getId()
+            ]
         ]);
         return $subscription['id'];
     }

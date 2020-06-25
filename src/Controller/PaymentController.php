@@ -434,32 +434,28 @@ class PaymentController extends AbstractController
         $message ="";
         // Handle the event
         switch ($event->type) {
-            case 'customer.subscription.updated':
-                $message = "subscription.updated";
-                break;
-            case 'customer.subscription.created':
-                $message = "subscription.created";
-                break;
             case 'payment_intent.payment_failed':
                 $paymentIntent = $event->data->object; 
-                $message = "payment_intent_failed";
-                /*$description = $paymentIntent->charges->data->description;
-                $source_id = $paymentIntent->charges->data->source->id;
-                $status = $paymentIntent->charges->data->source->status;//failed
-                if($description == "Subscription creation")
-                    $this->updateAbonn($status, $source_id);*/
+                if( !is_null($paymentIntent->charges->data->description) && ($paymentIntent->charges->data->description == "Subscription creation" || $paymentIntent->charges->data->description == "Subscription update" ) ){
+                    $message = "payment_intent_failed";
+                    $description = $paymentIntent->charges->data->description;
+                    $source_id = $paymentIntent->charges->data->source->id;
+                    $status = $paymentIntent->charges->data->source->status;//failed
+                    $message .= " ".$description;
+                    //$this->updateAbonn($status, $source_id);
+                }
                 break;
             case 'invoice.payment_succeeded':
                 $paymentMethod = $event->data->object; 
                 $message = "invoice.payment_succeeded";
-
-                /*$billing_reason = $paymentMethod->billing_reason;
-                $status = $paymentMethod->status;//paid
-                $customer_email = $paymentMethod->customer_email;
-                $invoice_pdf = $paymentMethod->invoice_pdf;
-                $subscription = $paymentMethod->lines->data->subscription;
-                if($billing_reason == "subscription_create" || $billing_reason == "subscription_cycle")
-                    $this->updateAbonn($status, $subscription);*/
+                if(!is_null($paymentMethod->billing_reason) && ($paymentMethod->billing_reason == "subscription_create" || $paymentMethod->billing_reason == "subscription_cycle" ) ){
+                    $status = $paymentMethod->status;//paid
+                    $customer_email = $paymentMethod->customer_email;
+                    $invoice_pdf = $paymentMethod->invoice_pdf;
+                    $subscription = $paymentMethod->lines->data->subscription;
+                    $message .= " ".$paymentMethod->billing_reason;
+                    //$this->updateAbonn($status, $subscription);
+                }
                 break;
             case 'invoice.payment_failed':
                 $paymentMethod = $event->data->object; 
