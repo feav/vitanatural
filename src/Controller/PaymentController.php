@@ -148,11 +148,6 @@ class PaymentController extends AbstractController
                 $infosLivraison = serialize($infosLivraison);
                 $panier->setLivraison($infosLivraison);
             }
-            if(count($panier->getAbonnements())){
-                $abonnement = $panier->getAbonnements()[0];
-                if($abonnement->getFormule()->getTryDays() == 0)
-                    $abonnement->setState(1);
-            }
             $this->entityManager->flush();
             $assetFile = $this->params_dir->get('file_upload_dir');
             if (!file_exists($request->server->get('DOCUMENT_ROOT') .'/'. $assetFile)) {
@@ -290,11 +285,6 @@ class PaymentController extends AbstractController
         if($result == ""){
             $panier->setStatus(1);
             $panier->setPaiementDate(new \Datetime());
-            if(count($panier->getAbonnements())){
-                $abonnement = $panier->getAbonnements()[0];
-                if($abonnement->getFormule()->getTryDays() == 0)
-                    $abonnement->setState(1);
-            }
             $this->entityManager->flush();
             $assetFile = $this->params_dir->get('file_upload_dir');
             if (!file_exists($request->server->get('DOCUMENT_ROOT') .'/'. $assetFile)) {
@@ -411,12 +401,6 @@ class PaymentController extends AbstractController
         return 1;
     }
 
-
-    public function findEvent($eventId)
-    {
-        return \Stripe\Event::retrieve($eventId);
-    }
-
     /**
      * @Route("/webhook-subscription", name="webhook_subscription")
      */
@@ -428,8 +412,7 @@ class PaymentController extends AbstractController
         if ($data === null) {
             throw new \Exception('Bad JSON body from Stripe!');
         }
-        $eventId = $data['id'];
-        $event = $this->findEvent($eventId);
+        $event = \Stripe\Event::retrieve($data['id']);
 
         $message ="";
         // Handle the event
@@ -462,6 +445,10 @@ class PaymentController extends AbstractController
 
         $this->entityManager = $this->getDoctrine()->getManager();
         $abonnement = $this->abonnementRepository->findOneBy(['subscription'=>$subscription->id]);
+        if(is_null($abonnement)){
+            $user = $this->userRepository->findOneBy(['stripe_custom_id'=>$subscription->customer]);
+            $abonnement = $this->abonnementRepository->findOneBy(['user'=>$user->getId()]);
+        }
         if(!is_null($abonnement)){
             $message = "";
             if( ($status == "created" || $status == "updated") && $subscription->status == "active"){
@@ -474,16 +461,20 @@ class PaymentController extends AbstractController
             }
             if($status == "expired"){
                 $abonnement->setActive(0);
-                $message="<p> Bonjour, <br> nous n'avons pas pu renouveller abonnement, il sera donc resilié</p>";
+                $message="<p> Bonjour, <br> nous n'avons pas pu renouveller votre abonnement, il sera donc suspendu</p>";
             }
             $this->entityManager->flush();
             $user = $abonnement->getUser();
+            $url = $this->generateUrl('home', [], UrlGenerator::ABSOLUTE_URL);
             try {
-            $mail = (new \Swift_Message("Abonnement Vitanatural"))
-                ->setFrom(array($user->getEmail() => 'webhook'))
+            $mail = (new \Swift_Message("Succèss abonnement"))
+                ->setFrom(array($user->getEmail() => 'Vitanatural'))
                 ->setCc("alexngoumo.an@gmail.com")
                 ->setTo([$user->getEmail()=> $user->getEmail()])
-                ->setBody($message,
+                ->setBody(
+                    $this->renderView(
+                        'emails/mail_template.html.twig',['content'=>$message, 'url'=>$url]
+                    ),
                     'text/html'
                 );
                 $mailer->send($mail);
@@ -512,7 +503,7 @@ class PaymentController extends AbstractController
         $amount = $panier->getTotalPrice();
         if(count($panier->getAbonnements())){
             $this->stripe_s->subscription($this->getUser(), $panier->getAbonnements()[0]);
-            $this->addFlash('success', "Votre abonnement a été pris en compte");
+            $this->addFlash('success', "Vous recevrez une confirmation de votre abonnement d'ici peu.");
             $response = ['paid'=>false, 'message'=>"Votre abonnement a été pris en compte", 'amount'=>0];
         }
         if(count($panier->getCommandes())){
