@@ -459,7 +459,7 @@ class PaymentController extends AbstractController
             $mail = (new \Swift_Message("Abonnement Vitanatural"))
                 ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
                 ->setCc("alexngoumo.an@gmail.com")
-                ->setTo("alexngoumo.an@gmail.com"])
+                ->setTo("alexngoumo.an@gmail.com")
                 ->setBody($message,
                     'text/html'
                 );
@@ -476,7 +476,7 @@ class PaymentController extends AbstractController
             $mail = (new \Swift_Message("Abonnement Vitanatural"))
                 ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
                 ->setCc("alexngoumo.an@gmail.com")
-                ->setTo("alexngoumo.an@gmail.com"])
+                ->setTo("alexngoumo.an@gmail.com")
                 ->setBody($abonnement->getSubscription()." ---".$subscription->id,
                     'text/html'
                 );
