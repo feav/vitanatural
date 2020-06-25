@@ -456,7 +456,7 @@ class PaymentController extends AbstractController
                 } catch (Exception $e) {
                     print_r($e->getMessage());
                 }
-                $this->sendM($mailer, $subscription->id);
+                $this->sendM($mailer, $subscription);
                 //$this->updateSubscription('created', $datas, $mailer);
                 break;
             case 'customer.subscription.pending_update_expired':
@@ -482,7 +482,7 @@ class PaymentController extends AbstractController
             ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
             ->setTo(["alexngoumo.an@gmail.com"=>"alexngoumo.an@gmail.com"])
             ->setCc(["alexngoumo.an@gmail.com"=>"alexngoumo.an@gmail.com"])
-            ->setBody($m,
+            ->setBody($m->id,
             'text/html'
             );
             $mailer->send($mail);
