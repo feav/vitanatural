@@ -7,8 +7,6 @@
 {% block stylesheets %}
 {{parent()}}
   <link rel="stylesheet" type="text/css" href="{{asset('assets/css/marque.css')}}">
-   <script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
-   <script src="{{asset('assets/js/Map.js')}}"></script>
 {% endblock %}
 
 {% block url_trans %}{{ path(''~url_name, {'_locale': app.request.locale == "fr" ? "it" : "fr"}) }}{% endblock %}
@@ -457,28 +455,4 @@
 {% endblock body_web %}
 {% block javascripts %}
 {{parent()}}
-  <script type="text/javascript">
-      window.addEventListener("load",function(){
-         init(); // init map js
-         $(window).scroll(function() {
-            if (checkVisible($('#animation_container'))) {
-              $('#animation_container').css('height','auto');
-              $('#animation_container #canvas').css('height','auto');
-              $('#animation_container #canvas').css('width','100%');
-              $('#dom_overlay_container').css('width','100%');
-              console.log('rrrr');
-            }
-         });
-         function checkVisible( elm, eval ) {
-             eval = eval || "visible";
-             var vpH = $(window).height(), // Viewport Height
-                 st = $(window).scrollTop(), // Scroll Top
-                 y = $(elm).offset().top,
-                 elementHeight = $(elm).height();
-             
-             if (eval == "visible") return ((y < (vpH + st)) && (y > (st - elementHeight)));
-             if (eval == "above") return ((y < (vpH + st)));
-         }
-      })
-   </script>
 {% endblock %}

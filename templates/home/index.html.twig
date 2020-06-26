@@ -10,9 +10,6 @@
   <style type="text/css">
     nav.position-lock.navbar ul.navbar-nav li.nav-item a {color: rgba(0,0,0,.7);}
   </style>
-
-  <script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
-  <script src="{{asset('assets/js/Map.js')}}"></script>
 {% endblock %}
 
 {% block url_trans %}{{ path(''~url_name, {'_locale': app.request.locale == "fr" ? "it" : "fr"}) }}{% endblock %}
@@ -170,20 +167,6 @@
   
   <script type="text/javascript">
     window.addEventListener("load",function(){
-      init(); // init map js
-      {% if app.request.locale == "it" %}
-        $('#videoFirst').html('<source src="/assets/video/demo-it.mp4" type="video/mp4">');
-      {% else %}
-        $('#videoFirst').html('<source src="/assets/video/demo-fr.mp4" type="video/mp4">');
-      {% endif %}
-
-      var video=document.getElementById("videoFirst");
-      $('.btn-play').click(function(){
-        video.setAttribute("controls", "");
-        video.play();
-        $(this).css('display', 'none');
-      });
-
       {%  if coupon %}
         addToCard('{{coupon}}',1,'coupon');
       {% endif %}

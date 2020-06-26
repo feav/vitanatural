@@ -21,6 +21,9 @@
   <link href=" https://unpkg.com/placeholder-loading/dist/css/placeholder-loading.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
   <link href="{{ asset('assets/Notification/css/ussal-notification.css')}}" rel="stylesheet" type="text/css" media="all" />
+  <script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
+  <script src="{{asset('assets/js/Map.js')}}"></script>
+
   <style type="text/css">
     .row.justify-content-center.rowlyo > div > div p {
         font-size: 12px;
@@ -1235,6 +1238,25 @@
 
 
 </script>
+
+  <script type="text/javascript">
+    window.addEventListener("load",function(){
+      init(); // init map js
+      {% if app.request.locale == "it" %}
+        $('#videoFirst').html('<source src="/assets/video/demo-it.mp4" type="video/mp4">');
+      {% else %}
+        $('#videoFirst').html('<source src="/assets/video/demo-fr.mp4" type="video/mp4">');
+      {% endif %}
+
+      var video=document.getElementById("videoFirst");
+      $('.btn-play').click(function(){
+        video.setAttribute("controls", "");
+        video.play();
+        $(this).css('display', 'none');
+      });
+    });
+      
+  </script>
 
 <!-- Facebook Pixel Code -->
 
