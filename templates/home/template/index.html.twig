@@ -3,13 +3,7 @@
 </style>
 <section class="p-0 bg-primary text-white row no-gutters">
    <div class="col-lg-5 col-xl-6">
-      <video autoplay muted playsinline loop volume="0.2" id="videoHeader"  data-aos="zoom-in" data-aos-delay="400"  loading="lazy"  class=" w-100 h-100" style="max-height: 556px; object-fit: cover;">
-         {% if app.request.locale == "it" %}
-            <source src="/assets/video/demo-it.mp4" type="video/mp4">
-         {% else %}
-            <source src="/assets/video/demo-fr.mp4" type="video/mp4">
-         {% endif %}
-      </video>
+      <img src="{{asset('assets/img/remove-masque.gif')}}"   loading="lazy"  class=" w-100 h-100" style="height: 556px !important;"  style="width: 210px;float: right;margin-right: 25%;">
       <div class="divider divider-side bg-primary d-none d-lg-block"></div>
    </div>
    <div class="col-lg-7 col-xl-6">
@@ -289,8 +283,10 @@
                </div>
             </div>
          </div>
-         <div class="col-md-9 col-lg-6 col-xl-5 order-lg-1">
-            <img  src="{{asset('assets/img/ooMm2Xx-min.png')}}"  loading="lazy"  class="img-fluid">
+         <div id="animation_container" class="col-md-9 col-lg-6 col-xl-5 order-lg-1">
+            <canvas id="canvas" width="100%"></canvas>
+            <div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:100%; height:900px; position: absolute; left: 0px; top: 0px; display: block;">
+            </div>
          </div>
       </div>
    </div>
@@ -513,3 +509,24 @@
 <script type="text/javascript" src="{{ asset('assets/js/jarallax.min.js')}}"></script> 
 <script type="text/javascript" src="{{ asset('assets/js/jarallax-video.min.js')}}"></script>
 <script  async defer type="text/javascript" src="{{ asset('assets/js/jarallax-element.min.js')}}"></script>
+
+<script type="text/javascript">
+   $(window).scroll(function() {
+      if (checkVisible($('#animation_container'))) {
+        $('#animation_container').css('height','auto');
+        $('#animation_container #canvas').css('height','auto');
+        $('#animation_container #canvas').css('width','100%');
+        $('#dom_overlay_container').css('width','100%');
+      }
+   });
+   function checkVisible( elm, eval ) {
+       eval = eval || "visible";
+       var vpH = $(window).height(), // Viewport Height
+           st = $(window).scrollTop(), // Scroll Top
+           y = $(elm).offset().top,
+           elementHeight = $(elm).height();
+       
+       if (eval == "visible") return ((y < (vpH + st)) && (y > (st - elementHeight)));
+       if (eval == "above") return ((y < (vpH + st)));
+   }
+</script>
