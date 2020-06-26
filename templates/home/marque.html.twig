@@ -46,10 +46,15 @@
             <img src="{{asset('assets/img/prod-min.png')}}" class="img-fluid"  loading="lazy"  style="width: 210px;float: right;margin-right: 25%;">
          </div>
          <div class="col-md-8 col-lg-4 col-xl mt-4 mt-md-5 mt-lg-0" style="padding-top: 13px;border-radius: 6px;box-shadow: 0px -165px 120px 2px rgba(0, 0, 0, 0.09) !important;">
-            
-               <div class="rounded o-hidden">
-                  <div class="plyr" data-plyr-provider="youtube" data-plyr-embed-id="NM-eXztJFc4"></div>
-               </div>
+           <div class="d-flex position-relative align-items-center justify-content-center rounded">
+              <video id="videoFirst" class=" w-100 h-100" style="object-fit: cover;"></video>
+              <img class="rounded img-fluid" src="https://imgur.com/TJk0PzY.png" alt="Video cover image" style="display:none">
+              <a class="btn btn-lg btn-light rounded-circle position-absolute aos-init aos-animate btn-play" href="javascript:void()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="injected-svg icon icon-lg bg-dark pl-1" data-src="/assets/img/icons/interface/icon-media-play.svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                 <path d="M18.2403 11.5659C18.5762 11.7578 18.5762 12.2422 18.2403 12.4341L5.74807 19.5725C5.41474 19.763 5 19.5223 5 19.1384L5 4.86159C5 4.47768 5.41474 4.23699 5.74807 4.42747L18.2403 11.5659Z" fill="#2C3038"></path>
+                </svg>
+              </a>
+            </div>
             <p class="lead" style="
                margin-top: 15px;
                font-size: 15px;
@@ -457,4 +462,47 @@
 {% endblock body_web %}
 {% block javascripts %}
 {{parent()}}
+  <script type="text/javascript">
+      window.addEventListener("load",function(){
+         init(); // init map js
+         $(window).scroll(function() {
+            if (checkVisible($('#animation_container'))) {
+              $('#animation_container').css('height','auto');
+              $('#animation_container #canvas').css('height','auto');
+              $('#animation_container #canvas').css('width','100%');
+              $('#dom_overlay_container').css('width','100%');
+              console.log('rrrr');
+            }
+         });
+         function checkVisible( elm, eval ) {
+             eval = eval || "visible";
+             var vpH = $(window).height(), // Viewport Height
+                 st = $(window).scrollTop(), // Scroll Top
+                 y = $(elm).offset().top,
+                 elementHeight = $(elm).height();
+             
+             if (eval == "visible") return ((y < (vpH + st)) && (y > (st - elementHeight)));
+             if (eval == "above") return ((y < (vpH + st)));
+         }
+
+
+         {% if app.request.locale == "it" %}
+           $('#videoFirst').html('<source src="/assets/video/demo-it.mp4" type="video/mp4">');
+         {% else %}
+           $('#videoFirst').html('<source src="/assets/video/demo-fr.mp4" type="video/mp4">');
+         {% endif %}
+
+         var video=document.getElementById("videoFirst");
+         $('.btn-play').click(function(){
+           video.setAttribute("controls", "");
+           video.play();
+           $(this).css('display', 'none');
+         });
+
+         {%  if coupon %}
+           addToCard('{{coupon}}',1,'coupon');
+         {% endif %}
+
+      })
+   </script>
 {% endblock %}
