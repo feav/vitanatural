@@ -198,4 +198,19 @@ class StripeService{
 
         http_response_code(200);
     }
+
+    public function subscriptionCancel($subscription_id){
+        \Stripe\Stripe::setApiKey($this->stripeApiKey);
+        $subscription = \Stripe\Subscription::update(
+          $subscription_id,
+          [
+            'cancel_at_period_end' => true,
+          ]
+        );
+        
+        /*$subscription = \Stripe\Subscription::retrieve($subscription_id);
+        $subscription->cancel();//resili imediatement 
+        */
+        return $subscription['id'];
+    }
 }

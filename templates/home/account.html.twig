@@ -164,8 +164,8 @@
                 <div class="d-flex justify-content-between align-items-center mb-1">
                   <i class="fa fa-credit-card"></i>
                   <div>
-                  {% if (abonnements.resilie is not null) and abonnements.active and abonnements.state and (date(abonnements.start) < date() and date(abonnements.end) > date()) %}
-                    <a class="btn btn-sm btn-primary" type="button" href="{{path('abonnement_resilie', {'id':abonnements.id})}}">Revoquer</a>
+                  {% if (abonnements.resilie is not null) and abonnements.active and abonnements.subscription %}
+                    <a class="btn btn-sm btn-primary" type="button" href="{{path('abonnement_resilie', {'id':abonnements.id})}}">Resilier</a>
                   {% endif %}
                   {% if abonnements.resilie %}
                     <a href="javascript:void()" style="cursor: text;">Resilié</a>
@@ -181,24 +181,17 @@
                 <div class="d-flex justify-content-between align-items-end">
                   <div>
                     <div class="h6 mb-2">{{abonnements.formule.name}}</div>
-                    <div class="text-muted">{{abonnements.formule.price}}€ / {{abonnements.formule.month}} mois</div>
-                    <div class="text-muted">Livraison : {{abonnements.formule.getPriceShipping()}}€</div>
+                    <div class="text-muted">{{abonnements.price is null ? abonnements.formule.price : abonnements.price}}€</div>
+                    {#<div class="text-muted">Livraison : {{abonnements.formule.getPriceShipping()}}€</div>#}
                      <div>
-                         {% if abonnements.state %}
-
-                           {% if (date(abonnements.start) < date() and date(abonnements.start)|date_modify("+3 day") > date()) %}
-                              <span class="badge badge-info badge-pill">Periode d'Essaie encours</span>
-                           {% endif %}
-
-                           {% if (date(abonnements.start)|date_modify("+3 day") < date() and date(abonnements.end) > date()) %}
-                              <span class="badge badge-success badge-pill">encours</span>
-
-                           {% else %}
-                              <span class="badge badge-info badge-pill">Abonnement expire</span>
-                           {% endif %}
-                        {% else %}
-                           <span class="badge badge-danger badge-pill">Impayee</span>
-                        {% endif %}
+                          {% if date(abonnements.end) < date() %}
+                            <span class="badge badge-warning badge-pill">Abonnement Expiré</span><br>
+                          {% endif %}
+                          {% if abonnements.active and date(abonnements.end) > date() %}
+                            <span class="badge badge-success badge-pill">Actif</span><br>
+                          {% else %}
+                            <span class="badge badge-danger badge-pill">Desactivé</span>
+                          {% endif %}
                      </div>
                     <div class="text-muted">Validite : <a class="badge badge-pill">{{abonnements.start|date('d/m/Y')}}</a> - <a class="badge badge-pill">{{abonnements.end|date('d/m/Y')}}</a> </div>
                   </div>

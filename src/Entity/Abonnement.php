@@ -69,6 +69,11 @@ class Abonnement
      */
     private $subscription;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $price;
+
 
     public function __construct()
     {
@@ -203,6 +208,18 @@ class Abonnement
     public function setSubscription(?string $subscription): self
     {
         $this->subscription = $subscription;
+
+        return $this;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?float $price): self
+    {
+        $this->price = $price;
 
         return $this;
     }
