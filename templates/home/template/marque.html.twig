@@ -48,8 +48,8 @@
       </div>
    </div>
 </section>
-<section class="bg-primary-3 text-white pb-0 jarallax" data-jarallax data-speed="0.75">
-   <img src="https://www.galaxie-voyage.com/wp-content/uploads/2017/12/paris-le-jour.jpg" class="jarallax-img opacity-30 "   style="width: 100%;height: 20px;margin-top: -4px;">
+<section class="bg-primary-3 text-white jarallax" data-jarallax data-speed="0.75" style="margin-top: -4px;">
+   {#<!--<img src="https://www.galaxie-voyage.com/wp-content/uploads/2017/12/paris-le-jour.jpg" class=" jarallax-img opacity-30 "  loading="lazy" style="width: 100%;height: 20px;margin-top: -4px;">-->#}
    <div class="container min-vh-40 d-flex flex-column justify-content-center">
       <div class="row align-items-center justify-content-around">
          <div class="col-md-9 col-lg-6 col-xl-7 mb-4 mb-lg-0 order-lg-2 pl-lg-5">
@@ -121,7 +121,6 @@
          </div>
       </div>
    </div>
-   <div class="divider divider-bottom bg"></div>
 </section>
 <div class="drapeau">
      <div class="couleur"></div>
@@ -481,3 +480,28 @@
 
    });
 </script>
+
+  <script type="text/javascript">
+      window.addEventListener("load",function(){
+         init(); // init map js
+         $(window).scroll(function() {
+            if (checkVisible($('#animation_container'))) {
+              $('#animation_container').css('height','auto');
+              $('#animation_container #canvas').css('height','auto');
+              $('#animation_container #canvas').css('width','100%');
+              $('#dom_overlay_container').css('width','100%');
+              console.log('rrrr');
+            }
+         });
+         function checkVisible( elm, eval ) {
+             eval = eval || "visible";
+             var vpH = $(window).height(), // Viewport Height
+                 st = $(window).scrollTop(), // Scroll Top
+                 y = $(elm).offset().top,
+                 elementHeight = $(elm).height();
+             
+             if (eval == "visible") return ((y < (vpH + st)) && (y > (st - elementHeight)));
+             if (eval == "above") return ((y < (vpH + st)));
+         }
+      })
+   </script>
