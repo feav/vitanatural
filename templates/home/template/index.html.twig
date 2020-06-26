@@ -217,7 +217,7 @@
      <div class="couleur"></div>
      <div class="couleur"></div>
 </div>
-<section class="bg-primary-3 text-white pb-0 jarallax" data-jarallax data-speed="0.75">
+<section id="map-wrapper" class="bg-primary-3 text-white pb-0 jarallax" data-jarallax data-speed="0.75">
    <img src="https://www.galaxie-voyage.com/wp-content/uploads/2017/12/paris-le-jour.jpg" class="jarallax-img opacity-30 "   style="width: 100%;height: 20px;margin-top: -4px;">
    <div class="container min-vh-40 d-flex flex-column justify-content-center">
       <div class="row align-items-center justify-content-around">
@@ -512,7 +512,7 @@
 
 <script type="text/javascript">
    $(window).scroll(function() {
-      if (checkVisible($('#animation_container'))) {
+      if (checkVisible($('#map-wrapper'))) {
         $('#animation_container').css('height','auto');
         $('#animation_container #canvas').css('height','auto');
         $('#animation_container #canvas').css('width','100%');
