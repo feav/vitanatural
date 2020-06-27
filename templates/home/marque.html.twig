@@ -118,7 +118,7 @@
    <div class="container">
       <div class="row section-title justify-content-center text-center">
          <div class="col-md-9 col-lg-8 col-xl-10">
-            <h3 class="display-4" style=" margin-bottom: 0px; ">{{ 'accueil.peau_parfaite'|trans({}, 'home') }}<mark data-aos="highlight-text" data-aos-delay="200" class="aos-init aos-animate" style=" background-image: linear-gradient(120deg, #8bc889 0%, #eff7ee 100%); ">{{ 'accueil.quatre_passage'|trans({}, 'home') }}</mark> !</h3>
+            <h3 class="display-4" style=" margin-bottom: 0px; ">{{ 'accueil.peau_parfaite'|trans({}, 'home')|raw }} <mark data-aos="highlight-text" data-aos-delay="200" class="aos-init aos-animate" style=" background-image: linear-gradient(120deg, #8bc889 0%, #eff7ee 100%); ">{{ 'accueil.quatre_passage'|trans({}, 'home') }}</mark> !</h3>
          </div>
       </div>
      
@@ -415,14 +415,14 @@
                            </div>
                            <p>
                               {% if app.request.locale == "it" %}
-                                 <p>{{temoignage.getTextIt|raw }}</p>
+                                 <span>{{temoignage.getTextIt|raw }}</>
                               {% else %}
                                  <p>{{temoignage.text|raw }}</p>
                               {% endif %}
                            </p>
                            <img src="https://i.ya-webdesign.com/images/loading-gif-png-5.gif" data-srcset="{{asset('assets/img/prod-min.png')}} 1x"  class="lazy"  style="height: 60px;margin-bottom: -33px;" data-src="{{asset('assets/img/TPNsH9D.png')}}">
                            <div style="
-                              background: #00684c;
+                              background: #009b72;
                               color: #ffffff;
                               font-size: 16px;
                               text-align: center;
@@ -432,7 +432,7 @@
                               ">{% if app.request.locale == "it" %}
                               <p>{{temoignage.getProgressIt}}</p>
                            {% else %}
-                              <p>{{temoignage.progress}}</p>
+                              <span>{{temoignage.progress}}</span>
                            {% endif %}</div>
                         </div>
                      </div>

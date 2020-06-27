@@ -42,8 +42,11 @@
                      {% endif %}
                      {% endfor %}
                   </div>
-                  <p style="
-                     ">{{temoignage.text|raw }}</p>
+                  {% if app.request.locale == "it" %}
+                     <p>{{temoignage.getTextIt|raw }}</p>
+                  {% else %}
+                     <p>{{temoignage.text|raw }}</p>
+                  {% endif %}
                   <img src="{{asset('assets/img/TPNsH9D.png')}}"   loading="lazy"   style="height: 60px;margin-bottom: -33px;">
                   <div style="
                      background: #009b72;
@@ -53,7 +56,11 @@
                      padding: 15px 0px;
                      border-radius: 0rem 0rem 0.3125rem 0.3125rem;
                      margin: 0px -25px;
-                     ">{{temoignage.progress}}</div>
+                     ">{% if app.request.locale == "it" %}
+                           <span>{{temoignage.getProgressIt}}</span>
+                        {% else %}
+                           <span>{{temoignage.progress}}</span>
+                        {% endif %}</div>
                </div>
             </div>
          </div>
