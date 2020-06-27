@@ -415,7 +415,7 @@
                            </div>
                            <p>
                               {% if app.request.locale == "it" %}
-                                 <span>{{temoignage.getTextIt|raw }}</>
+                                 <p>{{temoignage.getTextIt|raw }}</p>
                               {% else %}
                                  <p>{{temoignage.text|raw }}</p>
                               {% endif %}
@@ -430,7 +430,7 @@
                               border-radius: 0rem 0rem 0.3125rem 0.3125rem;
                               margin: 0px -25px;
                               ">{% if app.request.locale == "it" %}
-                              <p>{{temoignage.getProgressIt}}</p>
+                              <span>{{temoignage.getProgressIt}}</span>
                            {% else %}
                               <span>{{temoignage.progress}}</span>
                            {% endif %}</div>
