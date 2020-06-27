@@ -46,6 +46,7 @@ accueil:
   sans_dioxyde: "Sans Dioxyde de titane"
   les_ingredients: "Les ingrédients"
   the_vert: "Thé vert"
+  au: "au"
   the_vert_desc: "Le thé vert est naturellement riche en antioxydants, qui aident à protéger l'organisme contre les radicaux libres. Il a également été démontré que le thé vert a la capacité de rajeunir les vieilles cellules de la peau qui sont à la fin de leur cycle de vie, avec l'avantage supplémentaire d'avoir des propriétés anti-inflammatoires"
   vitamine_c: "LA VITAMINE C"
   vitamine_c_desc: "Un puissant antioxydant pour améliorer la pureté du teint et restaurer l'aspect uniforme de la peau."
@@ -57,6 +58,23 @@ accueil:
   aucun_temoigange: "Aucun temoignage enregistre"
   en_avez_assez: "Vous en avez pas eu assez ?"
   voir_temoignage: "Voir tous les témoignages."
+  point_noir_aderons: "Vos points noirs adérerons au masque qui partirons instantanément."
+  masque_percent_naturel : "Ce masque est à base de thé vert 100% naturel qui permettra de ne pas agressé votre peau."
+  ingredient_naturel: "Ses ingrédiants naturel vous permetteront d'avoir une utilisation quotidienne."
+  masque_hydratation: "Ce masque hydratera votre peau après l'utilisation."
+  retrouver_confiance: "Retrouver confiance en vous face aux regards des gens."
+  anti_ride_percent_natural: "Un anti-rides 100% Naturel"
+  the_vert_agent_actif: "Le Thé Vert contient des agents actifs qui protègent des radicaux libres responsables du veillissement cellulaire."
+  grace_polyphoénol: "Grâce aux polyphénols, le thé contribue de façon étonnante à la protection du collagène et de l'élastine."
+  lutte_relachement: "Lutte contre le relachement de la peau et contre les rides."
+  peau_propre: "Une peau propre et hydratée."
+  riche_antioxydants: "Riche en antioxydants a été formulé en gardant à l'esprit l'élément essentiel : l'acné, les points noirs et les impurtés de la peau."
+  calme_peau_irrite: "Il aide à calmer la peau irritée, à apaiser l'inflamation et à réduire les rougeurs."
+  pouvoirs_vedettes: "Les pouvoirs vedettes du mélange comprennent le thé vert et des extraits de plantes pour nettoyer et détoxifier la peau."
+
+
+
+
 
   #marque
   mask_anti_point_noir: "Masque anti point noir"

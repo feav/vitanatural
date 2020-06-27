@@ -118,7 +118,7 @@
    <div class="container">
       <div class="row section-title justify-content-center text-center">
          <div class="col-md-9 col-lg-8 col-xl-10">
-            <h3 class="display-4" style=" margin-bottom: 0px; ">Une peau parfaite<br/>après <mark data-aos="highlight-text" data-aos-delay="200" class="aos-init aos-animate" style=" background-image: linear-gradient(120deg, #8bc889 0%, #eff7ee 100%); ">4 passages</mark> !</h3>
+            <h3 class="display-4" style=" margin-bottom: 0px; ">{{ 'accueil.peau_parfaite'|trans({}, 'home') }}<mark data-aos="highlight-text" data-aos-delay="200" class="aos-init aos-animate" style=" background-image: linear-gradient(120deg, #8bc889 0%, #eff7ee 100%); ">{{ 'accueil.quatre_passage'|trans({}, 'home') }}</mark> !</h3>
          </div>
       </div>
      
@@ -127,13 +127,13 @@
             <div class="col">
                <ul class="nav nav-pills lead mb-4 mb-md-5 justify-content-center" id="myTab" role="tablist">
                   <li class="nav-item">
-                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Points Noir</a>
+                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">{{ 'accueil.point_noir'|trans({}, 'home') }}</a>
                   </li>
                   <li class="nav-item">
-                     <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Rides</a>
+                     <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">{{ 'accueil.ride'|trans({}, 'home') }}</a>
                   </li>
                   <li class="nav-item">
-                     <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Hydratation</a>
+                     <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">{{ 'accueil.hydratation'|trans({}, 'home') }}</a>
                   </li>
                </ul>
                <div class="tab-content" id="myTabContent">
@@ -141,8 +141,8 @@
                      <div class="row align-items-center justify-content-around">
                         <div class="col-lg-6 col-xl-7 text-lg-left mb-4 mb-md-5 mb-lg-0">
                            <div class="pr-lg-4 pr-xl-5 aos-init aos-animate" data-aos="fade-right">
-                              <h3 class="h2" style=" font-weight: 500; ">Vos points noirs adérerons au masque qui partirons instantanément.</h3>
-                              <p style="font-weight: 500; margin-bottom: 20px; color: #8bc889; line-height: 23px;">Ce masque est à base de thé vert 100% naturel qui permettera de ne pas agressé votre peau.</p>
+                              <h3 class="h2" style=" font-weight: 500; ">{{ 'accueil.point_noir_aderons'|trans({}, 'home') }}</h3>
+                              <p style="font-weight: 500; margin-bottom: 20px; color: #8bc889; line-height: 23px;">{{ 'accueil.masque_percent_naturel'|trans({}, 'home') }}</p>
                               <div class="d-flex flex-wrap justify-content-center justify-content-lg-start">
                                  <div class="mb-3 mr-4 ml-lg-0 mr-lg-4 aos-init aos-animate" data-aos="fade-left" data-aos-delay="100">
                                     <div class="d-flex align-items-center">
@@ -151,7 +151,7 @@
                                              <path d="M20 6L9 17L4 12" stroke="#2C3038" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                                           </svg>
                                        </div>
-                                       <h6 class="mb-0 ml-3" style="font-weight: 500;">Ses ingrédiants naturel vous permetteront d'avoir une utilisation quotidienne.</h6>
+                                       <h6 class="mb-0 ml-3" style="font-weight: 500;">{{ 'accueil.ingredient_naturel'|trans({}, 'home') }}</h6>
                                     </div>
                                  </div>
                                  <div class="mb-3 mr-4 ml-lg-0 mr-lg-4 aos-init aos-animate" data-aos="fade-left" data-aos-delay="100">
@@ -161,7 +161,7 @@
                                              <path d="M20 6L9 17L4 12" stroke="#2C3038" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                                           </svg>
                                        </div>
-                                       <h6 class="mb-0 ml-3" style="font-weight: 500;">Ce masque hydratera votre peau après l'utilisation.</h6>
+                                       <h6 class="mb-0 ml-3" style="font-weight: 500;">{{ 'accueil.masque_hydratation'|trans({}, 'home') }}</h6>
                                     </div>
                                  </div>
                                  <div class="mb-3 mr-4 ml-lg-0 mr-lg-4 aos-init aos-animate" data-aos="fade-left" data-aos-delay="200">
@@ -173,7 +173,7 @@
                                        </div>
                                        <h6 class="mb-0 ml-3" style="
                                           font-weight: 500;
-                                          ">Retrouver confiance en vous face aux regards des gens.</h6>
+                                          ">{{ 'accueil.retrouver_confiance'|trans({}, 'home') }}</h6>
                                     </div>
                                  </div>
                               </div>
@@ -188,7 +188,7 @@
                      <div class="row align-items-center justify-content-around">
                         <div class="col-lg-6 col-xl-5 text-lg-left mb-4 mb-md-5 mb-lg-0">
                            <div class="pr-lg-4 pr-xl-5 aos-init aos-animate" data-aos="fade-right">
-                              <h3 class="h2" style=" font-weight: 500; ">Un anti-rides 100% Naturel</h3>
+                              <h3 class="h2" style=" font-weight: 500; ">{{ 'accueil.anti_ride_percent_natural'|trans({}, 'home') }}</h3>
                               <div class="d-flex flex-wrap justify-content-center justify-content-lg-start">
                                  <div class="mb-3 mr-4 ml-lg-0 mr-lg-4 aos-init aos-animate" data-aos="fade-left" data-aos-delay="100">
                                     <div class="d-flex align-items-center">
@@ -197,7 +197,7 @@
                                              <path d="M20 6L9 17L4 12" stroke="#2C3038" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                                           </svg>
                                        </div>
-                                       <h6 class="mb-0 ml-3" style="font-weight: 500;">Le Thé Vert contient des agents actifs qui protègent des radicaux libres responsables du veillissement cellulaire.</h6>
+                                       <h6 class="mb-0 ml-3" style="font-weight: 500;">{{ 'accueil.the_vert_agent_actif'|trans({}, 'home') }}</h6>
                                     </div>
                                  </div>
                                  <div class="mb-3 mr-4 ml-lg-0 mr-lg-4 aos-init aos-animate" data-aos="fade-left" data-aos-delay="200">
@@ -209,7 +209,7 @@
                                        </div>
                                        <h6 class="mb-0 ml-3" style="
                                           font-weight: 500;
-                                          ">Grâce aux polyyphénols, le thé contribue de façon étonnante à la protection du collagène et de l'élastine.</h6>
+                                          ">{{ 'accueil.grace_polyphoénol'|trans({}, 'home') }}</h6>
                                     </div>
                                  </div>
                                  <div class="mb-3 mr-4 ml-lg-0 mr-lg-4 aos-init aos-animate" data-aos="fade-left" data-aos-delay="300">
@@ -221,7 +221,7 @@
                                        </div>
                                        <h6 class="mb-0 ml-3" style="
                                           font-weight: 500;
-                                          ">Lutte contre le relachement de la peau et contre les rides.</h6>
+                                          ">{{ 'accueil.lutte_relachement'|trans({}, 'home') }}</h6>
                                     </div>
                                  </div>
                               </div>
@@ -236,8 +236,8 @@
                      <div class="row align-items-center justify-content-around">
                         <div class="col-lg-6 col-xl-5 text-lg-left mb-4 mb-md-5 mb-lg-0">
                            <div class="pr-lg-4 pr-xl-5 aos-init aos-animate" data-aos="fade-right">
-                              <h3 class="h2" style=" font-weight: 500; ">Un peau propre et hydraté.</h3>
-                              <p style="font-weight: 500; margin-bottom: 20px; color: #8bc889; line-height: 23px;">Riche en antioxydants a été formulé en gardant à l'esprit l'élément essentiel : l'acné, les points noirs et les impurtés de la peau.</p>
+                              <h3 class="h2" style=" font-weight: 500; ">{{ 'accueil.peau_propre'|trans({}, 'home') }}</h3>
+                              <p style="font-weight: 500; margin-bottom: 20px; color: #8bc889; line-height: 23px;">{{ 'accueil.riche_antioxydants'|trans({}, 'home') }}</p>
                               <div class="d-flex flex-wrap justify-content-center justify-content-lg-start">
                                  <div class="mb-3 mr-4 ml-lg-0 mr-lg-4 aos-init aos-animate" data-aos="fade-left" data-aos-delay="200">
                                     <div class="d-flex align-items-center">
@@ -248,7 +248,7 @@
                                        </div>
                                        <h6 class="mb-0 ml-3" style="
                                           font-weight: 500;
-                                          ">Il aide à calmer la peau irritée, à apaiser l'inflamation et à réduire les rougeurs.</h6>
+                                          ">{{ 'accueil.calme_peau_irrute'|trans({}, 'home') }}</h6>
                                     </div>
                                  </div>
                                  <div class="mb-3 mr-4 ml-lg-0 mr-lg-4 aos-init aos-animate" data-aos="fade-left" data-aos-delay="200">
@@ -260,7 +260,7 @@
                                        </div>
                                        <h6 class="mb-0 ml-3" style="
                                           font-weight: 500;
-                                          ">Les pouvoirs vedettes du mélange comprennent le thé vert et des extraits de plantes pour nettoyer et détoxifier la peau.</h6>
+                                          ">{{ 'accueil.pouvoirs_vedettes'|trans({}, 'home') }}</h6>
                                     </div>
                                  </div>
                               </div>
@@ -304,7 +304,7 @@
             <div class="col col-md-10 col-xl-11 text-center text-lg-left">
                <section>
                   <div data-aosx="fade-right">
-                     <h1 class="display-5">Masque Anti Point Noir au <mark data-aosx="highlight-text" data-aos-delay="200">Thé Vert</mark> !</h1>
+                     <h1 class="display-5">{{ 'accueil.mask_anti_point_noir'|trans({}, 'home') }} {{ 'accueil.au'|trans({}, 'home') }} <mark data-aosx="highlight-text" data-aos-delay="200">{{ 'accueil.the_vert'|trans({}, 'home') }}</mark> !</h1>
                      <p class="lead">
                      </p>
 
@@ -356,11 +356,11 @@
                      
                   </div>
                   <div class="d-flex flex-column flex-sm-row mt-4 mt-md-5 justify-content-center justify-content-lg-start" data-aosx="fade-right" data-aos-delayx="300">
-                     <a onclick="addToCard({{product.id}},$('input[name=product-{{product.id}}]:checked'). val())" class="btn btn-primary btn-lg" >Ajouté au panier</a>
-                     <a onclick="addToCard({{product.id}},$('input[name=product-{{product.id}}]:checked'). val())"  class="open-modal-payment btn btn-outline-primary btn-lg mx-sm-2 mx-lg-0 mr-lg-2 my-1 my-sm-0" style="color:#555A64; display:none" >Paiement direct</a>
+                     <a onclick="addToCard({{product.id}},$('input[name=product-{{product.id}}]:checked'). val())" class="btn btn-primary btn-lg" >{{ 'accueil.add_card'|trans({}, 'home') }}</a>
+                     <a onclick="addToCard({{product.id}},$('input[name=product-{{product.id}}]:checked'). val())"  class="open-modal-payment btn btn-outline-primary btn-lg mx-sm-2 mx-lg-0 mr-lg-2 my-1 my-sm-0" style="color:#555A64; display:none" >{{ 'accueil.direct_paid'|trans({}, 'home') }}</a>
                   </div>
                   {% else %}
-                            <div>Aucun produit enregistre</div>
+                            <div>{{ 'accueil.aucun_produit'|trans({}, 'home') }}</div>
                     {% endfor %}
                </section>
             </div>
@@ -373,7 +373,7 @@
          <div class="container">
             <div class="row section-title justify-content-center text-center">
                <div class="col-md-9 col-lg-8 col-xl-10">
-                  <h3 class="display-4">Nos clients en <mark data-aos="highlight-text" data-aos-delay="200" class="aos-init aos-animate" style=" background-image: linear-gradient(120deg, #8bc889 0%, #f7f9fc 100%); ">parlent</mark><br/>mieux que nous.</h3>
+                  <h3 class="display-4">{{ 'accueil.nos_client_parle'|trans({}, 'home') }} <mark data-aos="highlight-text" data-aos-delay="200" class="aos-init aos-animate" style=" background-image: linear-gradient(120deg, #8bc889 0%, #f7f9fc 100%); ">{{ 'accueil.parlent'|trans({}, 'home') }}</mark><br/>{{ 'accueil.mieux_que_nous'|trans({}, 'home') }}</h3>
                   <div class="lead">Toute une gamme au service de votre beauté.</div>
                </div>
             </div>
@@ -429,7 +429,7 @@
                      </div>
                   </div>
                {% else %}
-                  <div>Aucun temoignage enregistre</div>
+                  <div>{{ 'accueil.aucun_temoigange'|trans({}, 'home') }}</div>
           {% endfor %}
             </div>
          </div>
