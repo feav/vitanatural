@@ -99,8 +99,12 @@
                                  {% endif %}
                               {% endfor %}
                            </div>
-                           <p style="
-                              ">{{temoignage.text|raw }}</p>
+                           {% if app.request.locale == "it" %}
+                              <p>{{temoignage.getTextIt|raw }}</p>
+                           {% else %}
+                              <p>{{temoignage.text|raw }}</p>
+                           {% endif %}
+                            
                            <img alt="miniature" style="width: 65px;height: auto;margin-bottom: -45px;" src="https://www.brulafine.com/assets/images/product/hero.png">
                            <div style="
                               background: #ef357af7;
@@ -110,7 +114,12 @@
                               padding: 15px 0px;
                               border-radius: 0rem 0rem 0.3125rem 0.3125rem;
                               margin: 0px -25px;
-                              ">{{temoignage.progress}}</div>
+                              ">{% if app.request.locale == "it" %}
+                              <p>{{temoignage.getProgressIt}}</p>
+                           {% else %}
+                              <p>{{temoignage.progress}}</p>
+                           {% endif %}
+                         </div>
                         </div>
                      </div>
                   </div>

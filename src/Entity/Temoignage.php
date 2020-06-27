@@ -56,6 +56,16 @@ class Temoignage
      */
     private $image;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $progress_it;
+
+    /**
+     * @ORM\Column(type="string", length=1000, nullable=true)
+     */
+    private $text_it;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -153,6 +163,30 @@ class Temoignage
     public function setImage(?string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getProgressIt(): ?string
+    {
+        return $this->progress_it;
+    }
+
+    public function setProgressIt(?string $progress_it): self
+    {
+        $this->progress_it = $progress_it;
+
+        return $this;
+    }
+
+    public function getTextIt(): ?string
+    {
+        return $this->text_it;
+    }
+
+    public function setTextIt(?string $text_it): self
+    {
+        $this->text_it = $text_it;
 
         return $this;
     }

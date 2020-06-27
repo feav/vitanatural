@@ -26,6 +26,7 @@ class TemoignageType extends AbstractType
             ->add('location')
             ->add('video')
             ->add('text',TextareaType::class, array('attr' => array('class' => 'ckeditor')))
+            ->add('text_it',TextareaType::class, array('attr' => array('class' => 'ckeditor')))
             ->add('note', ChoiceType::class, [
                 'choices' => [
                     'Type de reduction' => [
@@ -38,6 +39,7 @@ class TemoignageType extends AbstractType
                     ]
                 ],
             ])
+            ->add('progress_it')
             ->add('progress')
             ->add('image')
         ;
