@@ -22,6 +22,8 @@ use App\Entity\User;
 use App\Entity\Abonnement;
 use App\Entity\Panier;
 use App\Entity\Commande;
+use App\Service\ConfigService;
+
 /*
 use Stripe\Stripe;
 use \Stripe\Charge;*/
@@ -32,6 +34,7 @@ use Dompdf\Dompdf;
 class PaymentController extends AbstractController
 {   
     private $params_dir;
+    private $configService;
     private $mollie_s;
     private $stripe_s;
     private $user_s;
@@ -42,18 +45,21 @@ class PaymentController extends AbstractController
     private $abonnementRepository;
     private $global_s;
     private $formuleRepository;
+    private $price_shipping = 0;
 
-    public function __construct(ParameterBagInterface $params_dir, UserRepository $userRepository, UserService $user_s, MollieService $mollie_s, AbonnementRepository $abonnementRepository, PanierRepository $panierRepository, CommandeRepository $commandeRepository, GlobalService $global_s, FormuleRepository $formuleRepository, StripeService $stripe_s){
+    public function __construct(ParameterBagInterface $params_dir, UserRepository $userRepository, UserService $user_s, MollieService $mollie_s, AbonnementRepository $abonnementRepository, PanierRepository $panierRepository, CommandeRepository $commandeRepository, GlobalService $global_s, FormuleRepository $formuleRepository, StripeService $stripe_s, ConfigService $configService){
         $this->params_dir = $params_dir;
         $this->mollie_s = $mollie_s;
         $this->stripe_s = $stripe_s;
         $this->user_s = $user_s;
         $this->global_s = $global_s;
+        $this->configService = $configService;
         $this->userRepository = $userRepository;
         $this->panierRepository = $panierRepository;
         $this->commandeRepository = $commandeRepository;
         $this->abonnementRepository = $abonnementRepository;
         $this->formuleRepository = $formuleRepository;
+        $this->price_shipping = floatval($this->configService->getField('LIVRAISON_AMOUNT'));
     }
 
     /**
@@ -119,7 +125,6 @@ class PaymentController extends AbstractController
                 $message = $preparePaid['message'];
                 if($preparePaid['paid']){
                     $amount = $preparePaid['amount'];
-                    
                     $response = $this->stripe_s->proceedPayment($user, $amount);
                     $result = $response['message'];
                     $this->stripe_s->saveChargeToRefund($panier, $response['charge']);
@@ -171,6 +176,20 @@ class PaymentController extends AbstractController
             return new Response(json_encode(array('status'=>500, "checkoutUrl"=>"", "message"=>"Une erreur s'est produite")));
         }
         return new Response(json_encode(array('status'=>200, "checkoutUrl"=>"", "message"=>"aucune action Effectuée")));
+    }
+
+    public function totalAmount($panier){
+        $amount = $panier->getTotalPrice();
+        if(count($panier->getCommandes())){
+            $user = $this->getUser();
+            $abonnementExit = $this->abonnementRepository->findBy(['user'=>$user->getId(), 'active'=>1]);
+            if(!count($abonnementExit) && $panier->getPriceShipping() == 0){
+                $amount += $this->price_shipping;
+            }
+        }
+        if($panier->getTotalReduction() > 0)
+            $amount -= $panier->getTotalReduction();
+        return $amount;
     }
 
     public function sendMail($mailer, $user, $panier, $commande_pdf, $amount){
@@ -549,6 +568,7 @@ class PaymentController extends AbstractController
             $response = ['paid'=>false, 'message'=>"Votre abonnement a été pris en compte", 'amount'=>0];
         }
         if(count($panier->getCommandes())){
+            $amount = $this->totalAmount($panier);
             $this->entityManager = $this->getDoctrine()->getManager();
             $panier->setPaiementDate(new \Datetime());
             $this->entityManager->flush();

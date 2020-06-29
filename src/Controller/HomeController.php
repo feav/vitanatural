@@ -91,6 +91,9 @@ class HomeController extends AbstractController
      */
     public function index(FormuleRepository $formuleRepository,TemoignageRepository $temoignageRepository)
     {
+        $url = $this->generateUrl('marque');
+        return $this->redirect($url);
+
         $coupon = 0;
         if(isset($_GET['code_promo']) && $_GET['code_promo'] != ''){
             $coupon = $_GET['code_promo'];

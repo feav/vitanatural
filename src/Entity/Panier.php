@@ -120,7 +120,7 @@ class Panier
         if($this->price_shipping > 0){
             foreach ($this->coupons as $key => $coupon) {
                 if($coupon->getTypeReduction()){
-                    $reduction +=  ($this->price_shipping)*$coupon->getPriceReduction()/100;
+                    $reduction +=  $sommes*$coupon->getPriceReduction()/100;
                 }else{
                     $reduction +=  $coupon->getPriceReduction();
                 }

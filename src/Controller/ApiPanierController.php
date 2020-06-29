@@ -126,7 +126,7 @@ class ApiPanierController extends AbstractController
                         'coupons' => $coupons,
                         'formules' => $formules,
                         'livraison' => $paniers[0]->getPriceShipping(),
-                        'total' => $total,
+                        'total' => ($total-$reduction),
                         'reduction' => $reduction
                     )
                 )
@@ -416,7 +416,7 @@ class ApiPanierController extends AbstractController
                         'formules' => $formules,
                         'livraison' => $livraison,
                         'livraison_facture' => 0,
-                        'total' => $total,
+                        'total' => ($total-$reduction),
                         'reduction' => $reduction
                     )
                 )
