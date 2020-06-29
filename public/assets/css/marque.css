@@ -165,14 +165,11 @@
    background-image: url(https://i.imgur.com/CK1h7ap.png);
    background-size: 100% 100%;
 }
-#videoHeader{
-  object-fit: cover;
-}
   @media(max-width: 600px){
       .products-pack > div {
           width: 100%;
       }
-      #videoHeader{object-fit: fill;}
+      #videoHeader{object-fit: fill!important;}
    }
 .radio-item label{
    position: absolute;
