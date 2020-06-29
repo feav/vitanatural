@@ -116,6 +116,7 @@ class ApiPanierController extends AbstractController
                 $total = $panier->getTotalPrice();
                 $reduction = $panier->getTotalReduction();
             }
+
             return new Response( json_encode(
                 array(
                     'status' => 200, 
@@ -124,10 +125,8 @@ class ApiPanierController extends AbstractController
                         'products'=>$produis,
                         'coupons' => $coupons,
                         'formules' => $formules,
-                        'livraison' => $livraison,
+                        'livraison' => $paniers[0]->getPriceShipping(),
                         'total' => $total,
-                        'total' => $total,
-                        'livraison' => $livraison,
                         'reduction' => $reduction
                     )
                 )
@@ -303,7 +302,11 @@ class ApiPanierController extends AbstractController
                 }
 
             }
-            $panier->setPriceShipping( $this->price_shipping );
+            $abonnementExit = $this->abonnementRepository->findBy(['user'=>$user->getId(), 'active'=>1]);
+            if(count($abonnementExit))
+                $panier->setPriceShipping(0);
+            else
+                $panier->setPriceShipping( $this->price_shipping );
 
             $panier->refresh_price();
 
@@ -316,10 +319,6 @@ class ApiPanierController extends AbstractController
         return new Response( json_encode(array('status' => 300, 'message' => "Utilisateur non connecte" )) );
     }
 
-
-
-
-
     public function getCurrentCardNotConnected(): Response
     {
         $this->entityManager = $this->getDoctrine()->getManager();
@@ -328,12 +327,12 @@ class ApiPanierController extends AbstractController
         if(isset($_GET['products']) && $_GET['products'] !== ''){
             $products = $_GET['products'];
         }
-            $produis = array();
-            $coupons = array();
-            $formules = array();
-            $livraison = $this->price_shipping;
-            $total = 0;
-            $reduction = 0;
+        $produis = array();
+        $coupons = array();
+        $formules = array();
+        $livraison = $this->price_shipping;
+        $total = 0;
+        $reduction = 0;
         if(count($products)){
 
 
@@ -409,9 +408,9 @@ class ApiPanierController extends AbstractController
                         'coupons' => $coupons,
                         'formules' => $formules,
                         'livraison' => $livraison,
+                        'livraison_facture' => 0,
                         'total' => $total?$total+$livraison:0,
                         'total' => $total,
-                        'livraison' => $livraison,
                         'reduction' => $reduction
                     )
                 )
@@ -609,8 +608,6 @@ class ApiPanierController extends AbstractController
         }
         return new Response( json_encode(array('status' => 300, 'message' => "Utilisateur non connecte" )) );
     }
-
-
 
     /**
      * @Route("/", name="panier_index", methods={"GET"})

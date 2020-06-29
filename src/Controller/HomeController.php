@@ -181,6 +181,10 @@ class HomeController extends AbstractController
      */
     public function marque(FormuleRepository $formuleRepository,TemoignageRepository $temoignageRepository)
     {
+        $coupon = 0;
+        if(isset($_GET['code_promo']) && $_GET['code_promo'] != ''){
+            $coupon = $_GET['code_promo'];
+        }
         $products = $this->prodService->findAll();
         $formule = $formuleRepository->findAll();
         $temoignage = $temoignageRepository->findAll();
@@ -190,7 +194,8 @@ class HomeController extends AbstractController
             'products' => $products,
             'formules' => $formule,
             'temoignages' => $temoignage,
-            'url_name'=>'marque'
+            'url_name'=>'marque',
+            'coupon'=>$coupon
         ]);
     }
     /**
@@ -293,50 +298,6 @@ class HomeController extends AbstractController
             return $response;
         }
         return $this->render('home/contact.html.twig');
-    }
-
-    /**
-     * @Route("/resiliation-abonnement/{id}", name="abonnement_resilie", methods={"GET"})
-     */
-    public function resile(Request $request, $id, \Swift_Mailer $mailer)
-    {   
-        $user = $this->getUser();
-        $entityManager = $this->getDoctrine()->getManager();
-        $abonnement = $this->abonnementRepository->find($id);
-        if($abonnement->getStart() >= new \DateTime()){
-            $flashBag = $this->get('session')->getFlashBag()->clear();
-            $this->addFlash('warning', "La periode d'essaie de cet abonnement est passée, vous ne pouvez plus le resilier");
-            return $this->redirectToRoute('account');
-        }
-        if(!$abonnement->getActive()){
-            $flashBag = $this->get('session')->getFlashBag()->clear();
-            $this->addFlash('warning', "cet abonnement n'est pas actif");
-            return $this->redirectToRoute('account');
-        }
-        $abonnement->setResilie(1);
-        $abonnement->setActive(0);
-        $entityManager->flush();
-
-        $content = "<p>Votre abonnement a bien été resilié</p>";
-        $url = $this->generateUrl('home', [], UrlGenerator::ABSOLUTE_URL);
-        try {
-            $mail = (new \Swift_Message("Résiliation d'abonement"))
-                ->setFrom(array('alexngoumo.an@gmail.com' => 'EpodsOne'))
-                ->setTo([$user->getEmail()=>$user->getName()])
-                ->setCc("alexngoumo.an@gmail.com")
-                ->setBody(
-                    $this->renderView(
-                        'emails/mail_template.html.twig',['content'=>$content, 'url'=>$url]
-                    ),
-                    'text/html'
-                );
-            $mailer->send($mail);
-        } catch (Exception $e) {
-            print_r($e->getMessage());
-        }            
-        $flashBag = $this->get('session')->getFlashBag()->clear();
-        $this->addFlash('success', "Abonnement resilié");
-        return $this->redirectToRoute('account');
     }
 
     public function generatePdf($template, $data, $params){

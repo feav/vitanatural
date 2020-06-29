@@ -15,7 +15,7 @@ global:
   paiement_de: 'Paiement de'
   offert: "Offert"
   one_clik_paid: 'Payer en 1 click'
-  paid_by_stripe: 'Paiements sécurisés par Stripe.'
+  paid_by_stripe: 'Paiements sécurisés.'
   secure_paid: 'Paiement securisé'
   valider: 'Valider'
   debit_auto_text: "Vous serez automatiquement debité sur la precedente carte utilisée"

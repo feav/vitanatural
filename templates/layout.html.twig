@@ -22,6 +22,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
   <link href="{{ asset('assets/Notification/css/ussal-notification.css')}}" rel="stylesheet" type="text/css" media="all" />
   <style type="text/css">
+    
+    nav.nav-white.navbar{
+      background: #fff;
+    }
+    nav.nav-white.navbar .navbar-nav .nav-link{
+      color: rgba(0,0,0,.7);
+    }
+    nav.nav-white.navbar img.logo.default-logo{
+      display: block;
+    }
+    nav.nav-white.navbar img.logo.scrolled-logo{
+      display: none;
+    }
+
     .row.justify-content-center.rowlyo > div > div p {
         font-size: 12px;
         margin-bottom: 3px;
@@ -86,11 +100,11 @@
   </div>
     
     <div class="navbar-container">
-      <nav class="navbar navbar-expand-lg navbar-dark position-lock" data-overlay data-sticky="top">
+      <nav class="navbar navbar-expand-lg navbar-dark position-lock {% block nav_theme %}{% endblock %}" data-overlay data-sticky="top">
           <div class="container"> 
         
 
-        <a class="navbar-brand navbar-brand-dynamic-color" href="{{path('home')}}">
+        <a class="navbar-brand navbar-brand-dynamic-color" href="{{path('marque')}}">
                <img src="https://i.imgur.com/n6vhM8P.png"  loading="lazy" class="logo scrolled-logo" alt="logo">
                <img src="https://i.imgur.com/qgKGYM6.png"  loading="lazy" class="logo default-logo" alt="logo">
         </a>
@@ -110,8 +124,7 @@
 
         <div class="collapse navbar-collapse order-3 order-lg-2 justify-content-lg-center">
           <ul class="navbar-nav my-3 my-lg-0">
-            <li class="nav-item"> <a href="{{path('home')}}" class="nav-link">{{ 'global.home'|trans({}, 'global') }}</a></li>
-            <li class="nav-item"> <a  href="{{path('marque')}}" class="nav-link">{{ 'global.la_marque'|trans({}, 'global') }}</a></li>
+            <li class="nav-item"> <a href="{{path('marque')}}" class="nav-link">{{ 'global.home'|trans({}, 'global') }}</a></li>
             <li class="nav-item"> <a href="{{path('temoignage')}}" class="nav-link">{{ 'global.temoignage'|trans({}, 'global') }}</a></li>
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
               <li class="nav-item">
@@ -161,7 +174,7 @@
             {% if is_granted('IS_AUTHENTICATED_FULLY') and (app.user.getStripeCustomId is not null) %}
               <div style="text-align: center;margin-top: 19px;font-size: 16px">
                   <a href="{{path('direct_paid')}}" class="oneClickPaid" style="text-decoration: underline;" title="{{ 'global.debit_auto_text'|trans({}, 'global') }}">{{ 'global.one_clik_paid'|trans({}, 'global') }}</a><br>
-                  <small style="display: block;margin-top: 6px;">Pour le paiement en un click, Vous serez automatiquement debité sur votre precedente carte utilisée</small>
+                  <small style="display: block;margin-top: 6px;display:none">Pour le paiement en un click, Vous serez automatiquement debité sur votre precedente carte utilisée</small>
               </div>
             {% endif %}
             <div style="text-align:center; margin-top:20px">
@@ -617,7 +630,7 @@
           '</div>';
    }
 
-  function itemRecap(products, total_amount, total_reduction, reduction){
+  function itemRecap(products, total_amount, total_reduction, reduction, livraison){
     $ELT = $('.cart-container .list-recap');
     var DATA_STRING = ""; 
     products.forEach(function(item, index){
@@ -628,13 +641,21 @@
               '</li>';
       }
     });
+    $livraison_montant = "{{livraison_montant}}";
+    $livraisonHtml = "";
+    if(livraison < $livraison_montant){
+      $livraisonHtml = '<span class="recap-value"><span style="padding-right: 14px;">'+livraison+'€</span><strike>'+$livraison_montant+'€</strike></span>';
+    }
+    else{
+      $livraisonHtml = '<span class="recap-value">'+$livraison_montant+'€</span>';
+    }
+
     DATA_STRING += '<li class="recap-item">'+
                 '<span class="recap-label">Réduction</span>'+
                 '<span class="recap-value">(-'+(total_amount?parseInt( (reduction*100)/ total_amount):0)+'%) -'+reduction.toFixed(2)+'€</span>'+
               '</li>'+
               '<li class="recap-item">'+
-                '<span class="recap-label">Livraison</span>'+
-                '<span class="recap-value">{{livraison_montant}}€</span>'+
+                '<span class="recap-label">Livraison</span>'+$livraisonHtml+
               '</li>'+
               '<li class="recap-item">'+
                 '<span class="recap-label">Total</span>'+
@@ -792,7 +813,7 @@
                   $(".cart-total-pay").html(total.toFixed(2));
                   $(".cart-total-reduction").html(data.panier.total.toFixed(2));
                   $(".card-list-product").html("");
-                  itemRecap(data.panier.products, data.panier.total, total.toFixed(2), data.panier.reduction);
+                  itemRecap(data.panier.products, data.panier.total, total.toFixed(2), data.panier.reduction, data.panier.livraison, data.panier.reduction);
                    data.panier.products.forEach(function(item, index){
                      $(".card-list-product").prepend(itemProduct(item.id_product,item.img, item.name, item.quantity, item.price, item.oldprice));
                      if(typeof init_product_qty === "function"){
@@ -896,7 +917,7 @@
                   $(".cart-total-reduction").html(data.panier.total.toFixed(2));
                   $(".card-list-product").html(""); 
                   var reductions = 0;
-                  itemRecap(data.panier.products, data.panier.total, total.toFixed(2), data.panier.reduction);
+                  itemRecap(data.panier.products, data.panier.total, total.toFixed(2), data.panier.reduction, data.panier.livraison, data.panier.reduction);
                    data.panier.products.forEach(function(item, index){
                      $(".card-list-product").prepend(itemProduct(item.id_product,item.img, item.name, item.quantity, item.price, item.oldprice));
                        reductions += parseFloat(item.oldprice*item.quantity);

@@ -117,11 +117,13 @@ class Panier
             $sommes +=  $abonnement->getFormule()->getPrice();
         }
         $reduction = 0;
-        foreach ($this->coupons as $key => $coupon) {
-            if($coupon->getTypeReduction()){
-                $reduction +=  $sommes*$coupon->getPriceReduction()/100;
-            }else{
-                $reduction +=  $coupon->getPriceReduction();
+        if($this->price_shipping > 0){
+            foreach ($this->coupons as $key => $coupon) {
+                if($coupon->getTypeReduction()){
+                    $reduction +=  ($this->price_shipping)*$coupon->getPriceReduction()/100;
+                }else{
+                    $reduction +=  $coupon->getPriceReduction();
+                }
             }
         }
         $this->total_price =  $sommes;

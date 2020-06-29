@@ -570,6 +570,7 @@ class PaymentController extends AbstractController
         $subscription = $this->stripe_s->subscriptionCancel($abonnement->getSubscription());
         if($subscription == $abonnement->getSubscription()){
             $abonnement->setActive(0);
+            $abonnement->setResilie(1);
             $entityManager->flush();
 
             $content = "<p>Votre abonnement a bien été resilié</p>";
