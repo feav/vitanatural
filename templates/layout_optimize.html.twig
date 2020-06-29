@@ -245,171 +245,173 @@
         </div>
       </div>
     </div>
-      <footer class="bg-primary-3 text-white links-white pb-5 footer-1">
-         <div class="container">
-            <div class="row">
-               <div class="col-xl-auto mr-xl-5 col-md-3 mb-4 mb-md-0">
-                  <h5>Navigation</h5>
-                  <ul class="nav flex-row flex-md-column">
-                     <li class="nav-item mr-3 mr-md-0">
-                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">{{ 'global.home'|trans({}, 'global') }}</a>
-                     </li>
-                     <li class="nav-item mr-3 mr-md-0">
-                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Nos produits</a>
-                     </li>
-                     <li class="nav-item mr-3 mr-md-0">
-                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Les ingrédiants</a>
-                     </li>
-                     <li class="nav-item mr-3 mr-md-0">
-                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">{{ 'global.temoignage'|trans({}, 'global') }}</a>
-                     </li>
-                     <li class="nav-item mr-3 mr-md-0">
-                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Coaching</a>
-                     </li>
-                     <li class="nav-item mr-3 mr-md-0">
-                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Nous contacter</a>
-                     </li>
-                     <li class="nav-item mr-3 mr-md-0">
-                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Plan du site</a>
-                     </li>
-                     <li class="nav-item mr-3 mr-md-0">
-                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                        <a href="{{ path('app_logout') }}" data-id="je_minscris-form" class="nav-link px-0 py-2">{{ 'global.deconnexion'|trans({}, 'global') }}</a>
-                    {% else %}   
-                        <a href="{{ path('app_login') }}" data-id="je_minscris-form" class="nav-link px-0 py-2">{{ 'global.connexion'|trans({}, 'global') }}</a>
 
-                    {% endif %}
-                  </li>
-                  </ul>
-               </div>
-               <div class="col-xl-auto mr-xl-5 col-md-3 mb-4 mb-md-0">
-                  <h5>Nos produits</h5>
-                  <ul class="nav flex-row flex-md-column">
-                     <li class="nav-item mr-3 mr-md-0">
-                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Minceur</a>
-                     </li>
-                     <li class="nav-item mr-3 mr-md-0">
-                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Sommeil</a>
-                     </li>
-                     <li class="nav-item mr-3 mr-md-0">
-                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">EveilActif</a>
-                     </li>
-                     <li class="nav-item mr-3 mr-md-0">
-                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Circulation</a>
-                     </li>
-                     <li class="nav-item mr-3 mr-md-0">
-                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">ActifPousse</a>
-                     </li>
-                     <li class="nav-item mr-3 mr-md-0">
-                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">PeauParfaite</a>
-                     </li>
-                  </ul>
-               </div>
-               <div class="col-xl-auto mr-xl-5 col-md-3 mb-4 mb-md-0">
-                  <h5>Informations</h5>
-                  <ul class="nav flex-row flex-md-column">
-                     <li class="nav-item mr-3 mr-md-0">
-                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Partenariat et Affiliation</a>
-                     </li>
-                     <li class="nav-item mr-3 mr-md-0">
-                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Paiement sécurisé</a>
-                     </li>
-                     <li class="nav-item mr-3 mr-md-0">
-                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Charte de confidentialité</a>
-                     </li>
-                     <li class="nav-item mr-3 mr-md-0">
-                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">C.G.U.</a>
-                     </li>
-                     <li class="nav-item mr-3 mr-md-0">
-                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">C.G.V.</a>
-                     </li>
-                     <li class="nav-item mr-3 mr-md-0">
-                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Cookies</a>
-                     </li>
-                     <li class="nav-item mr-3 mr-md-0">
-                        <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Mentions légales</a>
-                     </li>
-                  </ul>
-               </div>
-               <div class="col-lg mt-md-5 mt-lg-0 order-lg-3 order-xl-4">
-                  <h5>Pour les bavards...</h5>
-                  <div class="card card-body bg-white">
-                     <p style=" margin-bottom: 0; ">Tél : 01 75 85 83 83</p>
-                     <p style=" margin-bottom: 0; margin-top: 0.5rem; ">hello(at)respir.co</p>
-                  </div>
-                  <ul class="list-unstyled d-flex mb-0 mt-4">
-                     <li class="mx-3" style=" margin-left: 0px !important; ">
-                        <a href="#" class="hover-fade-out">
-                        <img src="assets/img/icons/social/twitter.svg"  loading="lazy" alt="Twitter" class="icon icon-xs bg-white" data-inject-svg>
-                        </a>
-                     </li>
-                     <li class="mx-3">
-                        <a href="#" class="hover-fade-out">
-                        <img src="assets/img/icons/social/instagram.svg"  loading="lazy" alt="Github" class="icon icon-xs bg-white" data-inject-svg>
-                        </a>
-                     </li>
-                     <li class="mx-3">
-                        <a href="#" class="hover-fade-out">
-                        <img src="assets/img/icons/social/facebook.svg"  loading="lazy" alt="Facebook" class="icon icon-xs bg-white" data-inject-svg>
-                        </a>
-                     </li>
-                  </ul>
-               </div>
-            </div>
-            <div class="row">
-               <div class="col">
-                  <hr>
-               </div>
-            </div>
-            <div class="row flex-column flex-lg-row align-items-center justify-content-center justify-content-lg-between text-center text-lg-left">
-               <div class="col-auto">
-                  <div class="d-flex flex-column flex-sm-row align-items-center text-small">
-                     <div class="text-muted">
-                        {{ 'global.percent_securise'|trans({}, 'global') }}
-                     </div>
-                  </div>
-               </div>
-               <div class="col-auto mt-3 mt-lg-0">
-                  <ul class="list-unstyled d-flex mb-0 payment-list">
-                     <li class="mx-2"> 
-                        <img src="https://www.brulafine.com/assets/images/card-cb.svg"  loading="lazy"> 
-                     </li>
-                     <li class="mx-2"> 
-                        <img src="https://www.brulafine.com/assets/images/card-mc.svg"  loading="lazy"> 
-                     </li>
-                     <li class="mx-2"> 
-                        <img src="https://www.brulafine.com/assets/images/card-mc-secured.svg"  loading="lazy" style=" height: 20px; "> 
-                     </li>
-                     <li class="mx-2"> 
-                        <img src="https://www.brulafine.com/assets/images/card-visa.svg"  loading="lazy"> 
-                     </li>
-                     <li class="mx-2"> 
-                        <img src="https://www.brulafine.com/assets/images/card-visa-secured.svg"  loading="lazy"> 
-                     </li>
-                  </ul>
-               </div>
-            </div>
-            <div class="row flex-column flex-lg-row align-items-center justify-content-center justify-content-lg-between text-center text-lg-left">
-               <div class="col-auto">
-                  <div class="d-flex flex-column flex-sm-row align-items-center text-small">
-                     <div class="text-muted" style=" font-size: 11px;margin: 20px 0px; ">
-                        {{ 'global.foot_p'|trans({}, 'global') }}
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div class="row flex-column flex-lg-row align-items-center justify-content-center justify-content-lg-between text-center text-lg-left">
-               <div class="col-auto">
-                  <div class="d-flex flex-column flex-sm-row align-items-center text-small">
-                     <div class="text-muted">
-                        © EDA Solutions, 2020
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </footer>
-      <a href="{{path('marque')}}" class="btn btn-primary goto-formule">{{ 'global.buy_now'|trans({}, 'global') }}</a>
+  <footer class="bg-primary-3 text-white links-white pb-5 footer-1">
+     <div class="container">
+        <div class="row">
+           <div class="col-xl-auto mr-xl-5 col-md-3 mb-4 mb-md-0">
+              <h5>Navigation</h5>
+              <ul class="nav flex-row flex-md-column">
+                 <li class="nav-item mr-3 mr-md-0">
+                    <a href="{{path('home')}}" class="nav-link fade-page px-0 py-2">{{ 'global.home'|trans({}, 'global') }}</a>
+                 </li>
+                 <li class="nav-item mr-3 mr-md-0">
+                    <a href="javascript:void()" class="nav-link fade-page px-0 py-2">{{ 'global.nos_produit'|trans({}, 'global') }}</a>
+                 </li>
+                 <li class="nav-item mr-3 mr-md-0">
+                    <a href="javascript:void()" class="nav-link fade-page px-0 py-2">{{ 'global.les_ingrediants'|trans({}, 'global') }}</a>
+                 </li>
+                 <li class="nav-item mr-3 mr-md-0">
+                    <a href="{{path('temoignage')}}" class="nav-link fade-page px-0 py-2">{{ 'global.temoignage'|trans({}, 'global') }}</a>
+                 </li>
+                 <li class="nav-item mr-3 mr-md-0">
+                    <a href="javascript:void()" class="nav-link fade-page px-0 py-2">{{ 'global.coaching'|trans({}, 'global') }}</a>
+                 </li>
+                 <li class="nav-item mr-3 mr-md-0">
+                    <a href="javascript:void()" class="nav-link fade-page px-0 py-2">{{ 'global.nous_contacter'|trans({}, 'global') }}</a>
+                 </li>
+                 <li class="nav-item mr-3 mr-md-0">
+                    <a href="javascript:void()" class="nav-link fade-page px-0 py-2">{{ 'global.plan_site'|trans({}, 'global') }}</a>
+                 </li>
+                 <li class="nav-item mr-3 mr-md-0">
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a href="{{ path('app_logout') }}" data-id="je_minscris-form" class="nav-link px-0 py-2">{{ 'global.deconnexion'|trans({}, 'global') }}</a>
+                {% else %}   
+                    <a href="{{ path('app_login') }}" data-id="je_minscris-form" class="nav-link px-0 py-2">{{ 'global.connexion'|trans({}, 'global') }}</a>
+
+                {% endif %}
+              </li>
+              </ul>
+           </div>
+           <div class="col-xl-auto mr-xl-5 col-md-3 mb-4 mb-md-0">
+              <h5>{{ 'global.nos_produit'|trans({}, 'global') }}</h5>
+              <ul class="nav flex-row flex-md-column">
+                 <li class="nav-item mr-3 mr-md-0">
+                    <a href="javascript:void()" class="nav-link fade-page px-0 py-2">{{ 'global.minceur'|trans({}, 'global') }}</a>
+                 </li>
+                 <li class="nav-item mr-3 mr-md-0">
+                    <a href="javascript:void()" class="nav-link fade-page px-0 py-2">{{ 'global.sommeil'|trans({}, 'global') }}</a>
+                 </li>
+                 <li class="nav-item mr-3 mr-md-0">
+                    <a href="javascript:void()" class="nav-link fade-page px-0 py-2">{{ 'global.eveil_actif'|trans({}, 'global') }}</a>
+                 </li>
+                 <li class="nav-item mr-3 mr-md-0">
+                    <a href="javascript:void()" class="nav-link fade-page px-0 py-2">{{ 'global.circulation'|trans({}, 'global') }}</a>
+                 </li>
+                 <li class="nav-item mr-3 mr-md-0">
+                    <a href="javascript:void()" class="nav-link fade-page px-0 py-2">{{ 'global.actif_pousse'|trans({}, 'global') }}</a>
+                 </li>
+                 <li class="nav-item mr-3 mr-md-0">
+                    <a href="javascript:void()" class="nav-link fade-page px-0 py-2">{{ 'global.peau_parfaite'|trans({}, 'global') }}</a>
+                 </li>
+              </ul>
+           </div>
+           <div class="col-xl-auto mr-xl-5 col-md-3 mb-4 mb-md-0">
+              <h5>{{ 'global.informations'|trans({}, 'global') }}</h5>
+              <ul class="nav flex-row flex-md-column">
+                 <li class="nav-item mr-3 mr-md-0">
+                    <a href="javascript:void()" class="nav-link fade-page px-0 py-2">{{ 'global.partenaria_affiliation'|trans({}, 'global') }}</a>
+                 </li>
+                 <li class="nav-item mr-3 mr-md-0">
+                    <a href="javascript:void()" class="nav-link fade-page px-0 py-2">{{ 'global.paiement_securise'|trans({}, 'global') }}</a>
+                 </li>
+                 <li class="nav-item mr-3 mr-md-0">
+                    <a href="javascript:void()" class="nav-link fade-page px-0 py-2">{{ 'global.charte_confidentialité'|trans({}, 'global') }}</a>
+                 </li>
+                 <li class="nav-item mr-3 mr-md-0">
+                    <a href="javascript:void()" class="nav-link fade-page px-0 py-2">C.G.U.</a>
+                 </li>
+                 <li class="nav-item mr-3 mr-md-0">
+                    <a href="javascript:void()" class="nav-link fade-page px-0 py-2">C.G.V.</a>
+                 </li>
+                 <li class="nav-item mr-3 mr-md-0">
+                    <a href="javascript:void()" class="nav-link fade-page px-0 py-2">Cookies</a>
+                 </li>
+                 <li class="nav-item mr-3 mr-md-0">
+                    <a href="javascript:void()" class="nav-link fade-page px-0 py-2">{{ 'global.mention_legale'|trans({}, 'global') }}</a>
+                 </li>
+              </ul>
+           </div>
+           <div class="col-lg mt-md-5 mt-lg-0 order-lg-3 order-xl-4">
+              <h5>{{ 'global.pour_bavard'|trans({}, 'global') }}</h5>
+              <div class="card card-body bg-white">
+                 <p style=" margin-bottom: 0; ">Tél : 01 75 85 83 83</p>
+                 <p style=" margin-bottom: 0; margin-top: 0.5rem; ">hello(at)respir.co</p>
+              </div>
+              <ul class="list-unstyled d-flex mb-0 mt-4">
+                 <li class="mx-3" style=" margin-left: 0px !important; ">
+                    <a href="#" class="hover-fade-out">
+                    <img src="assets/img/icons/social/twitter.svg"  loading="lazy" alt="Twitter" class="icon icon-xs bg-white" data-inject-svg>
+                    </a>
+                 </li>
+                 <li class="mx-3">
+                    <a href="#" class="hover-fade-out">
+                    <img src="assets/img/icons/social/instagram.svg"  loading="lazy" alt="Github" class="icon icon-xs bg-white" data-inject-svg>
+                    </a>
+                 </li>
+                 <li class="mx-3">
+                    <a href="#" class="hover-fade-out">
+                    <img src="assets/img/icons/social/facebook.svg"  loading="lazy" alt="Facebook" class="icon icon-xs bg-white" data-inject-svg>
+                    </a>
+                 </li>
+              </ul>
+           </div>
+        </div>
+        <div class="row">
+           <div class="col">
+              <hr>
+           </div>
+        </div>
+        <div class="row flex-column flex-lg-row align-items-center justify-content-center justify-content-lg-between text-center text-lg-left">
+           <div class="col-auto">
+              <div class="d-flex flex-column flex-sm-row align-items-center text-small">
+                 <div class="text-muted">
+                    {{ 'global.percent_securise'|trans({}, 'global') }}
+                 </div>
+              </div>
+           </div>
+           <div class="col-auto mt-3 mt-lg-0">
+              <ul class="list-unstyled d-flex mb-0 payment-list">
+                 <li class="mx-2"> 
+                    <img data-src="https://www.brulafine.com/assets/images/card-cb.svg"  loading="lazy" class="lazy"> 
+                 </li>
+                 <li class="mx-2"> 
+                    <img data-src="https://www.brulafine.com/assets/images/card-mc.svg"  loading="lazy" class="lazy"> 
+                 </li>
+                 <li class="mx-2"> 
+                    <img data-src="https://www.brulafine.com/assets/images/card-mc-secured.svg"  loading="lazy" style=" height: 20px; " class="lazy"> 
+                 </li>
+                 <li class="mx-2"> 
+                    <img data-src="https://www.brulafine.com/assets/images/card-visa.svg"  loading="lazy" class="lazy"> 
+                 </li>
+                 <li class="mx-2"> 
+                    <img data-src="https://www.brulafine.com/assets/images/card-visa-secured.svg"  loading="lazy" class="lazy"> 
+                 </li>
+              </ul>
+           </div>
+        </div>
+        <div class="row flex-column flex-lg-row align-items-center justify-content-center justify-content-lg-between text-center text-lg-left">
+           <div class="col-auto">
+              <div class="d-flex flex-column flex-sm-row align-items-center text-small">
+                 <div class="text-muted" style=" font-size: 11px;margin: 20px 0px; ">
+                  {{ 'global.foot_p'|trans({}, 'global') }}
+                 </div>
+              </div>
+           </div>
+        </div>
+        <div class="row flex-column flex-lg-row align-items-center justify-content-center justify-content-lg-between text-center text-lg-left">
+           <div class="col-auto">
+              <div class="d-flex flex-column flex-sm-row align-items-center text-small">
+                 <div class="text-muted">
+                    © EDA Solutions, 2020
+                 </div>
+              </div>
+           </div>
+        </div>
+     </div>
+  </footer>
+  <a href="{{path('marque')}}" class="btn btn-primary goto-formule">{{ 'global.buy_now'|trans({}, 'global') }}</a>
+
 {% endblock %}
 {% block javascripts %}
   <!-- Required vendor scripts (Do not remove) -->
@@ -599,7 +601,7 @@
                prods = JSON.parse(x);
 
                prods.forEach(function(item, index){
-                  console.log("add "+item.type+" : "+item.id);
+                  /*console.log("add "+item.type+" : "+item.id);*/
                   addToCard(item.id,item.qty,item.type);
                })
 
@@ -714,7 +716,7 @@
                   }
                  if(data.status==200){
                     $('.cart-btn > .nb-product-cart').text(data.panier.products.length);
-                    var total = (data.panier.total-data.panier.reduction)<0?0:data.panier.total-data.panier.reduction;
+                    var total = data.panier.total<0?0:data.panier.total;
                     $(".cart-total-pay").html(total.toFixed(2));
                     $(".cart-total-reduction").html(data.panier.total.toFixed(2));
                     $(".card-list-product").html("");
@@ -731,7 +733,7 @@
                        $(".card-list-formule").append( itemFormule(item.id,item.name,item.month,item.price));
                      });
                  }else{
-                    console.log(data.message);
+                    /*console.log(data.message);*/
                  }
                  if(show && !$(".cart-wrapper").hasClass("open"))
                        $(".cart-wrapper").addClass("open");
@@ -804,7 +806,6 @@
                     $('.cart-container').css('display', 'none');
                     $('.empty-cart').css('display', 'block');
                     $('.goto-checkout').css('pointer-events', 'none');
-                    console.log('gogo');
                 }
                   else{
                     $('.cart-container').css('display', 'block');
@@ -814,7 +815,7 @@
                  if(data.status==200){
                   $('.cart-btn > .nb-product-cart').text(data.panier.products.length);
                   $('.cart-btn > .nb-product-cart').text(data.panier.products.length);
-                    var total = (data.panier.total-data.panier.reduction)<0?0:data.panier.total-data.panier.reduction;
+                    var total = data.panier.total<0?0:data.panier.total;
                     $(".cart-total-pay").html(total.toFixed(2));
                     $(".cart-total-reduction").html(data.panier.total.toFixed(2));
                     $(".card-list-product").html(""); 
@@ -828,8 +829,6 @@
                           }
                      }); 
 
-                         console.log(reductions);
-                         console.log( parseFloat(data.panier.reduction).toFixed(2) ) ;
                     $(".cart-total-reduction").html( parseFloat(reductions+ parseFloat(data.panier.reduction)).toFixed(2));
                     $(".card-list-coupon").html("");
                     $(".card-list-formule").html("");
@@ -837,7 +836,7 @@
                        $(".card-list-formule").append( itemFormule(item.id,item.name,item.month,item.price));
                      });
                  }else{
-                    console.log(data.message);
+                    /*console.log(data.message);*/
                  }
                  if(show && !$(".cart-wrapper").hasClass("open"))
                        $(".cart-wrapper").addClass("open");
@@ -1047,7 +1046,7 @@
       /***************/
 
     function init_product_qty(id,qty){
-      console.log("Show quantity of product");
+      /*console.log("Show quantity of product");*/
       $('#product-qty-'+id).html(qty);
       $('#product-'+id + " .add-product-card ").hide();
       $('#product-'+id + " .get_quantity ").show();
@@ -1122,7 +1121,6 @@
               $(".custom-lazy-load").each(function(index,item){
                 if($(item).offset().top - 600 < (window.innerHeight + scrollTop)){
                   var id = $(item).attr("lazy-target");
-                  console.log(id);
                   var url = "{{path('page')}}/"+id;
                   $(item).removeClass("custom-lazy-load");
                   $.ajax({

@@ -119,6 +119,7 @@ class PaymentController extends AbstractController
                 $message = $preparePaid['message'];
                 if($preparePaid['paid']){
                     $amount = $preparePaid['amount'];
+                    
                     $response = $this->stripe_s->proceedPayment($user, $amount);
                     $result = $response['message'];
                     $this->stripe_s->saveChargeToRefund($panier, $response['charge']);

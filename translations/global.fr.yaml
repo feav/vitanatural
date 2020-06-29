@@ -4,7 +4,27 @@ global:
   la_marque: "La marque"
   temoignage: "Témoignages"
   je_commande: "Je commande"
+
   navigation: "Navigation"
+  les_ingrediants: "Les ingrédiants"
+  coaching: "Coaching"
+  nous_contacter: "Nous contacter"
+  plan_site: "Plan du site"
+  nos_produit: "Nos produits"
+  minceur: "Minceur"
+  sommeil: "Sommeil"
+  eveil_actif: "EveilActif"
+  circulation: "Circulation"
+  actif_pousse: "ActifPousse"
+  peau_parfaite: "PeauParfaite"
+  partenaria_affiliation: "Partenaiat et affiliation"
+  paiement_securise: "Paiement securisé"
+  charte_confidentialité: "Charte de confidentialité"
+  mention_legale: "Mention légales"
+  pour_bavard: "Pour les bavards..." 
+
+
+
   connexion: "Connexion"
   deconnexion: 'Deconnexion'
   informations: "Informations"

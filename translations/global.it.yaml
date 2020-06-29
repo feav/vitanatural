@@ -5,7 +5,28 @@ global:
   temoignage: "Testimonianze"
   je_commande: "Ordinare"
   navigation: "Navigation"
-  connexion: "Connexion"
+
+
+  les_ingrediants: "Gli ingredienti"
+  coaching: "Coaching"
+  nous_contacter: "Contattarci"
+  plan_site: "Mappa del sito"
+  nos_produit: "I nostri prodotti"
+  minceur: "Dimagrimento"
+  sommeil: "Riposo Notturno"
+  eveil_actif: "Risveglio attivo"
+  circulation: "Circolazione"
+  actif_pousse: "Crescita attiva"
+  peau_parfaite: "Pelle perfetta"
+  partenaria_affiliation: "Partenariato e Affiliazione"
+  paiement_securise: "Pagamenti sicuri"
+  charte_confidentialité: "Privacy"
+  mention_legale: "Menzioni Legali"
+  pour_bavard: "Per i chiacchieroni..." 
+
+
+
+  connexion: "Connessione"
   deconnexion: 'Deconnexion'
   informations: "Informations"
   mon_compte: "Mon compte"
@@ -13,6 +34,7 @@ global:
   je_valide: 'je valide'
   paiement_de: 'Paiement de'
   offert: "Gratuito"
+  gamme_au_service: "Tutta una gamma al servizio della vostra bellezza"
   one_clik_paid: 'Payer en 1 click'
   paid_by_stripe: 'Paiements sécurisés.'
   secure_paid: 'Paiement securisé'

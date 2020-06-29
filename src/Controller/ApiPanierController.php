@@ -354,7 +354,7 @@ class ApiPanierController extends AbstractController
                         );
                     }else if($value['type'] == 'product'){
                         $product = $this->productService->findById($value['id']);
-                        $total += $product->getPrice()*( (float) $value['qty'] );
+                        $total += floatval($product->getPriceTotal($value['qty'])*( (float) $value['qty'] ) );
                         $produis[] = array(
                             'name' => $product->getName(),
                             'product_price' => floatval($product->getPrice()),
@@ -399,6 +399,13 @@ class ApiPanierController extends AbstractController
             }
             
         }
+        $user = $this->getUser();
+        $abonnementExit = [] ;
+        if(!is_null($user))
+            $abonnementExit = $this->abonnementRepository->findBy(['user'=>$user->getId(), 'active'=>1]);
+        if(is_null($user) || (!is_null($user) && !count($abonnementExit))){
+            $total += $this->price_shipping;
+        }
         return new Response( json_encode(
                 array(
                     'status' => 200, 
@@ -409,7 +416,6 @@ class ApiPanierController extends AbstractController
                         'formules' => $formules,
                         'livraison' => $livraison,
                         'livraison_facture' => 0,
-                        'total' => $total?$total+$livraison:0,
                         'total' => $total,
                         'reduction' => $reduction
                     )
