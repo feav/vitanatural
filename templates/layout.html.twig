@@ -630,7 +630,7 @@
           '</div>';
    }
 
-  function itemRecap(products, total_amount, total_reduction, reduction, livraison){
+  function itemRecap(products, total_amount, reduction, livraison){
     $ELT = $('.cart-container .list-recap');
     var DATA_STRING = ""; 
     products.forEach(function(item, index){
@@ -659,7 +659,7 @@
               '</li>'+
               '<li class="recap-item">'+
                 '<span class="recap-label">Total</span>'+
-                '<span class="recap-value">'+total_reduction+'€</span>'+
+                '<span class="recap-value">'+total_amount+'€</span>'+
               '</li>';
     $ELT.html(DATA_STRING);
   }
@@ -797,6 +797,7 @@
               }
             })
             .done(function( data ) {
+              console.log(data);
                 if(data.panier && data.panier.coupons.length == 0 && data.panier.formules.length == 0 && data.panier.products.length==0){
                   $('.cart-container').css('display', 'none');
                   $('.empty-cart').css('display', 'block');
@@ -812,18 +813,19 @@
                   var total = data.panier.total<0?0:data.panier.total;
                   $(".cart-total-pay").html(total.toFixed(2));
                   $(".cart-total-reduction").html(data.panier.total.toFixed(2));
-                  $(".card-list-product").html("");
-                  itemRecap(data.panier.products, data.panier.total, total.toFixed(2), data.panier.reduction, data.panier.livraison, data.panier.reduction);
+                  $(".card-list-product").html(""); 
+                  var reductions = 0;
+                  itemRecap(data.panier.products, total.toFixed(2), data.panier.reduction, data.panier.livraison);
                    data.panier.products.forEach(function(item, index){
                      $(".card-list-product").prepend(itemProduct(item.id_product,item.img, item.name, item.quantity, item.price, item.oldprice));
-                     if(typeof init_product_qty === "function"){
-                        init_product_qty(item.id_product,item.quantity);
-                     }
+                       reductions += parseFloat(item.oldprice*item.quantity);
+                       if(typeof init_product_qty === "function" && item.price != 0){
+                            init_product_qty(item.id_product,item.quantity);
+                        }
                    }); 
+
+                  $(".cart-total-reduction").html( parseFloat(reductions+ parseFloat(data.panier.reduction)).toFixed(2));
                   $(".card-list-coupon").html("");
-                   // data.panier.coupons.forEach(function(item, index){
-                   //   $(".card-list-coupon").append( itemCoupon(item.id,item.code, item.value));
-                   // });
                   $(".card-list-formule").html("");
                    data.panier.formules.forEach(function(item, index){
                      $(".card-list-formule").append( itemFormule(item.id,item.name,item.month,item.price));
@@ -916,7 +918,7 @@
                   $(".cart-total-reduction").html(data.panier.total.toFixed(2));
                   $(".card-list-product").html(""); 
                   var reductions = 0;
-                  itemRecap(data.panier.products, data.panier.total, total.toFixed(2), data.panier.reduction, data.panier.livraison, data.panier.reduction);
+                  itemRecap(data.panier.products, total.toFixed(2), data.panier.reduction, data.panier.livraison);
                    data.panier.products.forEach(function(item, index){
                      $(".card-list-product").prepend(itemProduct(item.id_product,item.img, item.name, item.quantity, item.price, item.oldprice));
                        reductions += parseFloat(item.oldprice*item.quantity);
@@ -927,9 +929,6 @@
 
                   $(".cart-total-reduction").html( parseFloat(reductions+ parseFloat(data.panier.reduction)).toFixed(2));
                   $(".card-list-coupon").html("");
-                   // data.panier.coupons.forEach(function(item, index){
-                   //   $(".card-list-coupon").append( itemCoupon(item.id,item.code, item.value));
-                   // });
                   $(".card-list-formule").html("");
                    data.panier.formules.forEach(function(item, index){
                      $(".card-list-formule").append( itemFormule(item.id,item.name,item.month,item.price));

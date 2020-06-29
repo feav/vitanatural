@@ -116,7 +116,7 @@ class ApiPanierController extends AbstractController
                 $total = $panier->getTotalPrice();
                 $reduction = $panier->getTotalReduction();
             }
-
+            
             return new Response( json_encode(
                 array(
                     'status' => 200, 
@@ -415,7 +415,6 @@ class ApiPanierController extends AbstractController
                         'coupons' => $coupons,
                         'formules' => $formules,
                         'livraison' => $livraison,
-                        'livraison_facture' => 0,
                         'total' => ($total-$reduction),
                         'reduction' => $reduction
                     )

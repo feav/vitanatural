@@ -535,7 +535,7 @@
             '</div>';
      }
 
-    function itemRecap(products, total_amount, total_reduction, reduction, livraison){
+    function itemRecap(products, total_amount, reduction, livraison){
       $ELT = $('.cart-container .list-recap');
       var DATA_STRING = ""; 
       products.forEach(function(item, index){
@@ -546,7 +546,6 @@
                 '</li>';
         }
       });
-
       $livraison_montant = "{{livraison_montant}}";
       $livraisonHtml = "";
       if(livraison < $livraison_montant){
@@ -561,12 +560,11 @@
                   '<span class="recap-value">(-'+(total_amount?parseInt( (reduction*100)/ total_amount):0)+'%) -'+reduction.toFixed(2)+'€</span>'+
                 '</li>'+
                 '<li class="recap-item">'+
-                  '<span class="recap-label">Livraison</span>'+
-                  '<span class="recap-value">{{livraison_montant}}€</span>'+
+                  '<span class="recap-label">Livraison</span>'+$livraisonHtml+
                 '</li>'+
                 '<li class="recap-item">'+
                   '<span class="recap-label">Total</span>'+
-                  '<span class="recap-value">'+total_reduction+'€</span>'+
+                  '<span class="recap-value">'+total_amount+'€</span>'+
                 '</li>';
       $ELT.html(DATA_STRING);
     }
@@ -718,15 +716,18 @@
                     $('.cart-btn > .nb-product-cart').text(data.panier.products.length);
                     var total = data.panier.total<0?0:data.panier.total;
                     $(".cart-total-pay").html(total.toFixed(2));
-                    $(".cart-total-reduction").html(data.panier.total.toFixed(2));
                     $(".card-list-product").html("");
-                    itemRecap(data.panier.products, data.panier.total, total.toFixed(2), data.panier.reduction);
+                    var reductions = 0;
+                    itemRecap(data.panier.products, total.toFixed(2), data.panier.reduction, data.panier.livraison);
                      data.panier.products.forEach(function(item, index){
                        $(".card-list-product").prepend(itemProduct(item.id_product,item.img, item.name, item.quantity, item.price, item.oldprice));
-                       if(typeof init_product_qty === "function"){
-                          init_product_qty(item.id_product,item.quantity);
-                       }
+                         reductions += parseFloat(item.oldprice*item.quantity);
+                         if(typeof init_product_qty === "function" && item.price != 0){
+                              init_product_qty(item.id_product,item.quantity);
+                          }
                      }); 
+                    $(".cart-total-reduction").html( parseFloat(reductions+ parseFloat(data.panier.reduction)).toFixed(2));
+
                     $(".card-list-coupon").html("");
                     $(".card-list-formule").html("");
                      data.panier.formules.forEach(function(item, index){
@@ -817,10 +818,9 @@
                   $('.cart-btn > .nb-product-cart').text(data.panier.products.length);
                     var total = data.panier.total<0?0:data.panier.total;
                     $(".cart-total-pay").html(total.toFixed(2));
-                    $(".cart-total-reduction").html(data.panier.total.toFixed(2));
                     $(".card-list-product").html(""); 
                     var reductions = 0;
-                    itemRecap(data.panier.products, data.panier.total, total.toFixed(2), data.panier.reduction);
+                    itemRecap(data.panier.products, total.toFixed(2), data.panier.reduction, data.panier.livraison);
                      data.panier.products.forEach(function(item, index){
                        $(".card-list-product").prepend(itemProduct(item.id_product,item.img, item.name, item.quantity, item.price, item.oldprice));
                          reductions += parseFloat(item.oldprice*item.quantity);
