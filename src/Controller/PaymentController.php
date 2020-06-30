@@ -432,7 +432,7 @@ class PaymentController extends AbstractController
      */
     public function subscriptionWebhook(Request $request, \Swift_Mailer $mailer){
 
-        \Stripe\Stripe::setApiKey('sk_test_zJN82UbRA4k1a6Mvna4rV3qn');
+        \Stripe\Stripe::setApiKey($this->stripeApiKey);
 
         $data = json_decode($request->getContent(), true);
         if ($data === null) {
