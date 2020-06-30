@@ -281,6 +281,7 @@ class ApiPanierController extends AbstractController
                             $abonnement = new Abonnement();
                             $abonnement->setPanier($panier);
                             $abonnement->setFormule($formule);
+                            $abonnement->setPrice($formule->getPrice());
                             $abonnement->setStart($date_start);
                             $abonnement->setEnd($date);
                             $abonnement->setUser($user);

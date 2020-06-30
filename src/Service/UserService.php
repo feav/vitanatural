@@ -136,9 +136,9 @@ class UserService{
     public function send_mail(\Swift_Mailer $mailer, $email, $phone, $name,$surname, $message){
         try {
             $mail = (new \Swift_Message('Message - Contact '.$name))
-                ->setFrom(array('feavfeav@gmail.com' => 'Vitanatural'))
-                ->setTo('feavfeav@gmail.com')
-                ->setCc('feavfeav@gmail.com')
+                ->setFrom(array('alexngoumo.an@gmail.com' => 'Vitanatural'))
+                ->setTo('alexngoumo.an@gmail.com')
+                ->setCc('alexngoumo.an@gmail.com')
                 ->setBody(" je suis ".$name." ".$surname." repondant au numero : ".$phone.". ".$message,
                     'text/html'
                 );

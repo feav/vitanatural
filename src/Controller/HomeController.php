@@ -233,6 +233,7 @@ class HomeController extends AbstractController
             'url_name'=>'temoignage'
         ]);
     }
+
     /**
      * @Route("/account", name="account")
      */
