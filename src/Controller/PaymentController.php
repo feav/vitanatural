@@ -14,6 +14,7 @@ use App\Repository\AbonnementRepository;
 use App\Repository\CommandeRepository;
 use App\Repository\PanierRepository;
 use App\Repository\FormuleRepository;
+use App\Repository\ConfigRepository;
 use App\Service\StripeService;
 use App\Service\MollieService;
 use App\Service\UserService;
@@ -46,8 +47,9 @@ class PaymentController extends AbstractController
     private $global_s;
     private $formuleRepository;
     private $price_shipping = 0;
+    private $configRepository;
 
-    public function __construct(ParameterBagInterface $params_dir, UserRepository $userRepository, UserService $user_s, MollieService $mollie_s, AbonnementRepository $abonnementRepository, PanierRepository $panierRepository, CommandeRepository $commandeRepository, GlobalService $global_s, FormuleRepository $formuleRepository, StripeService $stripe_s, ConfigService $configService){
+    public function __construct(ParameterBagInterface $params_dir, UserRepository $userRepository, UserService $user_s, MollieService $mollie_s, AbonnementRepository $abonnementRepository, PanierRepository $panierRepository, CommandeRepository $commandeRepository, GlobalService $global_s, FormuleRepository $formuleRepository, StripeService $stripe_s, ConfigService $configService, ConfigRepository $configRepository){
         $this->params_dir = $params_dir;
         $this->mollie_s = $mollie_s;
         $this->stripe_s = $stripe_s;
@@ -59,7 +61,9 @@ class PaymentController extends AbstractController
         $this->commandeRepository = $commandeRepository;
         $this->abonnementRepository = $abonnementRepository;
         $this->formuleRepository = $formuleRepository;
+        $this->configRepository = $configRepository;
         $this->price_shipping = floatval($this->configService->getField('LIVRAISON_AMOUNT'));
+        $this->stripeApiKey = !is_null($this->configRepository->findOneBy(['mkey'=>'STRIPE_PRIVATE_KEY'])) ? $this->configRepository->findOneBy(['mkey'=>'STRIPE_PRIVATE_KEY'])->getValue() : "";
     }
 
     /**
