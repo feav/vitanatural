@@ -200,17 +200,25 @@ class StripeService{
     }
 
     public function subscriptionCancel($subscription_id){
+        $abonnement = $this->abonnementRepository->findOneBy(['subscription'=>$subscription_id]);
         \Stripe\Stripe::setApiKey($this->stripeApiKey);
-        $subscription = \Stripe\Subscription::update(
-          $subscription_id,
-          [
-            'cancel_at_period_end' => true,
-          ]
-        );
+
+        $endTryDay = new \DateTime();
+        $trialDay = $abonnement->getFormule()->getTryDays();
+        $endTryDay->add(new \DateInterval('P0Y0M'.$trialDay.'DT0H0M0S'));
+        if($endTryDay <= new \DateTime()){
+            $subscription = \Stripe\Subscription::retrieve($subscription_id);
+            $subscription->cancel();//resili imediatement 
+        }
+        else{
+            $subscription = \Stripe\Subscription::update(
+              $subscription_id,
+              [
+                'cancel_at_period_end' => true,
+              ]
+            );
+        }
         
-        /*$subscription = \Stripe\Subscription::retrieve($subscription_id);
-        $subscription->cancel();//resili imediatement 
-        */
         return $subscription['id'];
     }
 }
