@@ -285,6 +285,7 @@ class ApiPanierController extends AbstractController
                             $abonnement->setStart($date_start);
                             $abonnement->setEnd($date);
                             $abonnement->setUser($user);
+                            $abonnement->setStripeCustomId($user->getStripeCustomId());
                             $abonnement->setState(0);
 
                             $panier->addAbonnement($abonnement);
